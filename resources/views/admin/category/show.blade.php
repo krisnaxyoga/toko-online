@@ -1,4 +1,4 @@
-@extends(auth()->user()->role_id == 1 ? 'layouts.admin' : 'layouts.pegawai')
+@extends('layouts.admin')
 
 @section('contents')
     <section>

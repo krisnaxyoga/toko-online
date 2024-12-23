@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\CheckOngkirController;
+use App\Http\Controllers\ProductController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +38,7 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::resource('/category', CategoryController::class);
     Route::get('/subscategory/{id}', [CategoryController::class, 'subscategory'])->name('subscategory');
-    Route::resource('/product', CategoryController::class);
+    Route::resource('/product', ProductController::class);
     Route::resource('/productvariant', CategoryController::class);
 });
 

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Product_image;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -11,7 +15,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::orderByDesc('id')->get();
+        return view('admin.product.index',compact('products'));
     }
 
     /**
@@ -19,7 +24,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $model = new Product();
+        $categories = Category::whereColumn('id', 'parent_id')->get();
+        return view('admin.product.form',compact('model','categories'));
     }
 
     /**
@@ -27,7 +34,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255',
+        ]);
+
+        $category = Product::create([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'slug' => str()->slug($request->name),
+            'description' => $request->description,
+            'price' => $request->price,
+            'weight' => $request->weight,
+            'stock' => $request->stock,
+            'status' => $request->status
+        ]);
+
+
+        return redirect()->route('category.index')->with('success', 'Category has been created successfully');
     }
 
     /**
