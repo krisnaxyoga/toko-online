@@ -8,6 +8,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\CheckOngkirController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductVariant;
+use App\Http\Controllers\StoreSettingController;
 use App\Models\Product;
 
 /*
@@ -39,7 +41,11 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::resource('/category', CategoryController::class);
     Route::get('/subscategory/{id}', [CategoryController::class, 'subscategory'])->name('subscategory');
     Route::resource('/product', ProductController::class);
-    Route::resource('/productvariant', CategoryController::class);
+    Route::resource('/productvariant', ProductVariant::class);
+    Route::get('/productvariant/index/{id}', [ProductVariant::class, 'index'])->name('productvariant.creatus.index');
+    Route::get('/productvariant/create/{id}', [ProductVariant::class, 'create'])->name('productvariant.creatus');
+    Route::get('/store-setting', [StoreSettingController::class, 'index'])->name('store-setting');
+    Route::post('/store-setting', [StoreSettingController::class, 'update'])->name('store-setting.update');
 });
 
 // untuk pegawai

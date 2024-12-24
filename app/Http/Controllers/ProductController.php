@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Product_image;
+use App\Models\Product_variant;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
@@ -77,16 +78,10 @@ class ProductController extends Controller
             ]);
         }
 
-        return redirect()->route('category.index')->with('success', 'Product has been created successfully');
+        return redirect()->route('product.index')->with('success', 'Product has been created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -104,7 +99,61 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:255',
+        ]);
+
+        $product = Product::find($id);
+
+        $product->update([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'slug' => str()->slug($request->name),
+            'description' => $request->description,
+            'price' => $request->price,
+            'weight' => $request->weight,
+            'stock' => $request->stock,
+            'status' => $request->status
+        ]);
+
+        // Handle multiple images
+        if ($request->hasFile('images')) {
+            // Delete old images
+            $oldImages = Product_image::where('product_id', $product->id)->where('is_primary', false)->get();
+            foreach ($oldImages as $oldImage) {
+                if (File::exists(public_path($oldImage->image_url))) {
+                    File::delete(public_path($oldImage->image_url));
+                }
+                $oldImage->delete();
+            }
+
+            // Upload new images
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
+
+                Product_image::create([
+                    'product_id' => $product->id,
+                    'image_url' => '/images/' . $imageName,
+                    'is_primary' => false
+                ]);
+            }
+        }
+
+        if ($request->hasFile('images_primary')) {
+            // Delete old primary image
+            $oldPrimaryImage = Product_image::where('product_id', $id)->where('is_primary', true)->first();
+            if ($oldPrimaryImage && File::exists(public_path($oldPrimaryImage->image_url))) {
+                File::delete(public_path($oldPrimaryImage->image_url));
+            }
+
+            $image = $request->file('images_primary');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $filename);
+            Product_image::where('product_id', $id)->where('is_primary', true)->update(['image_url' => "/images/" . $filename]);
+        }
+
+        return redirect()->route('product.index')->with('success', 'Product has been updated successfully');
     }
 
     /**
@@ -112,6 +161,24 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+        // Delete product images
+        $productImages = Product_image::where('product_id', $id)->get();
+        foreach ($productImages as $productImage) {
+            if (File::exists(public_path($productImage->image_url))) {
+                File::delete(public_path($productImage->image_url));
+            }
+            $productImage->delete();
+        }
+
+        // Delete product variant
+        $productVariants = Product_variant::where('product_id', $id)->get();
+        foreach ($productVariants as $productVariant) {
+            $productVariant->delete();
+        }
+
+        // Delete product
+        $product->delete();
+        return redirect()->route('product.index')->with('success', 'Product has been Deleted successfully');
     }
 }

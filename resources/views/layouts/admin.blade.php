@@ -140,15 +140,14 @@
                             <i class="bi bi-circle"></i><span>Product</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('productvariant.index') }}"
-                            class="{{ request()->routeIs('productvariant.index') ? 'active' : '' }}">
-                            <i class="bi bi-circle"></i><span>Product Variant</span>
-                        </a>
-                    </li>
                 </ul>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link " href="{{ route('store-setting') }}">
+                    <i class="bi bi-gear"></i>
+                    <span>Store setting</span>
+                </a>
+            </li>
 
             <!-- End Forms Nav -->
             {{-- <li class="nav-item">
