@@ -1,16 +1,17 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductVariant;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\CheckOngkirController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductVariant;
 use App\Http\Controllers\StoreSettingController;
-use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,9 +54,11 @@ Route::group(['middleware' => ['auth', 'checkrole:1,2']], function() {
     Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
 
 });
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [FrontEndController::class, 'index'])->name('front.index');
 
 Route::get('provinces', [CheckOngkirController::class, 'province'])->name('provinces');
 Route::get('cities', [CheckOngkirController::class, 'city'])->name('cities');
