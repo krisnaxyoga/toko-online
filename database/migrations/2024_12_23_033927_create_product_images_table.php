@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('product_id');
             $table->string('image_url')->nullable();
-            $table->boolean('is_primary');
+            $table->boolean('is_primary')->nullable();;
             $table->timestamps();
         });
     }

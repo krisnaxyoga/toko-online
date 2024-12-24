@@ -64,7 +64,7 @@
                                                                 class="bx bxs-trash"></i></button>
                                                     </form>
                                                 </td>
-                                                <td>{{ $item->category }}</td>
+                                                <td>{{ $item->category->name }}</td>
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->slug }}</td>
                                                 <td>{{ $item->price }}</td>

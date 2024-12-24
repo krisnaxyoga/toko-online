@@ -26,7 +26,8 @@ class ProductController extends Controller
     {
         $model = new Product();
         $categories = Category::whereColumn('id', 'parent_id')->get();
-        return view('admin.product.form',compact('model','categories'));
+        $image_primary = null;
+        return view('admin.product.form',compact('model','categories','image_primary'));
     }
 
     /**
@@ -38,7 +39,9 @@ class ProductController extends Controller
             'name' => 'required|max:255',
         ]);
 
-        $category = Product::create([
+        // Remove dd() unless needed for debugging
+
+        $product = Product::create([
             'category_id' => $request->category_id,
             'name' => $request->name,
             'slug' => str()->slug($request->name),
@@ -49,8 +52,32 @@ class ProductController extends Controller
             'status' => $request->status
         ]);
 
+        // Handle multiple images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images'), $imageName);
 
-        return redirect()->route('category.index')->with('success', 'Category has been created successfully');
+                Product_image::create([
+                    'product_id' => $product->id,
+                    'image_url' => '/images/' . $imageName,
+                    'is_primary' => false
+                ]);
+            }
+        }
+
+        if($request->hasFile('images_primary')) {
+            $image = $request->file('images_primary');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $filename);
+            Product_image::create([
+                'product_id' => $product->id,
+                'image_url' => "/images/" . $filename,
+                'is_primary' => true
+            ]);
+        }
+
+        return redirect()->route('category.index')->with('success', 'Product has been created successfully');
     }
 
     /**
@@ -66,7 +93,10 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $model = Product::find($id);
+        $categories = Category::whereColumn('id', 'parent_id')->get();
+        $image_primary = Product_image::where('product_id', $id)->where('is_primary', true)->first();
+        return view('admin.product.form',compact('model','categories','image_primary'));
     }
 
     /**
