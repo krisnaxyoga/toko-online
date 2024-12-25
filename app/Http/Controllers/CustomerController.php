@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\User_address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
-        //
+        return view('front.myaccount');
     }
 
     /**
@@ -22,6 +26,40 @@ class CustomerController extends Controller
         //
     }
 
+    public function register(Request $request){
+        return view('auth.register');
+    }
+    public function doregister(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'address' => 'nullable|string',
+            'origin_province' => 'required|string',
+            'origin_city' => 'required|string',
+            'phone' => 'required|string|max:15',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = new User ();
+        $user->name  = $request->name;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role_id = 2;
+        $user->save();
+
+        $useraddress = new User_address();
+        $useraddress->user_id = $user->id;
+        $useraddress->province_id = $request->origin_province;
+        $useraddress->city_id = $request->origin_city;
+        $useraddress->address = $request->address;
+        $useraddress->postal_code = $request->postal_code;
+        $useraddress->is_primary = true;
+        $useraddress->save();
+
+
+        return redirect()->route('login')->with('success', 'Registration successful. Please login');
+    }
     /**
      * Store a newly created resource in storage.
      */

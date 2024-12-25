@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class FrontEndController extends Controller
 {
     public function index(){
-        $products = Product::orderBy('created_at', 'DESC')->paginate(8);
+        // session()->flush(); // Uncomment this line to clear session
+        $products = Product::with('images')->orderBy('created_at', 'DESC')->paginate(8);
         return view('front.index',compact('products'));
     }
 }

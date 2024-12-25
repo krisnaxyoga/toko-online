@@ -143,7 +143,8 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link " href="{{ route('store-setting') }}">
+                <a class="nav-link {{ request()->routeIs('store-setting') ? 'active' : 'collapsed' }}"
+                    href="{{ route('store-setting') }}">
                     <i class="bi bi-gear"></i>
                     <span>Store setting</span>
                 </a>

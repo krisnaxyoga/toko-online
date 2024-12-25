@@ -155,7 +155,8 @@
                                             @endif
                                         </label>
                                         <div class="col-md-8 col-lg-9">
-                                            <select name="origin_province" id="origin_province" class="form-select">
+                                            <select name="origin_province" id="origin_province"
+                                                class="form-select form-control">
 
                                                 <option>Choose Province</option>
                                             </select>
@@ -168,7 +169,7 @@
                                             @endif
                                         </label>
                                         <div class="col-md-8 col-lg-9">
-                                            <select name="origin_city" id="origin_city" class="form-select">
+                                            <select name="origin_city" id="origin_city" class="form-select form-control">
 
                                                 <option>Choose City</option>
                                             </select>

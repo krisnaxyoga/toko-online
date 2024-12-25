@@ -3,6 +3,7 @@
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductVariant;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
@@ -27,7 +28,8 @@ use App\Http\Controllers\StoreSettingController;
 Route::group(['middleware' => 'guest'], function() {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/dologin', [AuthController::class, 'dologin'])->name('dologin');
-
+    Route::get('/register', [CustomerController::class, 'register'])->name('register');
+    Route::post('/doregister', [CustomerController::class, 'doregister'])->name('doregister');
 });
 
 // untuk superadmin dan pegawai
@@ -52,12 +54,15 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
 // untuk pegawai
 Route::group(['middleware' => ['auth', 'checkrole:1,2']], function() {
     Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
+    Route::get('/home', [CustomerController::class, 'index'])->name('home');
 
+    Route::post('/cart/store', [CartController::class, 'cart'])->name('cart');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/destroy/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
 Route::get('/', [FrontEndController::class, 'index'])->name('front.index');
 
 Route::get('provinces', [CheckOngkirController::class, 'province'])->name('provinces');

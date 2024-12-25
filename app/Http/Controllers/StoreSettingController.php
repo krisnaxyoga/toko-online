@@ -23,11 +23,17 @@ class StoreSettingController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'address' => $request->address,
-            'province_id' => $request->province_id,
-            'city_id' => $request->city_id,
+            'province_id' => $request->origin_province == 'Choose Province' ? $store_setting->province_id : $request->origin_province,
+            'city_id' => $request->origin_city == 'Choose City' ? $store_setting->province_id : $request->origin_city,
             'postal_code' => $request->postal_code,
-            'logo_url' => $request->logo_url,
         ]);
+
+        if($request->hasFile('logo')) {
+            $image = $request->file('logo');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $filename);
+            $store_setting->update(['logo_url' => "/images/" . $filename]);
+        }
 
         return redirect()->route('store-setting')->with('success','Data has been updated successfully');
     }
