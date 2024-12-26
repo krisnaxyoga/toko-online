@@ -25,6 +25,7 @@ use App\Http\Controllers\StoreSettingController;
 |
 */
 //  jika user belum login
+
 Route::group(['middleware' => 'guest'], function() {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/dologin', [AuthController::class, 'dologin'])->name('dologin');
@@ -52,17 +53,20 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
 });
 
 // untuk pegawai
-Route::group(['middleware' => ['auth', 'checkrole:1,2']], function() {
+Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::get('/customer', [CustomerController::class, 'index'])->name('customer.index');
     Route::get('/home', [CustomerController::class, 'index'])->name('home');
-
-    Route::post('/cart/store', [CartController::class, 'cart'])->name('cart');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/destroy/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::post('/cartstore', [CartController::class, 'cart'])->name('cart.store');
+    Route::post('/cartsupdate/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/destroy/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('front.checkout');
+    Route::get('/checkoutSuccess', [CartController::class, 'checkoutSuccess'])->name('checkout-success');
 });
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
 Route::get('/', [FrontEndController::class, 'index'])->name('front.index');
 
 Route::get('provinces', [CheckOngkirController::class, 'province'])->name('provinces');

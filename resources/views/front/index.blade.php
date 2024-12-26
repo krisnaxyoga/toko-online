@@ -304,9 +304,10 @@
 
                                             <!-- Product Details -->
                                             <div class="col-md-6">
-                                                <form action="{{ route('cart') }}" method="POST"
+                                                <form action="{{ route('cart.store') }}" method="POST"
                                                     enctype="multipart/form-data">
                                                     @csrf
+                                                    @method('POST')
                                                     <input type="hidden" name="product_id" value="{{ $value->id }}">
 
                                                     <h3>{{ $value->name }}</h3>

@@ -1,22 +1,11 @@
 @extends('layouts.front')
 @section('contents')
-    <!-- breadcrumb -->
-    <div class="container">
-        <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-            <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
-                Home
-                <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-            </a>
+    <!-- breadcrumb remains the same -->
 
-            <span class="stext-109 cl4">
-                Shoping Cart
-            </span>
-        </div>
-    </div>
-
-
-    <!-- Shoping Cart -->
-    <form class="bg0 p-t-75 p-b-85">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Shopping Cart -->
+    <form class="bg0 p-t-75 p-b-85" action="{{ route('front.checkout') }}" method="POST">
+        @csrf
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -31,73 +20,60 @@
                                     <th class="column-5">Total</th>
                                 </tr>
 
-                                <tr class="table_row">
-                                    <td class="column-1">
-                                        <div class="how-itemcart1">
-                                            <img src="images/item-cart-04.jpg" alt="IMG">
-                                        </div>
-                                    </td>
-                                    <td class="column-2">Fresh Strawberries</td>
-                                    <td class="column-3">$ 36.00</td>
-                                    <td class="column-4">
-                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-minus"></i>
-                                            </div>
+                                @php
+                                    $cart = session()->get('cart', []);
+                                    $subtotal = 0;
+                                @endphp
 
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                name="num-product1" value="1">
+                                @if (empty($cart))
+                                    <tr class="table_row">
+                                        <td colspan="5" class="text-center p-4">
+                                            Your cart is empty
+                                        </td>
+                                    </tr>
+                                @else
+                                    @foreach ($cart as $item)
+                                        @php
+                                            $subtotal += $item['total_price'];
+                                        @endphp
+                                        <tr class="table_row">
+                                            <td class="column-1">
+                                                <div class="how-itemcart1">
+                                                    <img src="{{ $item['image'] }}" alt="IMG">
+                                                </div>
+                                            </td>
+                                            <td class="column-2">
+                                                {{ $item['name'] }}
+                                                @if ($item['variant'])
+                                                    <br>
+                                                    <small>{{ $item['variant'] }}</small>
+                                                @endif
+                                            </td>
+                                            <td class="column-3">Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
+                                            <td class="column-4">
+                                                <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
+                                                        onclick="updateQuantity('{{ $item['id'] }}', 'decrease')">
+                                                        <i class="fs-16 zmdi zmdi-minus"></i>
+                                                    </div>
 
-                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="column-5">$ 36.00</td>
-                                </tr>
+                                                    <input id="quantity-{{ $item['id'] }}"
+                                                        class="mtext-104 cl3 txt-center num-product" type="number"
+                                                        name="quantity" value="{{ $item['quantity'] }}" readonly>
 
-                                <tr class="table_row">
-                                    <td class="column-1">
-                                        <div class="how-itemcart1">
-                                            <img src="images/item-cart-05.jpg" alt="IMG">
-                                        </div>
-                                    </td>
-                                    <td class="column-2">Lightweight Jacket</td>
-                                    <td class="column-3">$ 16.00</td>
-                                    <td class="column-4">
-                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-minus"></i>
-                                            </div>
-
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                name="num-product2" value="1">
-
-                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                <i class="fs-16 zmdi zmdi-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="column-5">$ 16.00</td>
-                                </tr>
+                                                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
+                                                        onclick="updateQuantity('{{ $item['id'] }}', 'increase')">
+                                                        <i class="fs-16 zmdi zmdi-plus"></i>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="column-5" id="total-{{ $item['id'] }}">
+                                                Rp {{ number_format($item['total_price'], 0, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </table>
-                        </div>
-
-                        <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                            <div class="flex-w flex-m m-r-20 m-tb-5">
-                                <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
-                                    name="coupon" placeholder="Coupon Code">
-
-                                <div
-                                    class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
-                                    Apply coupon
-                                </div>
-                            </div>
-
-                            <div
-                                class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                                Update Cart
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,11 +93,12 @@
 
                             <div class="size-209">
                                 <span class="mtext-110 cl2">
-                                    $79.65
+                                    Rp {{ number_format($subtotal, 0, ',', '.') }}
                                 </span>
                             </div>
                         </div>
 
+                        <!-- Shipping section remains the same -->
                         <div class="flex-w flex-t bor12 p-t-15 p-b-30">
                             <div class="size-208 w-full-ssm">
                                 <span class="stext-110 cl2">
@@ -139,48 +116,106 @@
                                     <span class="stext-112 cl8">
                                         Calculate Shipping
                                     </span>
+                                    <br>
+                                    <strong>Destination</strong>
+                                    @forelse ($customer->user_address as $address)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="destination_city"
+                                                id="destination_city_{{ $address->id }}"
+                                                value="{{ $address->city->id }}">
+                                            <label class="form-check-label" for="destination_city_{{ $address->id }}">
+                                                {{ $address->address }},
+                                                {{ $address->city->name }}, {{ $address->province->name }}
+                                            </label>
+                                        </div>
+                                    @empty
+                                        <p>No Address</p>
+                                    @endforelse
 
-                                    <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                                        <select class="js-select2" name="time">
-                                            <option>Select a country...</option>
-                                            <option>USA</option>
-                                            <option>UK</option>
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
-                                    </div>
-
-                                    <div class="bor8 bg0 m-b-12">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state"
-                                            placeholder="State /  country">
-                                    </div>
-
-                                    <div class="bor8 bg0 m-b-22">
-                                        <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode"
-                                            placeholder="Postcode / Zip">
-                                    </div>
-
-                                    <div class="flex-w">
-                                        <div
-                                            class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
-                                            Update Totals
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <label for="courier" class="form-label">Courier</label>
+                                            <select name="courier" id="courier" class="form-select">
+                                                <option>Choose Courier</option>
+                                                <option value="jne">JNE</option>
+                                                <option value="pos">POS</option>
+                                                <option value="tiki">TIKI</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="weight" class="form-label">Weight (Gram)</label>
+                                            <input type="number" name="weight" id="weight" class="form-control"
+                                                value="{{ $weight }}" readonly>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <label for="notes" class="form-label">Note</label>
+                                            <textarea name="notes" id="notes" class="form-control"></textarea>
                                         </div>
                                     </div>
-
+                                    {{-- <div class="flex-w">
+                                        <div
+                                            class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
+                                            Check shipping
+                                        </div>
+                                    </div> --}}
+                                    <input type="hidden" id="shipping_cost" value="0">
                                 </div>
                             </div>
                         </div>
+                        <!-- Display Subtotal -->
+                        {{-- <div class="flex-w flex-t p-t-27 p-b-33">
+                            <div class="size-208">
+                                <span class="mtext-101 cl2">
+                                    Subtotal:
+                                </span>
+                            </div>
+                            <div class="size-209 p-t-1">
+                                <span class="mtext-110 cl2">
+                                    Rp {{ number_format($subtotal, 0, ',', '.') }}
+                                </span>
+                            </div>
+                        </div> --}}
+                        <input type="text" name="total_price" value="{{ $subtotal }}" hidden>
+                        <!-- Display Shipping Cost -->
+                        <div class="flex-w flex-t p-t-27 p-b-33">
+                            <div class="size-208">
+                                <span class="mtext-101 cl2">
+                                    Courier :
+                                </span>
+                            </div>
+                            <div class="size-209 p-t-1">
+                                <select id="shipping_options" class="form-select" name="shipping_cost">
+                                    <option value="" disabled selected>Select a price shipping</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex-w flex-t p-t-27 p-b-33">
+                            <div class="size-208">
+                                <span class="mtext-101 cl2">
+                                    Shipping:
+                                </span>
+                            </div>
+                            <div class="size-209 p-t-1">
+                                <span class="mtext-110 cl2" id="shipping_display">
+                                    Rp 0
+                                </span>
+                            </div>
+                        </div>
 
+                        <!-- Display Total -->
                         <div class="flex-w flex-t p-t-27 p-b-33">
                             <div class="size-208">
                                 <span class="mtext-101 cl2">
                                     Total:
                                 </span>
                             </div>
-
                             <div class="size-209 p-t-1">
-                                <span class="mtext-110 cl2">
-                                    $79.65
+                                <span class="mtext-110 cl2" id="total_display">
+                                    Rp {{ number_format($subtotal, 0, ',', '.') }}
                                 </span>
+                                <input type="text" name="grand_total" id="total" value="" hidden>
+                                <input type="text" name="shipping_address_id" value="" id="shipping_address_id"
+                                    hidden>
                             </div>
                         </div>
 
@@ -192,4 +227,136 @@
             </div>
         </div>
     </form>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('#courier').on('change', function(e) {
+                e.preventDefault();
+                let origin = {{ $store->city_id }}; //$('#origin_city').val();
+                let destination = $('input[name="destination_city"]:checked').val();
+                let courier = $('#courier').val();
+                let weight = $('#weight').val();
+
+                // Menonaktifkan tombol selama proses
+                $('#shipping_options').html('Loading...');
+                $('#shipping_options').attr('disabled', true);
+
+                $.ajax({
+                    url: "{{ route('check-ongkir') }}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        origin: origin,
+                        destination: destination,
+                        courier: courier,
+                        weight: weight
+                    },
+                    success: function(response) {
+                        $('#shipping_options').html('Update Totals');
+                        $('#shipping_options').attr('disabled', false);
+
+                        // Kosongkan dan isi dropdown ongkir
+                        $('#shipping_options').empty();
+                        $('#shipping_options').append(
+                            '<option value="" disabled selected>Select a shipping method</option>'
+                        );
+
+                        // Periksa jika response ongkir tersedia
+                        if (response.length > 0) {
+                            let subtotal =
+                                {{ $subtotal }}; // Subtotal yang sudah ada dalam variabel PHP
+
+                            $.each(response, function(index, option) {
+                                let cost = option.cost[0].value; // Ongkir
+                                let description = option
+                                    .description; // Deskripsi Ongkir
+                                let service = option.service; // Kode layanan
+                                let etd = option.cost[0]
+                                    .etd; // Estimasi waktu pengiriman
+
+                                // Tambahkan pilihan ongkir ke dropdown
+                                $('#shipping_options').append(`
+                        <option value="${cost}" data-service="${service}" data-description="${description}" data-etd="${etd}">
+                            ${description} (${etd}): Rp ${cost.toLocaleString()}
+                        </option>
+                    `);
+                            });
+
+                            // Event ketika pilihan ongkir berubah
+                            $('#shipping_options').on('change', function() {
+                                let shippingCost = parseInt($(this)
+                                    .val()); // Ongkir yang dipilih
+                                let total = subtotal +
+                                    shippingCost; // Tambahkan ongkir ke subtotal
+
+                                // Memperbarui nilai ongkir yang dipilih
+                                $('#shipping_display').text('Rp ' + shippingCost
+                                    .toLocaleString());
+
+                                // Memperbarui total yang ditampilkan
+                                $('#total_display').text('Rp ' + total
+                                    .toLocaleString());
+
+                                // Memperbarui nilai id total
+                                $('#total').val(total);
+                                $('#shipping_address_id').val(destination);
+
+                            });
+                        } else {
+                            // Jika tidak ada ongkir
+                            alert('No shipping methods available.');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                        alert('Failed to fetch shipping cost. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        function updateQuantity(id, action) {
+            const input = document.getElementById(`quantity-${id}`);
+            let quantity = parseInt(input.value);
+
+            // Update quantity based on action
+            if (action === 'increase') {
+                quantity += 1;
+            } else if (action === 'decrease') {
+                quantity -= 1;
+            }
+
+
+            // Send update to server
+            fetch(`{{ route('cart.update', ':id') }}`.replace(':id', id), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: `quantity=${quantity}`
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    location.reload(); // Refresh page to update all totals
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Something went wrong. Please try again.');
+                });
+        }
+    </script>
 @endsection
