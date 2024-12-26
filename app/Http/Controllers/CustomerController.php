@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Order;
 use App\Models\User_address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -63,9 +64,10 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+   public function report()
     {
-        //
+        $orders = Order::where('user_id', auth()->id())->with('order_item', 'payment', 'user_address')->get();
+        return view('front.report', compact('orders'));
     }
 
     /**

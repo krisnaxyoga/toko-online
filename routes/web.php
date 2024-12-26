@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductVariant;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
@@ -50,6 +51,10 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::get('/productvariant/create/{id}', [ProductVariant::class, 'create'])->name('productvariant.creatus');
     Route::get('/store-setting', [StoreSettingController::class, 'index'])->name('store-setting');
     Route::post('/store-setting', [StoreSettingController::class, 'update'])->name('store-setting.update');
+
+    Route::get('/report', [ReportController::class, 'report'])->name('report');
+    Route::get('/order/approve/{id}', [ReportController::class, 'approve'])->name('admin.order.approve');
+    Route::get('/order/cancel/{id}', [ReportController::class, 'cancel'])->name('admin.order.cancel');
 });
 
 // untuk pegawai
@@ -62,6 +67,8 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::delete('/cart/destroy/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::post('/checkout', [CartController::class, 'checkout'])->name('front.checkout');
     Route::get('/checkoutSuccess', [CartController::class, 'checkoutSuccess'])->name('checkout-success');
+
+    Route::post('/upload-bukti', [CartController::class, 'uploadBukti'])->name('upload-bukti');
 });
 // Route::get('/', function () {
 //     return view('welcome');

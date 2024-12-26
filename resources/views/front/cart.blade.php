@@ -121,7 +121,7 @@
                                     @forelse ($customer->user_address as $address)
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="destination_city"
-                                                id="destination_city_{{ $address->id }}"
+                                                id="destination_city_{{ $address->id }}" data-id="{{ $address->id }}"
                                                 value="{{ $address->city->id }}">
                                             <label class="form-check-label" for="destination_city_{{ $address->id }}">
                                                 {{ $address->address }},
@@ -240,6 +240,7 @@
                 e.preventDefault();
                 let origin = {{ $store->city_id }}; //$('#origin_city').val();
                 let destination = $('input[name="destination_city"]:checked').val();
+                let address = $('input[name="destination_city"]:checked').data('id');
                 let courier = $('#courier').val();
                 let weight = $('#weight').val();
 
@@ -306,7 +307,7 @@
 
                                 // Memperbarui nilai id total
                                 $('#total').val(total);
-                                $('#shipping_address_id').val(destination);
+                                $('#shipping_address_id').val(address);
 
                             });
                         } else {

@@ -149,6 +149,13 @@
                     <span>Store setting</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('report') ? 'active' : 'collapsed' }}"
+                    href="{{ route('report') }}">
+                    <i class="ri-file-pdf-fill"></i>
+                    <span>Report</span>
+                </a>
+            </li>
 
             <!-- End Forms Nav -->
             {{-- <li class="nav-item">

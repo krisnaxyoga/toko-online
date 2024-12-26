@@ -16,6 +16,7 @@
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Subtotal</th>
+                                <th>Grand Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,14 +25,20 @@
                                 <tr>
                                     <td>{{ $item->product->name }}</td>
                                     <td>Rp {{ number_format($item->price, 0, ',', '.') }}</td>
-                                    <td>{{ $item->quantity }}</td>
+                                    <td class="text-center">{{ $item->quantity }}</td>
                                     <td>Rp {{ number_format($item->subtotal, 0, ',', '.') }}</td>
                                 </tr>
                                 <?php $total += $item->subtotal; ?>
                             @endforeach
                             <tr>
-                                <th colspan="3">Total</th>
-                                <th>Rp {{ number_format($total, 0, ',', '.') }}</th>
+                                <th colspan="3">Ongkir</th>
+                                <th>{{ $order->shipping_courier }}</th>
+                                <th>Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</th>
+                            </tr>
+                            <tr>
+                                <th colspan="4">Total</th>
+                                <th class="text-right">Rp {{ number_format($total + $order->shipping_cost, 0, ',', '.') }}
+                                </th>
                             </tr>
                         </tbody>
                     </table>
@@ -39,12 +46,12 @@
 
                 </div>
                 <div class="col-lg-6">
-                    <form action="/upload-bukti-transfer" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('upload-bukti') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="order_id" value="{{ $order->id }}">
                         <div class="form-group">
                             <label for="bukti_transfer">Upload Bukti Transfer</label>
-                            <input type="file" class="form-control-file" id="bukti_transfer" name="bukti_transfer">
+                            <input type="file" class="form-control" id="bukti_transfer" name="bukti_transfer">
                         </div>
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </form>

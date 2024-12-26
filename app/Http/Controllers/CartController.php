@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Order;
-use App\Models\Order_item;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Cart_item;
+use App\Models\Order_item;
 use Illuminate\Http\Request;
 use App\Models\Store_setting;
 use App\Models\Product_variant;
@@ -196,4 +197,29 @@ class CartController extends Controller
         return view('front.checkout-success', compact('order', 'order_items'));
     }
 
+    public function uploadBukti(Request $request) {
+        $request->validate([
+            'order_id' => 'required',
+            'bukti_transfer' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $order = Order::find($request->order_id);
+        $image = $request->file('bukti_transfer');
+        $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('images/bukti'), $filename);
+
+        $imageName = '/images/bukti/' . $filename;
+
+        $order->payment_proof = $imageName;
+        $order->status = 'Menunggu Konfirmasi';
+        $order->save();
+
+        $payments = new Payment();
+        $payments->order_id = $order->id;
+        $payments->image = $imageName;
+        $payments->save();
+
+
+        return redirect()->route('checkout-success')->with('success', 'Bukti transfer has been uploaded successfully.');
+    }
 }
