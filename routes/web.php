@@ -56,8 +56,9 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::get('/report', [ReportController::class, 'report'])->name('report');
     Route::get('/order/approve/{id}', [ReportController::class, 'approve'])->name('admin.order.approve');
     Route::get('/order/cancel/{id}', [ReportController::class, 'cancel'])->name('admin.order.cancel');
-
-
+    Route::post('/slider/store', [StoreSettingController::class, 'addslidder'])->name('admin.setting.slider.store');
+    Route::put('/slider/update/{id}', [StoreSettingController::class, 'editslider'])->name('admin.setting.slider.update');
+    Route::delete('/slider/destroy/{id}', [StoreSettingController::class, 'deleteslider'])->name('admin.setting.slider.destroy');
 });
 
 // untuk pegawai

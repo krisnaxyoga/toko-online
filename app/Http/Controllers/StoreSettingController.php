@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use App\Models\Store_setting;
 
@@ -9,7 +10,8 @@ class StoreSettingController extends Controller
 {
     public function index(){
         $store_setting = Store_setting::first();
-        return view('admin.setting.index', compact('store_setting'));
+        $sliders = Slider::all();
+        return view('admin.setting.index', compact('store_setting','sliders'));
     }
 
     public function update(Request $request){
@@ -36,5 +38,67 @@ class StoreSettingController extends Controller
         }
 
         return redirect()->route('store-setting')->with('success','Data has been updated successfully');
+    }
+
+    public function addslidder(Request $request){
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'button_text' => 'required',
+            'button_link' => 'required|url',
+        ]);
+
+        $slider = new Slider();
+        $slider->title = $request->title;
+        $slider->description = $request->description;
+
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/slider'), $filename);
+            $slider->image = "/images/slider/" . $filename;
+        }
+
+        $slider->button_text = $request->button_text;
+        $slider->button_link = $request->button_link;
+        $slider->save();
+
+        return redirect()->route('store-setting')->with('success','Slider has been added successfully');
+    }
+
+    public function editslider(Request $request, $id){
+        $request->validate([
+            'title' => 'nullable',
+            'description' => 'nullable',
+            'button_text' => 'nullable',
+            'button_link' => 'nullable|url',
+        ]);
+
+        $slider = Slider::find($id);
+        if($slider == null){
+            return redirect()->route('store-setting')->with('error','Slider not found');
+        }
+
+        $slider->title = $request->title ?? $slider->title;
+        $slider->description = $request->description ?? $slider->description;
+        $slider->button_text = $request->button_text ?? $slider->button_text;
+        $slider->button_link = $request->button_link ?? $slider->button_link;
+        if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/slider'), $filename);
+            $slider->image = "/images/slider/" . $filename;
+        }
+        $slider->save();
+
+        return redirect()->route('store-setting')->with('success','Slider has been updated successfully');
+    }
+
+    public function deleteslider( $id){
+        $slider = Slider::find($id);
+        $slider->delete();
+
+        return redirect()->route('store-setting')->with('success','Slider has been deleted successfully');
     }
 }
