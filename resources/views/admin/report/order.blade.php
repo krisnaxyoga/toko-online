@@ -21,8 +21,7 @@
                     @endif
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Data Categories</h5>
-                            <a href="{{ route('category.create') }}" class="btn btn-success">add</a>
+                            <h5 class="card-title">Data Orders</h5>
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">
 

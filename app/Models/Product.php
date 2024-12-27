@@ -24,4 +24,14 @@ class Product extends Model
     {
         return $this->hasMany(Product_image::class);
     }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class)->where('user_id', auth()->id());
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Product_review::class);
+    }
 }

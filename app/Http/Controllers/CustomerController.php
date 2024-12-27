@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Product_review;
 use App\Models\User_address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,15 +17,29 @@ class CustomerController extends Controller
 
     public function index()
     {
-        return view('front.myaccount');
+        $orders = Order::with('order_item', 'payment', 'user_address','review')->get();
+        // dd($orders);
+        return view('front.myaccount', compact('orders'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function review(Request $request)
     {
-        //
+        $request->validate([
+            'order_id' => 'required',
+        ]);
+
+        $review = new Product_review();
+        $review->user_id = auth()->id();
+        $review->product_id = $request->product_id;
+        $review->order_id = $request->order_id;
+        $review->review = $request->review;
+        $review->rating = $request->rating;
+        $review->save();
+
+        return redirect()->back()->with('success', 'Review has been submitted successfully.');
     }
 
     public function register(Request $request){
@@ -64,11 +79,7 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-   public function report()
-    {
-        $orders = Order::where('user_id', auth()->id())->with('order_item', 'payment', 'user_address')->get();
-        return view('front.report', compact('orders'));
-    }
+
 
     /**
      * Display the specified resource.

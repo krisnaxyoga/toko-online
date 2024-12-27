@@ -62,33 +62,37 @@
                     <!-- Menu desktop -->
                     <div class="menu-desktop">
                         <ul class="main-menu">
-                            <li class="active-menu">
-                                <a href="index.html">Home</a>
+                            <li class="{{ request()->routeIs('front.index') ? 'active-menu' : '' }}">
+                                <a href="{{ route('front.index') }}">Home</a>
                             </li>
 
-                            <li>
-                                <a href="product.html">Shop</a>
+                            <li class="{{ request()->routeIs('front.shop') ? 'active-menu' : '' }}">
+                                <a href="{{ route('front.shop') }}">Shop</a>
                             </li>
 
-                            <li class="label1" data-label1="hot">
+                            {{-- <li class="label1" data-label1="hot"> --}}
+                            {{-- <li class="{{ request()->routeIs('admin.index') ? '' : 'active-menu' }}">
                                 <a href="shoping-cart.html">Features</a>
+                            </li> --}}
+
+
+                            <li class="{{ request()->routeIs('front.about') ? 'active-menu' : '' }}">
+                                <a href="{{ route('front.about') }}">About</a>
                             </li>
 
-                            <li>
-                                <a href="blog.html">Blog</a>
+                            <li class="{{ request()->routeIs('front.contact') ? 'active-menu' : '' }}">
+                                <a href="{{ route('front.contact') }}">Contact</a>
                             </li>
 
-                            <li>
-                                <a href="about.html">About</a>
-                            </li>
-
-                            <li>
-                                <a href="contact.html">Contact</a>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('register') }}">my account</a>
-                            </li>
+                            @auth
+                                <li>
+                                    <a href="{{ route('home') }}">my account</a>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{ route('login') }}">login</a>
+                                </li>
+                            @endauth
                         </ul>
                     </div>
 
@@ -103,9 +107,9 @@
                             <i class="zmdi zmdi-shopping-cart"></i>
                         </div>
 
-                        <a href="#"
+                        <a href="{{ route('wishlist') }}"
                             class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                            data-notify="0">
+                            data-notify="{{ count(session('wishlist', [])) }}">
                             <i class="zmdi zmdi-favorite-outline"></i>
                         </a>
                     </div>

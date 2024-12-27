@@ -34,4 +34,9 @@ class Order extends Model
     {
         return $this->belongsTo(User_address::class , 'shipping_address_id', 'id');
     }
+
+    public function review()
+    {
+        return $this->hasOne(Product_review::class);
+    }
 }

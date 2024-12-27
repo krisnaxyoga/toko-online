@@ -1,135 +1,8 @@
 @extends('layouts.front')
 @section('contents')
-
-    <section class="section-slide">
-        <div class="wrap-slick1">
-            <div class="slick1">
-                <div class="item-slick1"
-                    style="background-image: url(https://cdn.antaranews.com/cache/1200x800/2021/05/27/Putri-Koster-tenun.jpg);">
-                    <div class="container h-full">
-                        <div class="card border-0" style="background-color: rgba(255, 255, 255, 0.5); border-radius:20px">
-                            <div class="card-body">
-                                <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                                    <div class="layer-slick1 animated visible-false" data-appear="fadeInDown"
-                                        data-delay="0">
-                                        <span class="ltext-101 cl2 respon2">
-                                            Women Collection 2018
-                                        </span>
-                                    </div>
-
-                                    <div class="layer-slick1 animated visible-false" data-appear="fadeInUp"
-                                        data-delay="800">
-                                        <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                                            NEW SEASON
-                                        </h2>
-                                    </div>
-
-                                    <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-                                        <a href="product.html"
-                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                            Shop Now
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="item-slick1"
-                    style="background-image: url(https://infopublik.id/assets/upload/headline//IMG-20200720-WA00232.jpg);">
-                    <div class="container h-full">
-                        <div class="card border-0" style="background-color: rgba(255, 255, 255, 0.5); border-radius:20px">
-                            <div class="card-body">
-                                <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                                    <div class="layer-slick1 animated visible-false" data-appear="rollIn" data-delay="0">
-                                        <span class="ltext-101 cl2 respon2">
-                                            Men New-Season
-                                        </span>
-                                    </div>
-
-                                    <div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn"
-                                        data-delay="800">
-                                        <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                                            Jackets & Coats
-                                        </h2>
-                                    </div>
-
-                                    <div class="layer-slick1 animated visible-false" data-appear="slideInUp"
-                                        data-delay="1600">
-                                        <a href="product.html"
-                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                            Shop Now
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item-slick1"
-                    style="background-image: url(https://d3uyff779abz3k.cloudfront.net/-baliya-/images/480/Songket-Dan-Selendang-Bali-Asli-Negara.jpg);">
-                    <div class="container h-full">
-                        <div class="card border-0" style="background-color: rgba(255, 255, 255, 0.5); border-radius:20px">
-                            <div class="card-body">
-                                <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                                    <div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft"
-                                        data-delay="0">
-                                        <span class="ltext-101 cl2 respon2">
-                                            Men Collection 2018
-                                        </span>
-                                    </div>
-
-                                    <div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight"
-                                        data-delay="800">
-                                        <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                                            New arrivals
-                                        </h2>
-                                    </div>
-
-                                    <div class="layer-slick1 animated visible-false" data-appear="rotateIn"
-                                        data-delay="1600">
-                                        <a href="product.html"
-                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-                                            Shop Now
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Banner -->
-    <div class="sec-banner bg0 p-t-80 p-b-50">
+    <div class="bg0 m-t-23 p-b-140">
         <div class="container">
-            @if (session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-        </div>
-    </div>
-
-
-    <!-- Product -->
-    <section class="bg0 p-t-23 p-b-140">
-        <div class="container">
-            <div class="p-b-10">
-                <h3 class="ltext-103 cl5">
-                    Product Overview
-                </h3>
-            </div>
-
             <div class="flex-w flex-sb-m p-b-52">
-
 
                 <div class="flex-w flex-c-m m-tb-10">
 
@@ -151,26 +24,21 @@
                             placeholder="Search">
                     </div>
                 </div>
+
+                <!-- Filter -->
+
             </div>
 
             <div class="row isotope-grid">
-
-                @forelse($products as $key => $value)
-                    <!-- Product Card -->
+                {{-- {{ dd($wishlist) }} --}}
+                @forelse($wishlist as $key => $value)
                     <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
-                                @if ($value->images->count() > 0)
-                                    @foreach ($value->images as $image)
-                                        @if ($image->is_primary == 1)
-                                            <img src="{{ url($image->image_url) }}" alt="IMG-PRODUCT">
-                                        @endif
-                                    @endforeach
-                                @else
-                                    <img src="/cozas/images/no-image.png" alt="IMG-PRODUCT">
-                                @endif
+                                <img src="{{ url($value->product->images->where('is_primary', 1)->first()->image_url) }}"
+                                    alt="IMG-PRODUCT">
 
-                                <!-- Button trigger modal -->
                                 <button type="button"
                                     class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
                                     data-bs-toggle="modal" data-bs-target="#productModal{{ $value->id }}">
@@ -179,18 +47,19 @@
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
-                                <div class="block2-txt-child1 flex-col-l">
+                                <div class="block2-txt-child1 flex-col-l ">
                                     <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                        {{ $value->name }}
+                                        {{ $value->product->name }}
                                     </a>
+
                                     <span class="stext-105 cl3">
-                                        Rp. {{ number_format($value->price, 0, ',', '.') }}
+                                        Rp. {{ number_format($value->product->price, 0, ',', '.') }}
                                     </span>
                                 </div>
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
-                                    <a href="{{ route('wishlist.store', $value->id) }}" class="">
-                                        @if (in_array($value->id, array_column($value->wishlist->toArray(), 'product_id')))
+                                    <a href="{{ route('wishlist.store', $value->product_id) }}" class="">
+                                        @if (in_array($value->product_id, array_column($value->product->wishlist->toArray(), 'product_id')))
                                             <img class="icon-heart1 dis-block trans-04"
                                                 src="/cozas/images/icons/icon-heart-02.png" alt="ICON">
                                         @else
@@ -206,14 +75,14 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Modal for each product -->
                     <div class="modal fade" id="productModal{{ $value->id }}" tabindex="-1"
                         aria-labelledby="modalLabel{{ $value->id }}" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" style="margin-top:5rem">
+                        <div class="modal-dialog modal-lg" style="margin-top:7rem">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel{{ $value->id }}">{{ $value->name }}</h5>
+                                    <h5 class="modal-title" id="modalLabel{{ $value->id }}">{{ $value->product->name }}
+                                    </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -225,8 +94,8 @@
                                                 <div id="carousel{{ $value->id }}" class="carousel slide"
                                                     data-bs-ride="carousel">
                                                     <div class="carousel-inner">
-                                                        @if ($value->images->count() > 0)
-                                                            @foreach ($value->images as $key => $image)
+                                                        @if ($value->product->images->count() > 0)
+                                                            @foreach ($value->product->images as $key => $image)
                                                                 <div
                                                                     class="carousel-item {{ $key === 0 ? 'active' : '' }}">
                                                                     <img src="{{ url($image->image_url) }}"
@@ -235,12 +104,12 @@
                                                             @endforeach
                                                         @else
                                                             <div class="carousel-item active">
-                                                                <img src="/cozas/images/no-image.png"
-                                                                    class="d-block w-100" alt="No Image">
+                                                                <img src="/cozas/images/no-image.png" class="d-block w-100"
+                                                                    alt="No Image">
                                                             </div>
                                                         @endif
                                                     </div>
-                                                    @if ($value->images->count() > 1)
+                                                    @if ($value->product->images->count() > 1)
                                                         <button class="carousel-control-prev" type="button"
                                                             data-bs-target="#carousel{{ $value->id }}"
                                                             data-bs-slide="prev">
@@ -265,23 +134,24 @@
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     @method('POST')
-                                                    <input type="hidden" name="product_id" value="{{ $value->id }}">
+                                                    <input type="hidden" name="product_id"
+                                                        value="{{ $value->product_id }}">
 
-                                                    <h3>{{ $value->name }}</h3>
+                                                    <h3>{{ $value->product->name }}</h3>
                                                     <!-- Update price and variant section in modal -->
                                                     <p class="fs-4 fw-bold mb-3" id="price{{ $value->id }}">
-                                                        Rp. {{ number_format($value->price, 0, ',', '.') }}
+                                                        Rp. {{ number_format($value->product->price, 0, ',', '.') }}
                                                     </p>
-                                                    <p class="mb-4">{{ $value->description }}</p>
+                                                    <p class="mb-4">{{ $value->product->description }}</p>
 
                                                     <!-- Size Selection -->
                                                     <div class="mb-3">
                                                         <label class="form-label">Product variant</label>
                                                         <select class="form-select" name="variant"
                                                             id="variant{{ $value->id }}"
-                                                            onchange="updatePrice({{ $value->id }}, {{ $value->price }}, this.value)">
+                                                            onchange="updatePrice({{ $value->id }}, {{ $value->product->price }}, this.value)">
                                                             <option value="">Choose variant</option>
-                                                            @foreach ($value->variants as $variant)
+                                                            @foreach ($value->product->variants as $variant)
                                                                 <option value="{{ $variant->id }}"
                                                                     data-price-adjustment="{{ $variant->price_adjustment }}">
                                                                     {{ $variant->name }}
@@ -300,7 +170,7 @@
                                                             </button>
                                                             <input type="number" class="form-control text-center"
                                                                 name="quantity" value="1" min="1"
-                                                                max="{{ $value->stock }}" required>
+                                                                max="{{ $value->product->stock }}" required>
                                                             <button class="btn btn-outline-secondary" type="button"
                                                                 onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                                                                 +
@@ -329,38 +199,6 @@
                                                         <i class="fab fa-google-plus-g"></i>
                                                     </button>
                                                 </div>
-
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="mt-4">
-                                                    <h4>Review</h4>
-                                                    <ul class="list-unstyled">
-                                                        @if (!empty($value->reviews))
-                                                            @foreach ($value->reviews as $review)
-                                                                <li class="mb-3">
-                                                                    <div class="d-flex align-items-center">
-                                                                        <div class="ms-3">
-                                                                            <h5>{{ $review->user->name }}</h5>
-                                                                            <p>{{ $review->review }}</p>
-                                                                            <p class="text-muted">
-                                                                                Rating:
-                                                                                @for ($i = 1; $i <= 5; $i++)
-                                                                                    <i
-                                                                                        class="fas fa-star{{ $i <= $review->rating ? '' : '-o' }}"></i>
-                                                                                @endfor
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            @endforeach
-                                                        @else
-                                                            <li class="text-center">No reviews available</li>
-                                                        @endif
-                                                    </ul>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -369,18 +207,19 @@
                         </div>
                     </div>
                 @empty
-                    <p>No products available</p>
+                    <p>Wishlist is empty</p>
                 @endforelse
 
             </div>
+
             <!-- Load more -->
             <div class="flex-c-m flex-w w-full p-t-45">
                 <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
                     Load More
                 </a>
             </div>
-    </section>
-    <!-- Add this script at the bottom of your file -->
+        </div>
+    </div>
     <script>
         function updatePrice(productId, basePrice, variantId) {
             const select = document.getElementById('variant' + productId);

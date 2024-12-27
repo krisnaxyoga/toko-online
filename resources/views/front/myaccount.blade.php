@@ -82,11 +82,161 @@
                     <div class="flex-w w-full">
                         <form action="/logout" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-link text-danger">Logout</button>
+                            <button type="submit" class="btn btn-danger">Logout</button>
                         </form>
+                    </div>
+                </div>
+                <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
+                    <div class="flex-w w-full p-b-42">
+                        <span class="fs-18 cl5 txt-center size-211">
+                            <span class="lnr lnr-cart"></span>
+                        </span>
+
+                        <div class="size-212 p-t-2">
+                            <span class="mtext-110 cl2">
+                                Orders
+                            </span>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>
+                                                No. Invoice
+                                            </th>
+                                            <th>status</th>
+                                            <th>sub total</th>
+                                            <th>shipping cost</th>
+                                            <th>total</th>
+                                            <th>shipping courier</th>
+                                            <th>shipping address</th>
+                                            <th>notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($orders as $item)
+                                            <tr>
+                                                <td> <button type="button" class="btn btn-primary btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#orderItemsModal{{ $item->id }}">
+                                                        Show Items
+                                                    </button></td>
+                                                <td>{{ $item->invoice_number }}</td>
+                                                <td>{{ $item->status }}</td>
+                                                <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
+                                                <td>Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}</td>
+                                                <td>Rp {{ number_format($item->grand_total, 0, ',', '.') }}</td>
+                                                <td>{{ $item->shipping_courier }}</td>
+                                                <td>{{ $item->user_address->address ?? 'N/A' }}</td>
+                                                <td>{{ $item->notes }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        @foreach ($orders as $item)
+            <div class="modal fade" id="orderItemsModal{{ $item->id }}" tabindex="-1"
+                aria-labelledby="orderItemsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderItemsModalLabel">Order Items for {{ $item->invoice_number }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Product</th>
+                                        <th>Product Variant ID</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($item->order_item as $orderItem)
+                                        <tr>
+                                            <td>{{ $orderItem->order_id }}</td>
+                                            <td>{{ $orderItem->product->name }}</td>
+                                            <td>{{ $orderItem->product_variant->name ?? 'N/A' }}</td>
+                                            <td>{{ $orderItem->quantity }}</td>
+                                            <td>Rp {{ number_format($orderItem->price, 0, ',', '.') }}</td>
+                                            <td>Rp {{ number_format($orderItem->subtotal, 0, ',', '.') }}</td>
+                                        </tr>
+                                        @if ($item->status == 'Diterima')
+                                            <tr>
+                                                <td colspan="6">
+                                                    <form action="{{ route('submit-review') }}" method="post">
+                                                        @csrf
+                                                        <input type="text" name="order_id" value="{{ $item->id }}"
+                                                            hidden>
+                                                        <input type="text" name="product_id"
+                                                            value="{{ $orderItem->product_id }}" hidden>
+                                                        <div class="mb-3">
+                                                            <label for="review" class="form-label">Review</label>
+                                                            @if ($orderItem->review)
+                                                                <p class="fw-bold">{{ $orderItem->review->review }}</p>
+                                                            @else
+                                                                <textarea class="form-control" id="review" name="review" rows="3"></textarea>
+                                                            @endif
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="rating" class="form-label">Rating</label>
+                                                            <select class="form-select" id="rating" name="rating"
+                                                                {{ $orderItem->review ? 'disabled' : '' }}>
+                                                                <option value="1"
+                                                                    {{ $orderItem->review && $orderItem->review->rating == 1 ? 'selected' : '' }}>
+                                                                    1</option>
+                                                                <option value="2"
+                                                                    {{ $orderItem->review && $orderItem->review->rating == 2 ? 'selected' : '' }}>
+                                                                    2</option>
+                                                                <option value="3"
+                                                                    {{ $orderItem->review && $orderItem->review->rating == 3 ? 'selected' : '' }}>
+                                                                    3</option>
+                                                                <option value="4"
+                                                                    {{ $orderItem->review && $orderItem->review->rating == 4 ? 'selected' : '' }}>
+                                                                    4</option>
+                                                                <option value="5"
+                                                                    {{ $orderItem->review && $orderItem->review->rating == 5 ? 'selected' : '' }}>
+                                                                    5</option>
+                                                            </select>
+                                                        </div>
+                                                        @if (!$orderItem->review)
+                                                            <button type="submit" class="btn btn-primary">Submit
+                                                                Review</button>
+                                                        @endif
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            @if ($item->status == 'Belum Dibayar')
+                                <form action="{{ route('upload-bukti') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="order_id" value="{{ $item->id }}">
+                                    <div class="form-group">
+                                        <label for="bukti_transfer">Upload Bukti Transfer</label>
+                                        <input type="file" class="form-control" id="bukti_transfer"
+                                            name="bukti_transfer">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                </form>
+                            @endif
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </section>
 @endsection

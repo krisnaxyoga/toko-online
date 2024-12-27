@@ -44,29 +44,55 @@ class CartController extends Controller
 
         $total_price = $price * $quantity;
 
-        // Save cart item to database
-        $cartdb = Cart_item::create([
-            'user_id' => auth()->id(),
-            'product_id' => $product_id,
-            'product_variant_id' => $variant_id,
-            'quantity' => $quantity,
-        ]);
+        // Cari apakah ada cart item yang sama
+        $cartdb = Cart_item::where('user_id', auth()->id())
+            ->where('product_id', $product_id)
+            ->where('product_variant_id', $variant_id)
+            ->first();
+
+        if ($cartdb) {
+            // Jika ada, tambahkan quantity
+            $cartdb->quantity += $quantity;
+            $cartdb->save();
+        } else {
+            // Jika belum ada, buat baru
+            $cartdb = Cart_item::create([
+                'user_id' => auth()->id(),
+                'product_id' => $product_id,
+                'product_variant_id' => $variant_id,
+                'quantity' => $quantity,
+            ]);
+        }
 
         // Store cart item in session
         $cart = session()->get('cart', []);
-        $cart_item = [
-            'id' => $cartdb->id,
-            'product_id' => $product_id,
-            'image' => $product->images->where('is_primary', 1)->first()->image_url,
-            'product_variant_id' => $variant_id,
-            'name' => $product->name ?? $variant->product->name,
-            'variant' => $variant->name ?? null,
-            'quantity' => $quantity,
-            'price' => $price,
-            'max_stock' => $variant->stock ?? $product->stock,
-            'total_price' => $total_price,
-        ];
-        $cart[] = $cart_item;
+        $found = false;
+
+        foreach ($cart as &$item) {
+            if ($item['id'] === $cartdb->id) {
+                $item['quantity'] += $quantity;
+                $item['total_price'] = $item['price'] * $item['quantity'];
+                $found = true;
+                break;
+            }
+        }
+
+        if (!$found) {
+            $cart_item = [
+                'id' => $cartdb->id,
+                'product_id' => $product_id,
+                'image' => $product->images->where('is_primary', 1)->first()->image_url,
+                'product_variant_id' => $variant_id,
+                'name' => $product->name ?? $variant->product->name,
+                'variant' => $variant->name ?? null,
+                'quantity' => $cartdb->quantity,
+                'price' => $price,
+                'max_stock' => $variant->stock ?? $product->stock,
+                'total_price' => $total_price * $cartdb->quantity,
+            ];
+            $cart[] = $cart_item;
+        }
+
         session()->put('cart', $cart);
 
         // return redirect()->route('cart.index')->with('success', 'Product has been added to your cart.');
@@ -220,6 +246,6 @@ class CartController extends Controller
         $payments->save();
 
 
-        return redirect()->route('checkout-success')->with('success', 'Bukti transfer has been uploaded successfully.');
+        return redirect()->back()->with('success', 'Bukti transfer has been uploaded successfully.');
     }
 }

@@ -14,6 +14,7 @@ use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\CheckOngkirController;
 use App\Http\Controllers\StoreSettingController;
+use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,8 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::get('/report', [ReportController::class, 'report'])->name('report');
     Route::get('/order/approve/{id}', [ReportController::class, 'approve'])->name('admin.order.approve');
     Route::get('/order/cancel/{id}', [ReportController::class, 'cancel'])->name('admin.order.cancel');
+
+
 });
 
 // untuk pegawai
@@ -69,12 +72,21 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::get('/checkoutSuccess', [CartController::class, 'checkoutSuccess'])->name('checkout-success');
 
     Route::post('/upload-bukti', [CartController::class, 'uploadBukti'])->name('upload-bukti');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+    Route::get('/wishlist/store/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
+    Route::delete('/wishlist/destroy/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+    Route::post('/review', [CustomerController::class, 'review'])->name('submit-review');
 });
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
 Route::get('/', [FrontEndController::class, 'index'])->name('front.index');
+Route::get('/shop', [FrontEndController::class, 'product'])->name('front.shop');
+Route::get('/about', [FrontEndController::class, 'about'])->name('front.about');
+Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.contact');
+
 
 Route::get('provinces', [CheckOngkirController::class, 'province'])->name('provinces');
 Route::get('cities', [CheckOngkirController::class, 'city'])->name('cities');
