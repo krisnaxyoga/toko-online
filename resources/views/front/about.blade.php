@@ -19,29 +19,36 @@
                         </h3>
 
                         <p class="stext-113 cl6 p-b-26">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat consequat enim, non
-                            auctor massa ultrices non. Morbi sed odio massa. Quisque at vehicula tellus, sed tincidunt
-                            augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                            Maecenas varius egestas diam, eu sodales metus scelerisque congue. Pellentesque habitant morbi
-                            tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas gravida justo eu arcu
-                            egestas convallis. Nullam eu erat bibendum, tempus ipsum eget, dictum enim. Donec non neque ut
-                            enim dapibus tincidunt vitae nec augue. Suspendisse potenti. Proin ut est diam. Donec
-                            condimentum euismod tortor, eget facilisis diam faucibus et. Morbi a tempor elit.
+                            Endek Jepun Bali lahir dari cinta terhadap warisan budaya Bali. Terinspirasi oleh keindahan kain
+                            tradisional endek yang telah diwariskan dari generasi ke generasi, kami memulai perjalanan ini
+                            untuk melestarikan tradisi sekaligus memberikan sentuhan modern yang relevan dengan gaya hidup
+                            masa kini.
+
+                            Nama Endek Jepun Bali diambil dari dua simbol penting: endek, kain tradisional khas Bali yang
+                            sarat makna dan filosofi, serta jepun, bunga frangipani yang melambangkan keindahan, kesucian,
+                            dan keseimbangan spiritual di Bali.
+
+                            Perjalanan kami dimulai dari desa kecil di jantung Bali, di mana pengrajin lokal dengan penuh
+                            dedikasi menenun kain endek dengan tangan mereka. Setiap helai kain yang kami hasilkan adalah
+                            wujud dari kerajinan tangan yang penuh detail, tradisi, dan rasa hormat terhadap leluhur.
+
+
                         </p>
 
                         <p class="stext-113 cl6 p-b-26">
-                            Donec gravida lorem elit, quis condimentum ex semper sit amet. Fusce eget ligula magna. Aliquam
-                            aliquam imperdiet sodales. Ut fringilla turpis in vehicula vehicula. Pellentesque congue ac orci
-                            ut gravida. Aliquam erat volutpat. Donec iaculis lectus a arcu facilisis, eu sodales lectus
-                            sagittis. Etiam pellentesque, magna vel dictum rutrum, neque justo eleifend elit, vel tincidunt
-                            erat arcu ut sem. Sed rutrum, turpis ut commodo efficitur, quam velit convallis ipsum, et
-                            maximus enim ligula ac ligula.
+                            Visi kami adalah menjaga keaslian kain endek sambil membuka peluang baru untuk menjadikannya
+                            bagian dari gaya hidup modern. Dari pakaian adat hingga koleksi fashion kontemporer, kami
+                            percaya bahwa kain endek adalah perwujudan seni yang dapat dikenakan.
+
+                            Di Endek Jepun Bali, kami juga berkomitmen mendukung komunitas lokal. Setiap pembelian kain
+                            endek dari kami adalah bentuk dukungan langsung kepada pengrajin Bali dan kelangsungan seni
+                            tenun tradisional.
+
+                            Kami ingin mengundang Anda untuk bergabung dalam perjalanan ini. Bersama-sama, kita bisa menjaga
+                            warisan budaya Bali tetap hidup dan berkembang. Selamat datang di keluarga Endek Jepun Bali—di
+                            mana tradisi bertemu dengan keindahan modern.
                         </p>
 
-                        <p class="stext-113 cl6 p-b-26">
-                            Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us
-                            on (+1) 96 716 6879
-                        </p>
                     </div>
                 </div>
 
@@ -63,15 +70,35 @@
                         </h3>
 
                         <p class="stext-113 cl6 p-b-26">
-                            Mauris non lacinia magna. Sed nec lobortis dolor. Vestibulum rhoncus dignissim risus, sed
-                            consectetur erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
-                            turpis egestas. Nullam maximus mauris sit amet odio convallis, in pharetra magna gravida.
-                            Praesent sed nunc fermentum mi molestie tempor. Morbi vitae viverra odio. Pellentesque ac velit
-                            egestas, luctus arcu non, laoreet mauris. Sed in ipsum tempor, consequat odio in, porttitor
-                            ante. Ut mauris ligula, volutpat in sodales in, porta non odio. Pellentesque tempor urna vitae
-                            mi vestibulum, nec venenatis nulla lobortis. Proin at gravida ante. Mauris auctor purus at lacus
-                            maximus euismod. Pellentesque vulputate massa ut nisl hendrerit, eget elementum libero iaculis.
-                        </p>
+                            Di Endek Jepun Bali, misi kami adalah menjadi jembatan antara tradisi dan inovasi, menjaga
+                            keindahan budaya Bali tetap hidup dan relevan di tengah arus zaman. Kami percaya bahwa kain
+                            endek bukan sekadar kain, melainkan warisan yang membawa cerita, makna, dan identitas sebuah
+                            generasi.
+
+                            Misi utama kami adalah:
+
+                            Melestarikan Tradisi
+                            Kami berkomitmen untuk mempertahankan seni tenun endek Bali dengan memastikan setiap proses
+                            pembuatan kain dilakukan secara autentik oleh pengrajin lokal yang berpengalaman.
+
+                            Memberdayakan Komunitas Lokal
+                            Kami mendukung kesejahteraan pengrajin Bali dengan memberikan ruang bagi mereka untuk
+                            menunjukkan karya terbaiknya dan memastikan keberlanjutan tradisi tenun.
+
+                            Menginspirasi Melalui Desain Modern
+                            Dengan sentuhan kreatif, kami menciptakan produk kain endek yang tidak hanya mencerminkan budaya
+                            Bali, tetapi juga cocok untuk berbagai gaya hidup dan kebutuhan modern.
+
+                            Membangun Kesadaran Global
+                            Kami ingin memperkenalkan kain endek Bali kepada dunia, menunjukkan bahwa keindahan tradisional
+                            dapat berdiri sejajar dengan tren global.
+
+                            Berkomitmen pada Keberlanjutan
+                            Kami mendukung praktik ramah lingkungan dengan meminimalkan limbah, menggunakan bahan alami, dan
+                            menciptakan produk yang memiliki nilai jangka panjang.
+
+                            Kami percaya bahwa dengan setiap helai kain yang dihasilkan, kami tidak hanya menciptakan
+                            produk, tetapi juga menyebarkan cinta, cerita, dan semangat Bali kepada setiap pelanggan. </p>
 
                         <div class="bor16 p-l-29 p-b-9 m-t-22">
                             <p class="stext-114 cl6 p-r-40 p-b-11">

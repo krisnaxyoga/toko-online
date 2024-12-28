@@ -1,5 +1,11 @@
 @extends('layouts.front')
 @section('contents')
+    <?php
+    
+    use App\Models\Store_setting;
+    
+    $storeSetting = Store_setting::first();
+    ?>
     <section class="bg0 p-t-104 p-b-116">
         <div class="container">
             <div class="flex-w flex-tr">
@@ -12,7 +18,7 @@
                         <div class="bor8 m-b-20 how-pos4-parent">
                             <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email"
                                 placeholder="Your Email Address">
-                            <img class="how-pos4 pointer-none" src="images/icons/icon-email.png" alt="ICON">
+                            <img class="how-pos4 pointer-none" src="/cozas/images/icons/icon-email.png" alt="ICON">
                         </div>
 
                         <div class="bor8 m-b-30">
@@ -37,8 +43,7 @@
                             </span>
 
                             <p class="stext-115 cl6 size-213 p-t-18">
-                                Coza Store Center 8th floor, 379 Hudson St, New York, NY 10018 US
-                            </p>
+                                {{ $storeSetting->address }} </p>
                         </div>
                     </div>
 
@@ -53,7 +58,7 @@
                             </span>
 
                             <p class="stext-115 cl1 size-213 p-t-18">
-                                +1 800 1236879
+                                {{ $storeSetting->phone }}
                             </p>
                         </div>
                     </div>
@@ -69,7 +74,7 @@
                             </span>
 
                             <p class="stext-115 cl1 size-213 p-t-18">
-                                contact@example.com
+                                {{ $storeSetting->email }}
                             </p>
                         </div>
                     </div>
