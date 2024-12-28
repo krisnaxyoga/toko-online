@@ -41,6 +41,10 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
+            <div class="mt-3 text-center">
+                <a href="{{ route('register') }}" class="btn btn-link">Belum punya akun? Daftar disini</a>
+            </div>
         </div>
+
     </div>
 @endsection

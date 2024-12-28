@@ -221,6 +221,17 @@
                                 </tbody>
                             </table>
                             @if ($item->status == 'Belum Dibayar')
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Nomor Rekening</h5>
+                                        <p class="card-text">Silahkan transfer ke nomor rekening berikut:</p>
+                                        <p class="card-text">
+                                            <strong>Bank BCA</strong><br>
+                                            <strong>857-1234-5678</strong><br>
+                                            Atas Nama <strong>John Doe</strong>
+                                        </p>
+                                    </div>
+                                </div>
                                 <form action="{{ route('upload-bukti') }}" method="post" enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" name="order_id" value="{{ $item->id }}">

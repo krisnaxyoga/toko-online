@@ -14,7 +14,7 @@ class FrontEndController extends Controller
         // dd(session('cart', []));
         // session()->flush(); // Uncomment this line to clear session
         $sliders = Slider::all();
-        $products = Product::with('images','wishlist')->orderBy('created_at', 'DESC')->paginate(8);
+        $products = Product::with('images','wishlist')->orderBy('created_at', 'DESC')->get();
         return view('front.index',compact('products','sliders'));
     }
 

@@ -126,7 +126,7 @@
         <div class="wrap-header-mobile">
             <!-- Logo moblie -->
             <div class="logo-mobile">
-                <a href="index.html"><img src="/cozas/images/icons/logo-01.png" alt="IMG-LOGO"></a>
+                <a href="/"><img src="{{ url($storeSetting->logo_url) }}" alt="IMG-LOGO"></a>
             </div>
 
             <!-- Icon header -->
@@ -157,60 +157,38 @@
 
         <!-- Menu Mobile -->
         <div class="menu-mobile">
-            <ul class="topbar-mobile">
-                <li>
-                    <div class="left-top-bar">
-                        Free shipping for standard order over $100
-                    </div>
-                </li>
 
-                <li>
-                    <div class="right-top-bar flex-w h-full">
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            Help & FAQs
-                        </a>
-
-                        <a href="#" class="flex-c-m p-lr-10 trans-04">
-                            My Account
-                        </a>
-
-
-                    </div>
-                </li>
-            </ul>
 
             <ul class="main-menu-m">
                 <li>
-                    <a href="index.html">Home</a>
-                    <ul class="sub-menu-m">
-                        <li><a href="index.html">Homepage 1</a></li>
-                        <li><a href="home-02.html">Homepage 2</a></li>
-                        <li><a href="home-03.html">Homepage 3</a></li>
-                    </ul>
-                    <span class="arrow-main-menu-m">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </span>
+                    <a href="{{ route('front.index') }}">Home</a>
+
+
                 </li>
 
                 <li>
-                    <a href="product.html">Shop</a>
+                    <a href="{{ route('front.shop') }}">Shop</a>
+                </li>
+
+
+
+                <li>
+                    <a href="{{ route('front.about') }}">About</a>
                 </li>
 
                 <li>
-                    <a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
+                    <a href="{{ route('front.contact') }}">Contact</a>
                 </li>
 
-                <li>
-                    <a href="blog.html">Blog</a>
-                </li>
-
-                <li>
-                    <a href="about.html">About</a>
-                </li>
-
-                <li>
-                    <a href="contact.html">Contact</a>
-                </li>
+                @auth
+                    <li>
+                        <a href="{{ route('home') }}">my account</a>
+                    </li>
+                @else
+                    <li>
+                        <a href="{{ route('login') }}">login</a>
+                    </li>
+                @endauth
             </ul>
         </div>
 
@@ -304,31 +282,18 @@
                     <h4 class="stext-301 cl0 p-b-30">
                         Categories
                     </h4>
-
+                    <?php
+                    use App\Models\Category;
+                    $categories = Category::all();
+                    ?>
                     <ul>
-                        <li class="p-b-10">
-                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Women
-                            </a>
-                        </li>
-
-                        <li class="p-b-10">
-                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Men
-                            </a>
-                        </li>
-
-                        <li class="p-b-10">
-                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Shoes
-                            </a>
-                        </li>
-
-                        <li class="p-b-10">
-                            <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-                                Watches
-                            </a>
-                        </li>
+                        @foreach ($categories as $category)
+                            <li class="p-b-10">
+                                <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                                    {{ $category->name }}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
@@ -370,8 +335,8 @@
                     </h4>
 
                     <p class="stext-107 cl7 size-201">
-                        Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us
-                        on (+1) 96 716 6879
+                        Any questions? Let us know in store at {{ $storeSetting->address }}, or call us on
+                        {{ $storeSetting->phone }}
                     </p>
 
                     <div class="p-t-27">
@@ -397,7 +362,7 @@
                     <form>
                         <div class="wrap-input1 w-full p-b-4">
                             <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email"
-                                placeholder="email@example.com">
+                                placeholder="{{ $storeSetting->email }}">
                             <div class="focus-input1 trans-04"></div>
                         </div>
 
