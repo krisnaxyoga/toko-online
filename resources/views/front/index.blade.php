@@ -6,7 +6,7 @@
             <div class="slick1">
                 @forelse($sliders as $key => $value)
                     <div class="item-slick1" style="background-image: url({{ url($value->image) }});">
-                        <div class="container h-full">
+                        <div class="container h-full" style="margin-top: 5rem">
                             <div class="card border-0" style="background-color: rgba(255, 255, 255, 0.5); border-radius:20px">
                                 <div class="card-body">
                                     <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">

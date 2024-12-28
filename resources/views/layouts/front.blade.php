@@ -55,8 +55,8 @@
                 <nav class="limiter-menu-desktop container">
 
                     <!-- Logo desktop -->
-                    <a href="#" class="logo">
-                        <img src="/cozas/images/icons/logo-01.png" alt="IMG-LOGO">
+                    <a href="/" class="logo">
+                        <img src="{{ session('store_setting')->logo_url }}" alt="IMG-LOGO">
                     </a>
 
                     <!-- Menu desktop -->
