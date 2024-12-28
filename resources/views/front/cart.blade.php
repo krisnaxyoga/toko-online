@@ -21,7 +21,6 @@
                                 </tr>
 
                                 @php
-                                    $cart = session()->get('cart', []);
                                     $subtotal = 0;
                                 @endphp
 
@@ -34,42 +33,61 @@
                                 @else
                                     @foreach ($cart as $item)
                                         @php
-                                            $subtotal += $item['total_price'];
+                                            $price = $item->product_variant_id
+                                                ? $item->product_variant->price
+                                                : $item->product->price;
+                                            $subtotal += $price * $item->quantity;
                                         @endphp
                                         <tr class="table_row">
                                             <td class="column-1">
                                                 <div class="how-itemcart1">
-                                                    <img src="{{ $item['image'] }}" alt="IMG">
+                                                    <img src="{{ url($item->product->images->where('is_primary', 1)->first()->image_url) }}"
+                                                        alt="IMG">
                                                 </div>
                                             </td>
                                             <td class="column-2">
-                                                {{ $item['name'] }}
-                                                @if ($item['variant'])
+                                                {{ $item->product->name }}
+                                                @if ($item->product_variant_id)
                                                     <br>
-                                                    <small>{{ $item['variant'] }}</small>
+                                                    <small>{{ $item->product_variant->name }}</small>
                                                 @endif
                                             </td>
-                                            <td class="column-3">Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
+                                            @if ($item->product_variant_id)
+                                                <td class="column-3">Rp
+                                                    {{ number_format($item->product_variant->price, 0, ',', '.') }}</td>
+                                            @else
+                                                <td class="column-3">Rp
+                                                    {{ number_format($item->product->price, 0, ',', '.') }}</td>
+                                            @endif
                                             <td class="column-4">
                                                 <div class="wrap-num-product flex-w m-l-auto m-r-0">
                                                     <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m"
-                                                        onclick="updateQuantity('{{ $item['id'] }}', 'decrease')">
+                                                        onclick="updateQuantity('{{ $item->id }}', 'decrease')">
                                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                                     </div>
 
                                                     <input id="quantity-{{ $item['id'] }}"
                                                         class="mtext-104 cl3 txt-center num-product" type="number"
-                                                        name="quantity" value="{{ $item['quantity'] }}" readonly>
+                                                        name="quantity" value="{{ $item->quantity }}" readonly>
 
                                                     <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m"
-                                                        onclick="updateQuantity('{{ $item['id'] }}', 'increase')">
+                                                        onclick="updateQuantity('{{ $item->id }}', 'increase')">
                                                         <i class="fs-16 zmdi zmdi-plus"></i>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="column-5" id="total-{{ $item['id'] }}">
-                                                Rp {{ number_format($item['total_price'], 0, ',', '.') }}
-                                            </td>
+                                            @if ($item->product_variant_id)
+                                                <td class="column-5" id="total-{{ $item->id }}">
+                                                    Rp
+                                                    {{ number_format($item->product_variant->price * $item->quantity, 0, ',', '.') }}
+                                                </td>
+                                            @else
+                                                <td class="column-5" id="total-{{ $item->id }}">
+                                                    Rp
+                                                    {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
+                                                </td>
+                                            @endif
+
                                         </tr>
                                     @endforeach
                                 @endif
@@ -329,9 +347,9 @@
             let quantity = parseInt(input.value);
 
             // Update quantity based on action
-            if (action === 'increase') {
+            if (action == 'increase') {
                 quantity += 1;
-            } else if (action === 'decrease') {
+            } else if (action == 'decrease') {
                 quantity -= 1;
             }
 

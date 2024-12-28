@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Order;
-use App\Models\Product_review;
+use App\Mail\InvoiceMail;
 use App\Models\User_address;
 use Illuminate\Http\Request;
+use App\Models\Product_review;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -22,6 +24,16 @@ class CustomerController extends Controller
         return view('front.myaccount', compact('orders'));
     }
 
+    public function sendInvoiceEmail($id)
+{
+    try {
+        $order = Order::find($id);
+        Mail::to($order->user->email)->send(new InvoiceMail($order));
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    }
+}
     /**
      * Show the form for creating a new resource.
      */

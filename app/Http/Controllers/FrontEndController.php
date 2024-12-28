@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Slider;
 use App\Models\Product;
+use App\Models\Product_image;
 use App\Models\Store_setting;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class FrontEndController extends Controller
@@ -26,12 +28,40 @@ class FrontEndController extends Controller
 
     }
 
+    public function productDetail($id){
+        $product = Product::with('images','variants','reviews')->find($id);
+        return view('front.detailproduct',compact('product'));
+    }
+
     public function about(){
         return view('front.about');
     }
 
+    public function category(Request $request){
+
+        $categories = Category::all();
+        $products = Product::with('images','wishlist');
+
+        if($request->query('category')){
+            $products = $products->where('category_id',$request->query('category'));
+        }
+
+        if($request->query('price_range')){
+            $price_range = explode('-',$request->query('price_range'));
+            $products = $products->whereBetween('price',[$price_range[0],$price_range[1]]);
+        }
+
+        $products = $products->orderBy('created_at', 'DESC')->get();
+        return view('front.category',compact('products','categories'));
+    }
+
     public function contact(){
         return view('front.contact');
+    }
+
+    public function gallery(){
+        $products_images = Product_image::all();
+        return view('front.gallery',compact('products_images'));
     }
 
     public function product(){

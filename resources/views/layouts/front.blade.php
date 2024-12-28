@@ -79,6 +79,12 @@
                             {{-- <li class="{{ request()->routeIs('admin.index') ? '' : 'active-menu' }}">
                                 <a href="shoping-cart.html">Features</a>
                             </li> --}}
+                            <li class="{{ request()->routeIs('front.category') ? 'active-menu' : '' }}">
+                                <a href="{{ route('front.category') }}">Category</a>
+                            </li>
+                            <li class="{{ request()->routeIs('front.gallery') ? 'active-menu' : '' }}">
+                                <a href="{{ route('front.gallery') }}">Gallery</a>
+                            </li>
 
 
                             <li class="{{ request()->routeIs('front.about') ? 'active-menu' : '' }}">
@@ -140,7 +146,8 @@
                     <i class="zmdi zmdi-shopping-cart"></i>
                 </div>
 
-                <a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
+                <a href="#"
+                    class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti"
                     data-notify="0">
                     <i class="zmdi zmdi-favorite-outline"></i>
                 </a>

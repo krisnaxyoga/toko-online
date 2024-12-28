@@ -101,56 +101,58 @@
 
                 @forelse($products as $key => $value)
                     <!-- Product Card -->
-                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                        <div class="block2">
-                            <div class="block2-pic hov-img0">
-                                @if ($value->images->count() > 0)
-                                    @foreach ($value->images as $image)
-                                        @if ($image->is_primary == 1)
-                                            <img src="{{ url($image->image_url) }}" alt="IMG-PRODUCT">
-                                        @endif
-                                    @endforeach
-                                @else
-                                    <img src="/cozas/images/no-image.png" alt="IMG-PRODUCT">
-                                @endif
+                    <a href="{{ route('front.detailproduct', ['id' => $value->id]) }}">
+                        <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                            <div class="block2">
+                                <div class="block2-pic hov-img0">
+                                    @if ($value->images->count() > 0)
+                                        @foreach ($value->images as $image)
+                                            @if ($image->is_primary == 1)
+                                                <img src="{{ url($image->image_url) }}" alt="IMG-PRODUCT">
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <img src="/cozas/images/no-image.png" alt="IMG-PRODUCT">
+                                    @endif
 
-                                <!-- Button trigger modal -->
-                                <button type="button"
-                                    class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
-                                    data-bs-toggle="modal" data-bs-target="#productModal{{ $value->id }}">
-                                    Quick View
-                                </button>
-                            </div>
-
-                            <div class="block2-txt flex-w flex-t p-t-14">
-                                <div class="block2-txt-child1 flex-col-l">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                        {{ $value->name }}
-                                    </a>
-                                    <span class="stext-105 cl3">
-                                        Rp. {{ number_format($value->price, 0, ',', '.') }}
-                                    </span>
+                                    <!-- Button trigger modal -->
+                                    <button type="button"
+                                        class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
+                                        data-bs-toggle="modal" data-bs-target="#productModal{{ $value->id }}">
+                                        Quick View
+                                    </button>
                                 </div>
 
-                                <div class="block2-txt-child2 flex-r p-t-3">
-                                    <a href="{{ route('wishlist.store', $value->id) }}" class="">
-                                        @if (in_array($value->id, array_column($value->wishlist->toArray(), 'product_id')))
-                                            <img class="icon-heart1 dis-block trans-04"
-                                                src="/cozas/images/icons/icon-heart-02.png" alt="ICON">
-                                        @else
-                                            <img class="icon-heart1 dis-block trans-04"
-                                                src="/cozas/images/icons/icon-heart-01.png" alt="ICON">
-                                        @endif
-                                        {{-- <img class="icon-heart1 dis-block trans-04"
+                                <div class="block2-txt flex-w flex-t p-t-14">
+                                    <div class="block2-txt-child1 flex-col-l">
+                                        <a href="product-detail.html"
+                                            class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                            {{ $value->name }}
+                                        </a>
+                                        <span class="stext-105 cl3">
+                                            Rp. {{ number_format($value->price, 0, ',', '.') }}
+                                        </span>
+                                    </div>
+
+                                    <div class="block2-txt-child2 flex-r p-t-3">
+                                        <a href="{{ route('wishlist.store', $value->id) }}" class="">
+                                            @if (in_array($value->id, array_column($value->wishlist->toArray(), 'product_id')))
+                                                <img class="icon-heart1 dis-block trans-04"
+                                                    src="/cozas/images/icons/icon-heart-02.png" alt="ICON">
+                                            @else
+                                                <img class="icon-heart1 dis-block trans-04"
+                                                    src="/cozas/images/icons/icon-heart-01.png" alt="ICON">
+                                            @endif
+                                            {{-- <img class="icon-heart1 dis-block trans-04"
                                             src="/cozas/images/icons/icon-heart-01.png" alt="ICON">
                                         <img class="icon-heart2 dis-block trans-04 ab-t-l"
                                             src="/cozas/images/icons/icon-heart-02.png" alt="ICON"> --}}
-                                    </a>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                    </a>
                     <!-- Modal for each product -->
                     <div class="modal fade" id="productModal{{ $value->id }}" tabindex="-1"
                         aria-labelledby="modalLabel{{ $value->id }}" aria-hidden="true">

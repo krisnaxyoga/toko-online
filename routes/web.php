@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::delete('/wishlist/destroy/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
     Route::post('/review', [CustomerController::class, 'review'])->name('submit-review');
+    Route::post('/send-invoice-email/{id}', [CustomerController::class, 'sendInvoiceEmail'])->name('send-invoice-email');
+
 });
 // Route::get('/', function () {
 //     return view('welcome');
@@ -87,6 +89,9 @@ Route::get('/', [FrontEndController::class, 'index'])->name('front.index');
 Route::get('/shop', [FrontEndController::class, 'product'])->name('front.shop');
 Route::get('/about', [FrontEndController::class, 'about'])->name('front.about');
 Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.contact');
+Route::get('/gallery', [FrontEndController::class, 'gallery'])->name('front.gallery');
+Route::get('/category', [FrontEndController::class, 'category'])->name('front.category');
+Route::get('/detailproduct/{id}', [FrontEndController::class, 'productDetail'])->name('front.detailproduct');
 
 
 Route::get('provinces', [CheckOngkirController::class, 'province'])->name('provinces');
