@@ -45,7 +45,12 @@
 </head>
 
 <body class="animsition">
-
+    <?php
+    
+    use App\Models\Store_setting;
+    
+    $storeSetting = Store_setting::first();
+    ?>
     <!-- Header -->
     <header class="header-v4">
         <!-- Header desktop -->
@@ -56,7 +61,7 @@
 
                     <!-- Logo desktop -->
                     <a href="/" class="logo">
-                        <img src="{{ session('store_setting')->logo_url }}" alt="IMG-LOGO">
+                        <img src="{{ url($storeSetting->logo_url) }}" alt="IMG-LOGO">
                     </a>
 
                     <!-- Menu desktop -->
