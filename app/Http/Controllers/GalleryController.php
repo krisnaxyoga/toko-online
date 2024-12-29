@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class GalleryController extends Controller
 {
@@ -12,9 +13,9 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $galleries = Gallery::latest()->get();
+        $data = Gallery::latest()->get();
 
-        return view('gallery.index', compact('galleries'));
+        return view('admin.gallery.index', compact('data'));
     }
 
     /**
@@ -22,7 +23,8 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        return view('gallery.create');
+        $model = new Gallery();
+        return view('admin.gallery.create',compact('model'));
     }
 
     /**
@@ -41,6 +43,7 @@ class GalleryController extends Controller
 
         $gallery = new Gallery();
         $gallery->image = '/images/gallery/' . $filename;
+        $gallery->title = $request->title;
         $gallery->save();
 
         return redirect()->route('gallery.index')->with('success', 'Gallery created successfully.');
@@ -53,7 +56,7 @@ class GalleryController extends Controller
     {
         $gallery = Gallery::findOrFail($id);
 
-        return view('gallery.show', compact('gallery'));
+        return view('admin.gallery.show', compact('gallery'));
     }
 
     /**
@@ -63,7 +66,7 @@ class GalleryController extends Controller
     {
         $gallery = Gallery::findOrFail($id);
 
-        return view('gallery.edit', compact('gallery'));
+        return view('admin.gallery.create', compact('gallery'));
     }
 
     /**
@@ -97,6 +100,9 @@ class GalleryController extends Controller
     public function destroy(string $id)
     {
         $gallery = Gallery::findOrFail($id);
+        if (File::exists(public_path($gallery->image))) {
+            File::delete(public_path($gallery->image1));
+        }
         $gallery->delete();
 
         return redirect()->route('gallery.index')->with('success', 'Gallery deleted successfully.');

@@ -7,14 +7,15 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductVariant;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CheckOngkirController;
 use App\Http\Controllers\StoreSettingController;
-use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,7 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::get('/store-setting', [StoreSettingController::class, 'index'])->name('store-setting');
     Route::post('/store-setting', [StoreSettingController::class, 'update'])->name('store-setting.update');
 
+    Route::resource('/admin/gallery', GalleryController::class);
     Route::get('/report', [ReportController::class, 'report'])->name('report');
     Route::get('/order/approve/{id}', [ReportController::class, 'approve'])->name('admin.order.approve');
     Route::get('/order/cancel/{id}', [ReportController::class, 'cancel'])->name('admin.order.cancel');
@@ -89,8 +91,8 @@ Route::get('/', [FrontEndController::class, 'index'])->name('front.index');
 Route::get('/shop', [FrontEndController::class, 'product'])->name('front.shop');
 Route::get('/about', [FrontEndController::class, 'about'])->name('front.about');
 Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.contact');
-Route::get('/gallery', [FrontEndController::class, 'gallery'])->name('front.gallery');
-Route::get('/category', [FrontEndController::class, 'category'])->name('front.category');
+Route::get('/frony/gallery', [FrontEndController::class, 'gallery'])->name('front.gallery');
+Route::get('/category/product', [FrontEndController::class, 'category'])->name('front.category');
 Route::get('/detailproduct/{id}', [FrontEndController::class, 'productDetail'])->name('front.detailproduct');
 
 

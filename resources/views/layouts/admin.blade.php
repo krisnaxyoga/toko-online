@@ -150,6 +150,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('gallery.index') ? 'active' : 'collapsed' }}"
+                    href="{{ route('gallery.index') }}">
+                    <i class="bi bi-images"></i>
+                    Gallery</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('report') ? 'active' : 'collapsed' }}"
                     href="{{ route('report') }}">
                     <i class="ri-file-pdf-fill"></i>
