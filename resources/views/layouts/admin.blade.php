@@ -142,18 +142,34 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('store-setting') ? 'active' : 'collapsed' }}"
-                    href="{{ route('store-setting') }}">
-                    <i class="bi bi-gear"></i>
-                    <span>Store setting</span>
-                </a>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('gallery.index') ? 'active' : 'collapsed' }}"
                     href="{{ route('gallery.index') }}">
                     <i class="bi bi-images"></i>
                     Gallery</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('pageabout.index') ? 'active' : 'collapsed' }}"
+                    href="{{ route('pageabout.index') }}">
+                    <i class="bi bi-info-circle"></i>
+                    <span>About</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('pesanan') ? 'active' : 'collapsed' }}"
+                    href="{{ route('pesanan') }}">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>Pesanan</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('pelanggan') ? 'active' : 'collapsed' }}"
+                    href="{{ route('pelanggan') }}">
+                    <i class="bi bi-people"></i>
+                    <span>Customer</span>
+                </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('report') ? 'active' : 'collapsed' }}"
@@ -162,7 +178,35 @@
                     <span>Report</span>
                 </a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('store-setting') ? 'active' : 'collapsed' }}"
+                    href="{{ route('store-setting') }}">
+                    <i class="bi bi-gear"></i>
+                    <span>Store setting</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#stoter" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-archive-fill"></i><span>Store setting</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="stoter"
+                    class="nav-content collapse {{ request()->routeIs('store-setting') || request()->routeIs('product.index') || request()->routeIs('productvariant.index') ? 'show' : '' }}"
+                    data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{ route('store-setting') }}"
+                            class="{{ request()->routeIs('store-setting') ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Store setting</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('bank-account.index') }}"
+                            class="{{ request()->routeIs('bank-account.index') ? 'active' : '' }}">
+                            <i class="bi bi-circle"></i><span>Bank Account</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <!-- End Forms Nav -->
             {{-- <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('supplier.index') ? 'active' : 'collapsed' }}"

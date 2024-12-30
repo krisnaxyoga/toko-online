@@ -45,9 +45,9 @@
                                                 <td> <a href="{{ route('category.edit', ['category' => $item->id]) }}"
                                                         class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
                                                             class="bx bxs-edit"></i></a>
-                                                    <a href="{{ route('category.show', ['category' => $item->id]) }}"
+                                                    {{-- <a href="{{ route('category.show', ['category' => $item->id]) }}"
                                                         class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
-                                                            class="bx bxs-show"></i></a>
+                                                            class="bx bxs-show"></i></a> --}}
                                                     <form action="{{ route('category.destroy', $item->id) }}" method="post"
                                                         class="d-inline">
                                                         @csrf

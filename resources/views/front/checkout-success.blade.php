@@ -4,7 +4,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="text-center mb-4">Checkout Success</h1>
+                    @if ($order->status != 'Pembayaran Diterima' && $order->status != 'Pengiriman' && $order->status != 'Diterima')
+                        <h1 class="text-center mb-4">Checkout Success</h1>
+                    @else
+                        <h1 class="text-center mb-4">Invoice</h1>
+                    @endif
                     <div class="sec-banner bg0 p-t-80 p-b-50">
                         <div class="container">
                             @if (session()->has('success'))
@@ -75,27 +79,33 @@
                         <div class="card-body">
                             <h5 class="card-title">Nomor Rekening</h5>
                             <p class="card-text">Silahkan transfer ke nomor rekening berikut:</p>
-                            <div class="d-flex align-items-center mb-2">
-                                <strong class="mr-2">Bank BCA</strong>
-                                <span id="rekening">857-1234-5678</span>
-                                <button onclick="copyToClipboard('rekening')" class="btn btn-sm btn-outline-primary ml-2">
-                                    <i class="fas fa-copy"></i> Salin
-                                </button>
-                            </div>
-                            <p class="card-text">
-                                Atas Nama <strong>John Doe</strong>
-                            </p>
+                            @foreach ($bank as $bankDetail)
+                                <hr>
+                                <div class="d-flex align-items-center mb-2">
+                                    <strong class="mr-2">{{ $bankDetail->bank_name }}</strong>
+                                    <span id="rekening-{{ $loop->index }}">{{ $bankDetail->account_number }}</span>
+                                    <button onclick="copyToClipboard('rekening-{{ $loop->index }}')"
+                                        class="btn btn-sm btn-outline-primary ml-2">
+                                        <i class="fas fa-copy"></i> Salin
+                                    </button>
+                                </div>
+                                <p class="card-text">
+                                    Atas Nama <strong>{{ $bankDetail->account_name }}</strong>
+                                </p>
+                            @endforeach
                         </div>
                     </div>
-                    <form action="{{ route('upload-bukti') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="order_id" value="{{ $order->id }}">
-                        <div class="form-group">
-                            <label for="bukti_transfer">Upload Bukti Transfer</label>
-                            <input type="file" class="form-control" id="bukti_transfer" name="bukti_transfer">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Upload</button>
-                    </form>
+                    @if ($order->status != 'Pembayaran Diterima' && $order->status != 'Pengiriman' && $order->status != 'Diterima')
+                        <form action="{{ route('upload-bukti') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                            <div class="form-group">
+                                <label for="bukti_transfer">Upload Bukti Transfer</label>
+                                <input type="file" class="form-control" id="bukti_transfer" name="bukti_transfer">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>

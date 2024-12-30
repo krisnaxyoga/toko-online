@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Order;
 use App\Mail\InvoiceMail;
+use App\Models\BankAccount;
 use App\Models\User_address;
 use Illuminate\Http\Request;
 use App\Models\Product_review;
@@ -19,21 +20,33 @@ class CustomerController extends Controller
 
     public function index()
     {
+        $bank = BankAccount::where('status', 'active')->get();
         $orders = Order::with('order_item', 'payment', 'user_address','review')->get();
         // dd($orders);
-        return view('front.myaccount', compact('orders'));
+        return view('front.myaccount', compact('orders','bank'));
     }
 
-    public function sendInvoiceEmail($id)
-{
-    try {
-        $order = Order::find($id);
-        Mail::to($order->user->email)->send(new InvoiceMail($order));
-        return response()->json(['success' => true]);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    public function customerdata(){
+        $customers = User::where('role_id', 2)->get();
+        return view('admin.customer.index', compact('customers'));
     }
-}
+
+    public function barangditerima($id){
+        $order = Order::find($id);
+        $order->status = 'Diterima';
+        $order->save();
+        return redirect()->back()->with('success', 'Barang telah diterima');
+    }
+    public function sendInvoiceEmail($id)
+    {
+        try {
+            $order = Order::find($id);
+            Mail::to($order->user->email)->send(new InvoiceMail($order));
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */

@@ -44,9 +44,7 @@
                                                 <td> <a href="{{ route('gallery.edit', ['gallery' => $item->id]) }}"
                                                         class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
                                                             class="bx bxs-edit"></i></a>
-                                                    <a href="{{ route('gallery.show', ['gallery' => $item->id]) }}"
-                                                        class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
-                                                            class="bx bxs-show"></i></a>
+
                                                     <form action="{{ route('gallery.destroy', $item->id) }}" method="post"
                                                         class="d-inline">
                                                         @csrf

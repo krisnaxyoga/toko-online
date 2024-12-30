@@ -52,21 +52,15 @@ class GalleryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        $gallery = Gallery::findOrFail($id);
-
-        return view('admin.gallery.show', compact('gallery'));
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        $gallery = Gallery::findOrFail($id);
+        $model = Gallery::findOrFail($id);
 
-        return view('admin.gallery.create', compact('gallery'));
+        return view('admin.gallery.create', compact('model'));
     }
 
     /**
@@ -101,7 +95,7 @@ class GalleryController extends Controller
     {
         $gallery = Gallery::findOrFail($id);
         if (File::exists(public_path($gallery->image))) {
-            File::delete(public_path($gallery->image1));
+            File::delete(public_path($gallery->image));
         }
         $gallery->delete();
 

@@ -91,11 +91,11 @@
                         <span class="fs-18 cl5 txt-center size-211">
                             <span class="lnr lnr-cart"></span>
                         </span>
-
+                        <span class="mtext-110 cl2">
+                            Orders
+                        </span>
                         <div class="size-212 p-t-2">
-                            <span class="mtext-110 cl2">
-                                Orders
-                            </span>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
@@ -116,11 +116,16 @@
                                     <tbody>
                                         @foreach ($orders as $item)
                                             <tr>
-                                                <td> <button type="button" class="btn btn-primary btn-sm"
+                                                <td> <button type="button" class="btn btn-primary btn-sm mb-2"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#orderItemsModal{{ $item->id }}">
                                                         Show Items
-                                                    </button></td>
+                                                    </button>
+                                                    <a href="{{ route('invoice', ['id' => $item->id]) }}"
+                                                        class="btn btn-success btn-sm mb-2">
+                                                        Invoice Detail
+                                                    </a>
+                                                </td>
                                                 <td>{{ $item->invoice_number }}</td>
                                                 <td>{{ $item->status }}</td>
                                                 <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
@@ -150,6 +155,26 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            @if ($item->shipping_tracking_number != null)
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <p>Shipping Tracking Number: {{ $item->shipping_tracking_number }}</p>
+                                        <p>cek resi disini </p>
+                                        <a href="https://cekresi.com/" target="_blank" class="btn btn-info mb-3">Cek
+                                            Resi</a>
+                                    </div>
+                                    @if ($item->status == 'Diterima')
+                                        <div class="col-lg-12">
+                                            <div class="badge badge-info">Barang Sudah Diterima</div>
+                                        </div>
+                                    @else
+                                        <div class="col-lg-12">
+                                            <a href="{{ route('barang.diterima', ['id' => $item->id]) }}"
+                                                class="btn btn-success">Konfirmasi barang diterima</a>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -225,11 +250,21 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Nomor Rekening</h5>
                                         <p class="card-text">Silahkan transfer ke nomor rekening berikut:</p>
-                                        <p class="card-text">
-                                            <strong>Bank BCA</strong><br>
-                                            <strong>857-1234-5678</strong><br>
-                                            Atas Nama <strong>John Doe</strong>
-                                        </p>
+                                        @foreach ($bank as $bankDetail)
+                                            <hr>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <strong class="mr-2">{{ $bankDetail->bank_name }}</strong>
+                                                <span
+                                                    id="rekening-{{ $loop->index }}">{{ $bankDetail->account_number }}</span>
+                                                <button onclick="copyToClipboard('rekening-{{ $loop->index }}')"
+                                                    class="btn btn-sm btn-outline-primary ml-2">
+                                                    <i class="fas fa-copy"></i> Salin
+                                                </button>
+                                            </div>
+                                            <p class="card-text">
+                                                Atas Nama <strong>{{ $bankDetail->account_name }}</strong>
+                                            </p>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <form action="{{ route('upload-bukti') }}" method="post" enctype="multipart/form-data">

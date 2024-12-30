@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Cart_item;
 use App\Models\Order_item;
+use App\Models\BankAccount;
 use Illuminate\Http\Request;
 use App\Models\Store_setting;
 use App\Models\Product_variant;
@@ -41,6 +42,8 @@ class CartController extends Controller
         }else{
             $price = $product->price;
         }
+
+
 
         $total_price = $price * $quantity;
 
@@ -206,7 +209,7 @@ class CartController extends Controller
             $orderItem->product_variant_id = $item['product_variant_id'] ?? null;
             $orderItem->quantity = $item['quantity'];
             $orderItem->price = $item['price'];
-            $orderItem->subtotal = $item['total_price'];
+            $orderItem->subtotal = $item['price'] * $item['quantity'];
             $orderItem->save();
 
             Cart_item::find($item['id'])->delete();
@@ -219,8 +222,16 @@ class CartController extends Controller
 
     public function checkoutSuccess() {
         $order = Order::where('user_id', auth()->id())->latest()->first();
+        $bank = BankAccount::where('status', 'active')->get();
         $order_items = Order_item::where('order_id', $order->id)->with('product', 'product_variant')->get();
-        return view('front.checkout-success', compact('order', 'order_items'));
+        return view('front.checkout-success', compact('order', 'order_items','bank'));
+    }
+
+    public function invoice($id) {
+        $order = Order::find($id);
+        $bank = BankAccount::where('status', 'active')->get();
+        $order_items = Order_item::where('order_id', $order->id)->with('product', 'product_variant')->get();
+        return view('front.checkout-success', compact('order', 'order_items','bank'));
     }
 
     public function uploadBukti(Request $request) {

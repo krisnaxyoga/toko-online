@@ -41,7 +41,7 @@
                         <div class="text-center">
                             <button type="submit"
                                 class="btn btn-primary">{{ $model->exists ? 'Update' : 'Submit' }}</button>
-                            <button type="reset" class="btn btn-secondary">Reset</button>
+                            <a href="{{ route('gallery.index') }}" class="btn btn-danger">back</a>
                         </div>
                     </form>
                 </div>

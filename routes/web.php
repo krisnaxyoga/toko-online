@@ -3,7 +3,9 @@
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductVariant;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ReportController;
@@ -53,7 +55,7 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::get('/productvariant/create/{id}', [ProductVariant::class, 'create'])->name('productvariant.creatus');
     Route::get('/store-setting', [StoreSettingController::class, 'index'])->name('store-setting');
     Route::post('/store-setting', [StoreSettingController::class, 'update'])->name('store-setting.update');
-
+    Route::resource('/pageabout', PageController::class);
     Route::resource('/admin/gallery', GalleryController::class);
     Route::get('/report', [ReportController::class, 'report'])->name('report');
     Route::get('/order/approve/{id}', [ReportController::class, 'approve'])->name('admin.order.approve');
@@ -61,6 +63,11 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::post('/slider/store', [StoreSettingController::class, 'addslidder'])->name('admin.setting.slider.store');
     Route::put('/slider/update/{id}', [StoreSettingController::class, 'editslider'])->name('admin.setting.slider.update');
     Route::delete('/slider/destroy/{id}', [StoreSettingController::class, 'deleteslider'])->name('admin.setting.slider.destroy');
+
+    Route::post('/resiadd',[AdminController::class, 'resiadd'])->name('resi.add.admin');
+    Route::get('/pesanan',[ReportController::class, 'pesanan'])->name('pesanan');
+    Route::get('/pelanggan',[CustomerController::class, 'customerdata'])->name('pelanggan');
+    Route::resource('/bank-account', BankController::class);
 });
 
 // untuk pegawai
@@ -78,9 +85,10 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist/store/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist/destroy/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
-
+    Route::get('/invoice/{id}', [CartController::class, 'invoice'])->name('invoice');
     Route::post('/review', [CustomerController::class, 'review'])->name('submit-review');
     Route::post('/send-invoice-email/{id}', [CustomerController::class, 'sendInvoiceEmail'])->name('send-invoice-email');
+    Route::get('/barang-diterima/{id}',[CustomerController::class, 'barangditerima'])->name('barang.diterima');
 
 });
 // Route::get('/', function () {
@@ -92,7 +100,7 @@ Route::get('/shop', [FrontEndController::class, 'product'])->name('front.shop');
 Route::get('/about', [FrontEndController::class, 'about'])->name('front.about');
 Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.contact');
 Route::get('/frony/gallery', [FrontEndController::class, 'gallery'])->name('front.gallery');
-Route::get('/category/product', [FrontEndController::class, 'category'])->name('front.category');
+Route::get('/category-product', [FrontEndController::class, 'categoryproduct'])->name('front.category.product');
 Route::get('/detailproduct/{id}', [FrontEndController::class, 'productDetail'])->name('front.detailproduct');
 
 

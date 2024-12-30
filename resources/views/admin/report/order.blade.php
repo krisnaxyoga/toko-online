@@ -1,9 +1,13 @@
 @extends('layouts.admin')
 
 @section('contents')
+    <!-- Di bagian head atau sebelum closing body -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <section>
         <div class="container">
-            <h2>Data Categories</h2>
+            <h2>Report</h2>
             <div class="row">
                 <div class="col-lg-12">
                     @if (session()->has('success'))
@@ -34,6 +38,7 @@
                                             <th>
                                                 No. Invoice
                                             </th>
+                                            <th>customer</th>
                                             <th>status</th>
                                             <th>sub total</th>
                                             <th>shipping cost</th>
@@ -41,17 +46,23 @@
                                             <th>shipping courier</th>
                                             <th>shipping address</th>
                                             <th>notes</th>
-                                            <th>order items</th>
+                                            <th>date</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($orders as $item)
-                                            <tr>
-                                                <td> <a href="{{ route('category.show', ['category' => $item->id]) }}"
-                                                        class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
-                                                            class="bx bxs-show"></i></a></td>
-                                                <td>{{ $loop->iteration }}</td>
+                                            <tr data-created-at="{{ $item->created_at }}">
+                                                <td>
+                                                    {{ $loop->index + 1 }}
+                                                    {{-- <button type="button" class="btn btn-primary btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#orderItemsModal{{ $item->id }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button> --}}
+                                                </td>
                                                 <td>{{ $item->invoice_number }}</td>
+                                                <td>{{ $item->user->name }}</td>
                                                 <td>{{ $item->status }}</td>
                                                 <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}</td>
@@ -59,13 +70,7 @@
                                                 <td>{{ $item->shipping_courier }}</td>
                                                 <td>{{ $item->user_address->address }}</td>
                                                 <td>{{ $item->notes }}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary btn-sm"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#orderItemsModal{{ $item->id }}">
-                                                        Show Items
-                                                    </button>
-                                                </td>
+                                                <td>{{ $item->created_at }}</td>
                                             </tr>
                                         @endforeach
 
@@ -127,4 +132,270 @@
             </div>
         @endforeach
     </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add filter controls to the page
+            const filterControls = `
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-2">
+                        <label class="form-label">Filter Type</label>
+                        <select class="form-select" id="filterType">
+                            <option value="all">All Time</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-none" id="dateContainer">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-control" id="singleDate">
+                    </div>
+                    <div class="col-md-2 d-none" id="monthContainer">
+                        <label class="form-label">Month</label>
+                        <input type="month" class="form-control" id="monthPicker">
+                    </div>
+                    <div class="col-md-2 d-none" id="yearContainer">
+                        <label class="form-label">Year</label>
+                        <select class="form-select" id="yearPicker">
+                            ${generateYearOptions()}
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-none" id="weekContainer">
+                        <label class="form-label">Week</label>
+                        <input type="week" class="form-control" id="weekPicker">
+                    </div>
+                    <div class="col-md-4 d-none" id="customRangeContainer">
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="startDate">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="endDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" onclick="applyFilter()">Apply Filter</button>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="btn-group">
+                            <button class="btn btn-success" onclick="exportToExcel()">
+                                <i class="fas fa-file-excel"></i> Export Excel
+                            </button>
+                            <button class="btn btn-danger" onclick="exportToPDF()">
+                                <i class="fas fa-file-pdf"></i> Export PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+            // Insert filter controls before the table
+            document.querySelector('.table-responsive').insertAdjacentHTML('beforebegin', filterControls);
+
+            // Show/hide date inputs based on filter type
+            document.getElementById('filterType').addEventListener('change', function() {
+                const containers = ['dateContainer', 'monthContainer', 'yearContainer',
+                    'weekContainer', 'customRangeContainer'
+                ];
+                containers.forEach(container => {
+                    document.getElementById(container).classList.add('d-none');
+                });
+
+                switch (this.value) {
+                    case 'daily':
+                        document.getElementById('dateContainer').classList.remove('d-none');
+                        break;
+                    case 'weekly':
+                        document.getElementById('weekContainer').classList.remove('d-none');
+                        break;
+                    case 'monthly':
+                        document.getElementById('monthContainer').classList.remove('d-none');
+                        break;
+                    case 'yearly':
+                        document.getElementById('yearContainer').classList.remove('d-none');
+                        break;
+                    case 'custom':
+                        document.getElementById('customRangeContainer').classList.remove('d-none');
+                        break;
+                }
+            });
+
+            // Add created_at as data attribute to each row
+            addCreatedAtDataAttribute();
+        });
+
+        function addCreatedAtDataAttribute() {
+            const rows = document.querySelectorAll('.datatable tbody tr');
+            rows.forEach(row => {
+                // Get the created_at value from blade and add it as a data attribute
+                const createdAt = row.getAttribute('data-created-at');
+                console.log(createdAt);
+                if (createdAt) {
+                    row.dataset.date = new Date(createdAt).toISOString().split('T')[0];
+                }
+            });
+        }
+
+        function generateYearOptions() {
+            const currentYear = new Date().getFullYear();
+            let options = '';
+            for (let year = currentYear; year >= currentYear - 5; year--) {
+                options += `<option value="${year}">${year}</option>`;
+            }
+            return options;
+        }
+
+        function applyFilter() {
+            const filterType = document.getElementById('filterType').value;
+            let startDate, endDate;
+
+            switch (filterType) {
+                case 'daily':
+                    const selectedDate = document.getElementById('singleDate').value;
+                    startDate = selectedDate;
+                    endDate = selectedDate;
+                    break;
+                case 'weekly':
+                    const weekData = document.getElementById('weekPicker').value.split('-W');
+                    const weekDates = getWeekDates(weekData[0], weekData[1]);
+                    startDate = weekDates.start;
+                    endDate = weekDates.end;
+                    break;
+                case 'monthly':
+                    const monthData = document.getElementById('monthPicker').value.split('-');
+                    startDate = `${monthData[0]}-${monthData[1]}-01`;
+                    endDate = getLastDayOfMonth(monthData[0], monthData[1]);
+                    break;
+                case 'yearly':
+                    const year = document.getElementById('yearPicker').value;
+                    startDate = `${year}-01-01`;
+                    endDate = `${year}-12-31`;
+                    break;
+                case 'custom':
+                    startDate = document.getElementById('startDate').value;
+                    endDate = document.getElementById('endDate').value;
+                    break;
+                case 'all':
+                    showAllRows();
+                    return;
+                default:
+                    return;
+            }
+
+            filterTableRows(startDate, endDate);
+        }
+
+        function filterTableRows(startDate, endDate) {
+            const rows = document.querySelectorAll('.datatable tbody tr');
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            end.setHours(23, 59, 59, 999); // Include the entire end date
+
+            rows.forEach(row => {
+                const rowDate = new Date(row.dataset.date);
+                if (rowDate >= start && rowDate <= end) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function showAllRows() {
+            const rows = document.querySelectorAll('.datatable tbody tr');
+            rows.forEach(row => {
+                row.style.display = '';
+            });
+        }
+
+        // ... (fungsi export dan helper lainnya tetap sama)
+
+        function exportToExcel() {
+            const table = document.querySelector('.datatable');
+            const wb = XLSX.utils.table_to_book(table, {
+                sheet: "Orders"
+            });
+            const filterType = document.getElementById('filterType').value;
+            const filename = `orders_${filterType}_${new Date().toISOString().split('T')[0]}.xlsx`;
+
+            XLSX.writeFile(wb, filename);
+        }
+
+        function exportToPDF() {
+            const {
+                jsPDF
+            } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.autoTable({
+                html: '.datatable',
+                theme: 'grid',
+                headStyles: {
+                    fillColor: [41, 128, 185]
+                },
+                margin: {
+                    top: 20
+                },
+                didDrawPage: function(data) {
+                    doc.text('Orders Report', 14, 15);
+                }
+            });
+
+            const filterType = document.getElementById('filterType').value;
+            const filename = `orders_${filterType}_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(filename);
+        }
+
+        function getWeekDates(year, week) {
+            const firstDayOfYear = new Date(year, 0, 1);
+            const daysToFirstMonday = (8 - firstDayOfYear.getDay()) % 7;
+            const firstMonday = new Date(year, 0, 1 + daysToFirstMonday);
+
+            const startDate = new Date(firstMonday);
+            startDate.setDate(startDate.getDate() + (week - 1) * 7);
+
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 6);
+
+            return {
+                start: startDate.toISOString().split('T')[0],
+                end: endDate.toISOString().split('T')[0]
+            };
+        }
+
+        function getLastDayOfMonth(year, month) {
+            return new Date(year, month, 0).toISOString().split('T')[0];
+        }
+    </script>
+    <style>
+        .form-label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .btn-group {
+            gap: 0.5rem;
+        }
+
+        .datatable th {
+            white-space: nowrap;
+        }
+
+        #filterControls {
+            margin-bottom: 1rem;
+        }
+
+        .d-none {
+            display: none !important;
+        }
+    </style>
 @endsection

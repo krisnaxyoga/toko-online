@@ -90,8 +90,7 @@
                         <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
                             <i class="zmdi zmdi-search"></i>
                         </button>
-
-                        <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product"
+                        <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" id="search-product"
                             placeholder="Search">
                     </div>
                 </div>
@@ -349,4 +348,28 @@
             priceElement.textContent = 'Rp. ' + new Intl.NumberFormat('id-ID').format(newPrice);
         }
     </script>
+    <script>
+        // Event listener untuk mendeteksi perubahan pada input pencarian
+        document.getElementById('search-product').addEventListener('input', function() {
+            // Ambil nilai pencarian
+            const searchTerm = this.value.toLowerCase();
+
+            // Ambil semua elemen produk
+            const products = document.querySelectorAll('.isotope-item');
+
+            // Loop melalui setiap produk dan sembunyikan atau tampilkan berdasarkan pencarian
+            products.forEach(function(product) {
+                const productName = product.querySelector('.js-name-b2').textContent.toLowerCase();
+                const productDescription = product.querySelector('.stext-105').textContent.toLowerCase();
+
+                // Cek apakah nama atau deskripsi produk mengandung kata kunci pencarian
+                if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
+                    product.style.display = ''; // Tampilkan produk
+                } else {
+                    product.style.display = 'none'; // Sembunyikan produk
+                }
+            });
+        });
+    </script>
+
 @endsection

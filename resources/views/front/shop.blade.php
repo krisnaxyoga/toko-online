@@ -30,8 +30,7 @@
                         <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
                             <i class="zmdi zmdi-search"></i>
                         </button>
-
-                        <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product"
+                        <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" id="search-product"
                             placeholder="Search">
                     </div>
                 </div>
@@ -43,52 +42,51 @@
             <div class="row isotope-grid">
                 {{-- {{ dd($wishlist) }} --}}
                 @forelse($product as $key => $value)
-                    <a href="{{ route('front.detailproduct', ['id' => $value->id]) }}">
-                        <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                            <!-- Block2 -->
-                            <div class="block2">
-                                <div class="block2-pic hov-img0">
-                                    <img src="{{ url($value->images->where('is_primary', 1)->first()->image_url) }}"
-                                        alt="IMG-PRODUCT">
+                    {{-- <a href="{{ route('front.detailproduct', ['id' => $value->id]) }}"> --}}
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                        <!-- Block2 -->
+                        <div class="block2">
+                            <div class="block2-pic hov-img0">
+                                <img src="{{ url($value->images->where('is_primary', 1)->first()->image_url) }}"
+                                    alt="IMG-PRODUCT">
 
-                                    <button type="button"
-                                        class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
-                                        data-bs-toggle="modal" data-bs-target="#productModal{{ $value->id }}">
-                                        Quick View
-                                    </button>
+                                <button type="button"
+                                    class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04"
+                                    data-bs-toggle="modal" data-bs-target="#productModal{{ $value->id }}">
+                                    Quick View
+                                </button>
+                            </div>
+
+                            <div class="block2-txt flex-w flex-t p-t-14">
+                                <div class="block2-txt-child1 flex-col-l ">
+                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                        {{ $value->name }}
+                                    </a>
+
+                                    <span class="stext-105 cl3">
+                                        Rp. {{ number_format($value->price, 0, ',', '.') }}
+                                    </span>
                                 </div>
 
-                                <div class="block2-txt flex-w flex-t p-t-14">
-                                    <div class="block2-txt-child1 flex-col-l ">
-                                        <a href="product-detail.html"
-                                            class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                            {{ $value->name }}
-                                        </a>
-
-                                        <span class="stext-105 cl3">
-                                            Rp. {{ number_format($value->price, 0, ',', '.') }}
-                                        </span>
-                                    </div>
-
-                                    <div class="block2-txt-child2 flex-r p-t-3">
-                                        <a href="{{ route('wishlist.store', $value->id) }}" class="">
-                                            @if (in_array($value->id, array_column($value->wishlist->toArray(), 'product_id')))
-                                                <img class="icon-heart1 dis-block trans-04"
-                                                    src="/cozas/images/icons/icon-heart-02.png" alt="ICON">
-                                            @else
-                                                <img class="icon-heart1 dis-block trans-04"
-                                                    src="/cozas/images/icons/icon-heart-01.png" alt="ICON">
-                                            @endif
-                                            {{-- <img class="icon-heart1 dis-block trans-04"
+                                <div class="block2-txt-child2 flex-r p-t-3">
+                                    <a href="{{ route('wishlist.store', $value->id) }}" class="">
+                                        @if (in_array($value->id, array_column($value->wishlist->toArray(), 'product_id')))
+                                            <img class="icon-heart1 dis-block trans-04"
+                                                src="/cozas/images/icons/icon-heart-02.png" alt="ICON">
+                                        @else
+                                            <img class="icon-heart1 dis-block trans-04"
+                                                src="/cozas/images/icons/icon-heart-01.png" alt="ICON">
+                                        @endif
+                                        {{-- <img class="icon-heart1 dis-block trans-04"
                                             src="/cozas/images/icons/icon-heart-01.png" alt="ICON">
                                         <img class="icon-heart2 dis-block trans-04 ab-t-l"
                                             src="/cozas/images/icons/icon-heart-02.png" alt="ICON"> --}}
-                                        </a>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                    {{-- </a> --}}
                     <!-- Modal for each product -->
                     <div class="modal fade" id="productModal{{ $value->id }}" tabindex="-1"
                         aria-labelledby="modalLabel{{ $value->id }}" aria-hidden="true">
@@ -148,8 +146,7 @@
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     @method('POST')
-                                                    <input type="hidden" name="product_id"
-                                                        value="{{ $value->product_id }}">
+                                                    <input type="hidden" name="product_id" value="{{ $value->id }}">
 
                                                     <h3>{{ $value->name }}</h3>
                                                     <!-- Update price and variant section in modal -->
@@ -255,5 +252,28 @@
             // Update price display
             priceElement.textContent = 'Rp. ' + new Intl.NumberFormat('id-ID').format(newPrice);
         }
+    </script>
+    <script>
+        // Event listener untuk mendeteksi perubahan pada input pencarian
+        document.getElementById('search-product').addEventListener('input', function() {
+            // Ambil nilai pencarian
+            const searchTerm = this.value.toLowerCase();
+
+            // Ambil semua elemen produk
+            const products = document.querySelectorAll('.isotope-item');
+
+            // Loop melalui setiap produk dan sembunyikan atau tampilkan berdasarkan pencarian
+            products.forEach(function(product) {
+                const productName = product.querySelector('.js-name-b2').textContent.toLowerCase();
+                const productDescription = product.querySelector('.stext-105').textContent.toLowerCase();
+
+                // Cek apakah nama atau deskripsi produk mengandung kata kunci pencarian
+                if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
+                    product.style.display = ''; // Tampilkan produk
+                } else {
+                    product.style.display = 'none'; // Sembunyikan produk
+                }
+            });
+        });
     </script>
 @endsection

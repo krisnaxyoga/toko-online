@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use App\Models\Slider;
+use App\Models\Gallery;
 use App\Models\Product;
-use App\Models\Product_image;
-use App\Models\Store_setting;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Product_image;
+use App\Models\Store_setting;
 
 class FrontEndController extends Controller
 {
@@ -34,10 +36,11 @@ class FrontEndController extends Controller
     }
 
     public function about(){
-        return view('front.about');
+        $page = Page::first();
+        return view('front.about',compact('page'));
     }
 
-    public function category(Request $request){
+    public function categoryproduct(Request $request){
 
         $categories = Category::all();
         $products = Product::with('images','wishlist');
@@ -60,7 +63,7 @@ class FrontEndController extends Controller
     }
 
     public function gallery(){
-        $products_images = Product_image::all();
+        $products_images = Gallery::all();
         return view('front.gallery',compact('products_images'));
     }
 

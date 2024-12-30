@@ -13,7 +13,7 @@ class BankController extends Controller
     public function index()
     {
         $bank_accounts = BankAccount::all();
-        return view('bank.index', compact('bank_accounts'));
+        return view('admin.bank.index', compact('bank_accounts'));
     }
 
     /**
@@ -21,7 +21,8 @@ class BankController extends Controller
      */
     public function create()
     {
-        return view('bank.create');
+        $model = new BankAccount();
+        return view('admin.bank.form',compact('model'));
     }
 
     /**
@@ -30,18 +31,18 @@ class BankController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
             'account_number' => 'required|string|max:255',
             'bank_name' => 'required|string|max:255',
         ]);
 
         BankAccount::create([
-            'name' => $request->name,
             'account_number' => $request->account_number,
+            'account_name' => $request->account_name,
             'bank_name' => $request->bank_name,
+            'status' => $request->status,
         ]);
 
-        return redirect()->route('bank.index')->with('success', 'Bank account created successfully');
+        return redirect()->route('bank-account.index')->with('success', 'Bank account created successfully');
     }
 
     /**
@@ -58,8 +59,8 @@ class BankController extends Controller
      */
     public function edit(string $id)
     {
-        $bank_account = BankAccount::findOrFail($id);
-        return view('bank.edit', compact('bank_account'));
+        $model = BankAccount::findOrFail($id);
+        return view('admin.bank.form', compact('model'));
     }
 
     /**
@@ -68,19 +69,19 @@ class BankController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
             'account_number' => 'required|string|max:255',
             'bank_name' => 'required|string|max:255',
         ]);
 
         $bank_account = BankAccount::findOrFail($id);
         $bank_account->update([
-            'name' => $request->name,
             'account_number' => $request->account_number,
+            'account_name' => $request->account_name,
             'bank_name' => $request->bank_name,
+            'status' => $request->status,
         ]);
 
-        return redirect()->route('bank.index')->with('success', 'Bank account updated successfully');
+        return redirect()->route('bank-account.index')->with('success', 'Bank account updated successfully');
     }
 
     /**
@@ -91,6 +92,6 @@ class BankController extends Controller
         $bank_account = BankAccount::findOrFail($id);
         $bank_account->delete();
 
-        return redirect()->route('bank.index')->with('success', 'Bank account deleted successfully');
+        return redirect()->route('bank-account.index')->with('success', 'Bank account deleted successfully');
     }
 }
