@@ -21,7 +21,7 @@ class CustomerController extends Controller
     public function index()
     {
         $bank = BankAccount::where('status', 'active')->get();
-        $orders = Order::with('order_item', 'payment', 'user_address','review')->get();
+        $orders = Order::with('order_item', 'payment', 'user_address','review')->where('user_id', auth()->id())->get();
         // dd($orders);
         return view('front.myaccount', compact('orders','bank'));
     }
