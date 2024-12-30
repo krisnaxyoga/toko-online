@@ -179,13 +179,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('store-setting') ? 'active' : 'collapsed' }}"
-                    href="{{ route('store-setting') }}">
-                    <i class="bi bi-gear"></i>
-                    <span>Store setting</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#stoter" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-archive-fill"></i><span>Store setting</span><i
                         class="bi bi-chevron-down ms-auto"></i>
