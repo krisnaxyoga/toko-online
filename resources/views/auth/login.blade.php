@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('contents')
-    <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
         <div class="card" style="width: 25rem;">
             <div class="card-header text-center">
                 Login

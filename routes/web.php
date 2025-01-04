@@ -80,7 +80,8 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::delete('/cart/destroy/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::post('/checkout', [CartController::class, 'checkout'])->name('front.checkout');
     Route::get('/checkoutSuccess', [CartController::class, 'checkoutSuccess'])->name('checkout-success');
-
+    Route::get('/myorder', [CustomerController::class, 'myorder'])->name('myorder');
+    Route::get('/order-detail/{id}', [CustomerController::class, 'showorder'])->name('order-detail');
     Route::post('/upload-bukti', [CartController::class, 'uploadBukti'])->name('upload-bukti');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist/store/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
@@ -89,6 +90,8 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::post('/review', [CustomerController::class, 'review'])->name('submit-review');
     Route::post('/send-invoice-email/{id}', [CustomerController::class, 'sendInvoiceEmail'])->name('send-invoice-email');
     Route::get('/barang-diterima/{id}',[CustomerController::class, 'barangditerima'])->name('barang.diterima');
+    Route::get('/mypayment', [CustomerController::class, 'mypayment'])->name('mypayment');
+    Route::get('/mypaymentdetail/{id}', [CustomerController::class, 'mypaymentdetail'])->name('mypayment.detail');
 
 });
 // Route::get('/', function () {

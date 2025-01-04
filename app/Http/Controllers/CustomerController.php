@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Mail\InvoiceMail;
 use App\Models\BankAccount;
+use App\Models\Payment;
 use App\Models\User_address;
 use Illuminate\Http\Request;
 use App\Models\Product_review;
@@ -23,7 +24,7 @@ class CustomerController extends Controller
         $bank = BankAccount::where('status', 'active')->get();
         $orders = Order::with('order_item', 'payment', 'user_address','review')->where('user_id', auth()->id())->get();
         // dd($orders);
-        return view('front.myaccount', compact('orders','bank'));
+        return view('customer.index', compact('orders','bank'));
     }
 
     public function customerdata(){
@@ -109,32 +110,51 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+
+     public function myorder()
     {
-        //
+        $orders = Order::with('order_item', 'payment', 'user_address')->where('user_id', auth()->id())->latest()->get();
+        return view('customer.myorder.index', compact('orders'));
+    }
+    public function showorder(string $id)
+    {
+        $order = Order::with('order_item', 'payment', 'user_address')->find($id);
+        return view('customer.myorder.detail', compact('order'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function mypayment()
     {
-        //
+        $data = Payment::whereHas('order', function($query){
+            $query->where('user_id', auth()->id());
+        })->get();
+        return view('customer.mypayment.index', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function mypaymentdetail($id)
     {
-        //
+        $data = Order::find($id);
+        return view('customer.mypayment.detail', compact('data'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function myreview()
     {
-        //
+        $data = Product_review::whereHas('order', function($query){
+            $query->where('user_id', auth()->id());
+        })->get();
+        return view('customer.review.index', compact('data'));
+    }
+    public function createmyreview()
+    {
+        $data = Order::where('user_id', auth()->id())->whereHas('review')->get();
+        return view('customer.review.form', compact('data'));
     }
 }

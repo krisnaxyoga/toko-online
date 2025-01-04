@@ -34,7 +34,7 @@
                                     @foreach ($cart as $item)
                                         @php
                                             $price = $item->product_variant_id
-                                                ? $item->product_variant->price
+                                                ? $item->product_variant->price_adjustment
                                                 : $item->product->price;
                                             $subtotal += $price * $item->quantity;
                                         @endphp
@@ -54,7 +54,8 @@
                                             </td>
                                             @if ($item->product_variant_id)
                                                 <td class="column-3">Rp
-                                                    {{ number_format($item->product_variant->price, 0, ',', '.') }}</td>
+                                                    {{ number_format($item->product_variant->price_adjustment, 0, ',', '.') }}
+                                                </td>
                                             @else
                                                 <td class="column-3">Rp
                                                     {{ number_format($item->product->price, 0, ',', '.') }}</td>
@@ -79,7 +80,7 @@
                                             @if ($item->product_variant_id)
                                                 <td class="column-5" id="total-{{ $item->id }}">
                                                     Rp
-                                                    {{ number_format($item->product_variant->price * $item->quantity, 0, ',', '.') }}
+                                                    {{ number_format($item->product_variant->price_adjustment * $item->quantity, 0, ',', '.') }}
                                                 </td>
                                             @else
                                                 <td class="column-5" id="total-{{ $item->id }}">
@@ -161,8 +162,8 @@
                                             </select>
                                         </div>
                                         <div class="col-md-12">
-                                            <label for="weight" class="form-label">Weight (Gram)</label>
-                                            <input type="number" name="weight" id="weight" class="form-control"
+                                            {{-- <label for="weight" class="form-label">Weight (Gram)</label> --}}
+                                            <input hidden type="number" name="weight" id="weight" class="form-control"
                                                 value="{{ $weight }}" readonly>
                                         </div>
                                         <div class="col-lg-12">

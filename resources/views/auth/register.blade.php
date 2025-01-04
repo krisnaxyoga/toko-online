@@ -1,7 +1,7 @@
-@extends('layouts.front')
+@extends('layouts.main')
 @section('contents')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <section class="bg0 p-t-23 p-b-140">
+    <section class="d-flex justify-content-center align-items-center vh-100 bg-dark">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6">
@@ -12,71 +12,105 @@
                         <div class="card-body">
                             <form method="POST" action="{{ route('doregister') }}">
                                 @csrf
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        value="{{ old('name') }}" required autocomplete="name" autofocus>
-                                    @error('name')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-3">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                            @error('name')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                value="{{ old('email') }}" required autocomplete="email">
+                                            @error('email')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email">
-                                    @error('email')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-3">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="province">Province</label>
+                                            <select name="origin_province" id="origin_province"
+                                                class="form-select form-control">
+                                                <option>Choose Province</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="city">City</label>
+                                            <select name="origin_city" id="origin_city" class="form-select form-control">
+                                                <option>Choose City</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <textarea name="address" id="" class="form-control"></textarea>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <textarea name="address" id="" class="form-control"></textarea>
 
 
-                                </div>
-                                <div class="form-group">
-                                    <label for="province">Province</label>
-                                    <select name="origin_province" id="origin_province" class="form-select">
-                                        <option>Choose Province</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="city">City</label>
-                                    <select name="origin_city" id="origin_city" class="form-select">
-                                        <option>Choose City</option>
-                                    </select>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="postal_code">Postal Code</label>
-                                    <input type="text" class="form-control" id="postal_code" name="postal_code"
-                                        value="{{ old('postal_code') }}" required autocomplete="postal_code">
-                                    @error('postal_code')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="phone">Phone</label>
-                                    <input type="text" class="form-control" id="phone" name="phone"
-                                        value="{{ old('phone') }}" required autocomplete="phone">
-                                    @error('phone')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                <div class="row mb-3">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="text" class="form-control" id="phone" name="phone"
+                                                value="{{ old('phone') }}" required autocomplete="phone">
+                                            @error('phone')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="postal_code">Postal Code</label>
+                                            <input type="text" class="form-control" id="postal_code" name="postal_code"
+                                                value="{{ old('postal_code') }}" required autocomplete="postal_code">
+                                            @error('postal_code')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" name="password" required
-                                        autocomplete="new-password">
-                                    @error('password')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+
+
+
+                                <div class="row mb-3">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control" id="password" name="password"
+                                                required autocomplete="new-password">
+                                            @error('password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="password-confirm">Confirm Password</label>
+                                            <input type="password" class="form-control" id="password-confirm"
+                                                name="password_confirmation" required autocomplete="new-password">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="password-confirm">Confirm Password</label>
-                                    <input type="password" class="form-control" id="password-confirm"
-                                        name="password_confirmation" required autocomplete="new-password">
-                                </div>
+
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">Register</button>
                                 </div>

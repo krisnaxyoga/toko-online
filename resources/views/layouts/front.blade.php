@@ -173,7 +173,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('front.shop') }}">Shop</a>
+                    <a href="{{ route('front.shop') }}">Belanja</a>
                 </li>
 
 

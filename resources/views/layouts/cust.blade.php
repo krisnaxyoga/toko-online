@@ -45,10 +45,10 @@
     <header id="header" class="header fixed-top d-flex align-items-center bg-dark">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center text-light">
-                Admin
+            <a href="{{ route('front.index') }}" class="logo d-flex align-items-centern text-light">
+                Customer
             </a>
-            <i class="bi bi-list toggle-sidebar-btn  text-light"></i>
+            <i class="bi bi-list toggle-sidebar-btn text-light"></i>
         </div><!-- End Logo -->
 
         {{-- <div class="search-bar">
@@ -70,7 +70,7 @@
 
                 <li class="nav-item dropdown pe-3">
 
-                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0 text-light" href="#"
                         data-bs-toggle="dropdown">
 
                         <span class="d-none d-md-block dropdown-toggle ps-2">{{ auth()->user()->name }}</span>
@@ -113,47 +113,27 @@
             <li class="nav-heading">Menu</li>
             <li class="nav-item">
 
-                <a class="nav-link {{ request()->routeIs('admin.index') ? 'active' : 'collapsed' }}"
-                    href="{{ route('admin.index') }}">
+                <a class="nav-link {{ request()->routeIs('customer.index') ? 'active' : 'collapsed' }}"
+                    href="{{ route('customer.index') }}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
 
 
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#product" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-archive-fill"></i><span>Product</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="product"
-                    class="nav-content collapse {{ request()->routeIs('category.index') || request()->routeIs('product.index') || request()->routeIs('productvariant.index') ? 'show' : '' }}"
-                    data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="{{ route('category.index') }}"
-                            class="{{ request()->routeIs('category.index') ? 'active' : '' }}">
-                            <i class="bi bi-circle"></i><span>Category Product</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('product.index') }}"
-                            class="{{ request()->routeIs('product.index') ? 'active' : '' }}">
-                            <i class="bi bi-circle"></i><span>Product</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('gallery.index') ? 'active' : 'collapsed' }}"
-                    href="{{ route('gallery.index') }}">
-                    <i class="bi bi-images"></i>
-                    Gallery</a>
+                <a class="nav-link {{ request()->routeIs('myorder') ? 'active' : 'collapsed' }}"
+                    href="{{ route('myorder') }}">
+                    <i class="bi bi-cart"></i>
+                    My Order</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('pageabout.index') ? 'active' : 'collapsed' }}"
-                    href="{{ route('pageabout.index') }}">
+                <a class="nav-link {{ request()->routeIs('mypayment') ? 'active' : 'collapsed' }}"
+                    href="{{ route('mypayment') }}">
                     <i class="bi bi-info-circle"></i>
-                    <span>About</span>
+                    <span>My Payment</span>
                 </a>
             </li>
 
@@ -161,45 +141,11 @@
                 <a class="nav-link {{ request()->routeIs('pesanan') ? 'active' : 'collapsed' }}"
                     href="{{ route('pesanan') }}">
                     <i class="bi bi-file-earmark-text"></i>
-                    <span>Pesanan</span>
+                    <span>Review/Kritikan</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('pelanggan') ? 'active' : 'collapsed' }}"
-                    href="{{ route('pelanggan') }}">
-                    <i class="bi bi-people"></i>
-                    <span>Customer</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('report') ? 'active' : 'collapsed' }}"
-                    href="{{ route('report') }}">
-                    <i class="ri-file-pdf-fill"></i>
-                    <span>Report</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#stoter" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-archive-fill"></i><span>Store setting</span><i
-                        class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="stoter"
-                    class="nav-content collapse {{ request()->routeIs('store-setting') || request()->routeIs('product.index') || request()->routeIs('productvariant.index') ? 'show' : '' }}"
-                    data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="{{ route('store-setting') }}"
-                            class="{{ request()->routeIs('store-setting') ? 'active' : '' }}">
-                            <i class="bi bi-circle"></i><span>Store setting</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('bank-account.index') }}"
-                            class="{{ request()->routeIs('bank-account.index') ? 'active' : '' }}">
-                            <i class="bi bi-circle"></i><span>Bank Account</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+
+
             <!-- End Forms Nav -->
             {{-- <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('supplier.index') ? 'active' : 'collapsed' }}"
