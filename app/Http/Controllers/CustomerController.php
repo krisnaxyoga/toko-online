@@ -147,14 +147,12 @@ class CustomerController extends Controller
      */
     public function myreview()
     {
-        $data = Product_review::whereHas('order', function($query){
-            $query->where('user_id', auth()->id());
-        })->get();
+        $data = Order::where('user_id', auth()->id())->with('review')->get();
         return view('customer.review.index', compact('data'));
     }
-    public function createmyreview()
+    public function createmyreview($id)
     {
-        $data = Order::where('user_id', auth()->id())->whereHas('review')->get();
+        $data = Order::find($id);
         return view('customer.review.form', compact('data'));
     }
 }

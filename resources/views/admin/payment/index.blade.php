@@ -1,9 +1,9 @@
-@extends('layouts.cust')
+@extends('layouts.admin')
 
 @section('contents')
     <section>
         <div class="container">
-            <h2>Data Review</h2>
+            <h2>Data Payment</h2>
             <div class="row">
                 <div class="col-lg-12">
                     @if (session()->has('success'))
@@ -21,8 +21,8 @@
                     @endif
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Data Review</h5>
-                            {{-- <a href="{{ route('bank-account.create') }}" class="btn btn-success">add</a> --}}
+                            <h5 class="card-title">Data Payment</h5>
+
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">
 
@@ -30,28 +30,27 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                #
+                                                Number
                                             </th>
                                             <th>
                                                 ID Order
                                             </th>
                                             <th>Date</th>
-                                            <th>Rating</th>
-                                            <th>Review</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($data as $item)
                                             <tr>
-                                                <td> {{ $loop->iteration }} </td>
+                                                <td> {{ $loop->iteration }}</td>
                                                 </td>
-                                                <td><a
-                                                        href="{{ route('createmyreview', $item->id) }}">{{ $item->invoice_number }}</a>
+                                                <td>
+                                                    <a href="{{ route('admin.payment.detail', $item->order_id) }}">
+                                                        {{ $item->order->invoice_number }}</a>
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
                                                 </td>
-                                                <td>{{ $item->review ? $item->review->rating : 'NA' }}</td>
-                                                <td>{{ $item->review ? $item->review->review : 'NA' }}</td>
+                                                <td>{{ $item->order->status }}</td>
 
                                             </tr>
                                         @endforeach

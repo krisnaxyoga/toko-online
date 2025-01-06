@@ -18,7 +18,7 @@ class AdminController extends Controller
         $penjualan = Order::where('status', ['Diterima','Pengiriman','Pembayaran Diterima'])->count();
 
         $customer = User::where('role_id', 2)->count();
-        $orders = Order::with('order_item', 'payment', 'user_address')->get();
+        $orders = Order::with('order_item', 'payment', 'user_address')->latest()->get();
         return view('admin.dashboard',compact('revenue','penjualan','customer','orders'));
     }
 

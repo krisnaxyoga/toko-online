@@ -254,6 +254,7 @@ class CartController extends Controller
         $payments = new Payment();
         $payments->order_id = $order->id;
         $payments->image = $imageName;
+        $payments->status = 'Menunggu Konfirmasi';
         $payments->save();
 
 

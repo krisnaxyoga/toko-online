@@ -128,13 +128,13 @@
                 <ul id="product"
                     class="nav-content collapse {{ request()->routeIs('category.index') || request()->routeIs('product.index') || request()->routeIs('productvariant.index') ? 'show' : '' }}"
                     data-bs-parent="#sidebar-nav">
-                    <li>
+                    <li class="nav-item bg-light">
                         <a href="{{ route('category.index') }}"
                             class="{{ request()->routeIs('category.index') ? 'active' : '' }}">
                             <i class="bi bi-circle"></i><span>Category Product</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="nav-item bg-light">
                         <a href="{{ route('product.index') }}"
                             class="{{ request()->routeIs('product.index') ? 'active' : '' }}">
                             <i class="bi bi-circle"></i><span>Product</span>
@@ -165,6 +165,13 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.allpayment') ? 'active' : 'collapsed' }}"
+                    href="{{ route('admin.allpayment') }}">
+                    <i class="bi bi-cash"></i>
+                    <span>Payment</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('pelanggan') ? 'active' : 'collapsed' }}"
                     href="{{ route('pelanggan') }}">
                     <i class="bi bi-people"></i>
@@ -186,13 +193,13 @@
                 <ul id="stoter"
                     class="nav-content collapse {{ request()->routeIs('store-setting') || request()->routeIs('product.index') || request()->routeIs('productvariant.index') ? 'show' : '' }}"
                     data-bs-parent="#sidebar-nav">
-                    <li>
+                    <li class="nav-item bg-light">
                         <a href="{{ route('store-setting') }}"
                             class="{{ request()->routeIs('store-setting') ? 'active' : '' }}">
                             <i class="bi bi-circle"></i><span>Store setting</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="nav-item bg-light">
                         <a href="{{ route('bank-account.index') }}"
                             class="{{ request()->routeIs('bank-account.index') ? 'active' : '' }}">
                             <i class="bi bi-circle"></i><span>Bank Account</span>

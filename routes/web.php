@@ -66,8 +66,14 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
 
     Route::post('/resiadd',[AdminController::class, 'resiadd'])->name('resi.add.admin');
     Route::get('/pesanan',[ReportController::class, 'pesanan'])->name('pesanan');
+    Route::get('/detailpesananorder/{id}',[ReportController::class, 'detail'])->name('detailpesananorder');
+    Route::post('/detailpesananorder-update/{id}',[ReportController::class, 'updateorder'])->name('detailpesananorder-update');
     Route::get('/pelanggan',[CustomerController::class, 'customerdata'])->name('pelanggan');
     Route::resource('/bank-account', BankController::class);
+
+    Route::get('/admin/allpayment', [ReportController::class, 'reportpayment'])->name('admin.allpayment');
+    Route::get('/admin/payment/detail/{id}', [ReportController::class, 'detailpayment'])->name('admin.payment.detail');
+    Route::post('/admin/payment/status/{id}', [ReportController::class, 'paymentstatus'])->name('admin.payment.status');
 });
 
 // untuk pegawai
@@ -92,6 +98,8 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::get('/barang-diterima/{id}',[CustomerController::class, 'barangditerima'])->name('barang.diterima');
     Route::get('/mypayment', [CustomerController::class, 'mypayment'])->name('mypayment');
     Route::get('/mypaymentdetail/{id}', [CustomerController::class, 'mypaymentdetail'])->name('mypayment.detail');
+    Route::get('/myreview', [CustomerController::class, 'myreview'])->name('myreview');
+    Route::get('/createmyreview/{id}', [CustomerController::class, 'createmyreview'])->name('createmyreview');
 
 });
 // Route::get('/', function () {

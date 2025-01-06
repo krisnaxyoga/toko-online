@@ -51,11 +51,15 @@
                                         @foreach ($orders as $item)
                                             <tr data-created-at="{{ $item->created_at }}">
                                                 <td>
-                                                    <button type="button" class="btn btn-primary btn-sm"
+                                                    <a class="btn btn-primary btn-sm"
+                                                        href="{{ route('detailpesananorder', ['id' => $item->id]) }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    {{-- <button type="button" class="btn btn-primary btn-sm"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#orderItemsModal{{ $item->id }}">
-                                                        <i class="bi bi-eye"></i>
-                                                    </button>
+
+                                                    </button> --}}
                                                 </td>
                                                 <td>{{ $item->invoice_number }}</td>
                                                 <td>{{ $item->user->name }}</td>
@@ -80,7 +84,7 @@
             </div>
         </div>
 
-        @foreach ($orders as $item)
+        {{-- @foreach ($orders as $item)
             <div class="modal fade" id="orderItemsModal{{ $item->id }}" tabindex="-1"
                 aria-labelledby="orderItemsModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -126,6 +130,6 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @endforeach --}}
     </section>
 @endsection

@@ -138,8 +138,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('pesanan') ? 'active' : 'collapsed' }}"
-                    href="{{ route('pesanan') }}">
+                <a class="nav-link {{ request()->routeIs('myreview') ? 'active' : 'collapsed' }}"
+                    href="{{ route('myreview') }}">
                     <i class="bi bi-file-earmark-text"></i>
                     <span>Review/Kritikan</span>
                 </a>
