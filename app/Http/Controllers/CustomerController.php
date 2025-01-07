@@ -155,4 +155,9 @@ class CustomerController extends Controller
         $data = Order::find($id);
         return view('customer.review.form', compact('data'));
     }
+
+    public function profile(){
+        $user = User::find(auth()->id());
+        return view('customer.profile.index', compact('user'));
+    }
 }

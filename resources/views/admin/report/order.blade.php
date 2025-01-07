@@ -47,6 +47,7 @@
                                             <th>shipping address</th>
                                             <th>notes</th>
                                             <th>date</th>
+                                            <th>total item</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -70,7 +71,9 @@
                                                 <td>{{ $item->shipping_courier }}</td>
                                                 <td>{{ $item->user_address->address }}</td>
                                                 <td>{{ $item->notes }}</td>
-                                                <td>{{ $item->created_at }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
+                                                </td>
+                                                <td>{{ $item->order_item->sum('quantity') }}</td>
                                             </tr>
                                         @endforeach
 
@@ -319,14 +322,91 @@
 
         // ... (fungsi export dan helper lainnya tetap sama)
 
-        function exportToExcel() {
-            const table = document.querySelector('.datatable');
-            const wb = XLSX.utils.table_to_book(table, {
-                sheet: "Orders"
+        function getFilterTitle() {
+            const filterType = document.getElementById('filterType').value;
+            let title = 'Orders Report';
+
+            switch (filterType) {
+                case 'daily':
+                    const date = new Date(document.getElementById('singleDate').value);
+                    title += ` - ${date.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+                    break;
+                case 'monthly':
+                    const monthValue = document.getElementById('monthPicker').value;
+                    const monthDate = new Date(monthValue + '-01');
+                    title += ` - ${monthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
+                    break;
+                case 'yearly':
+                    const year = document.getElementById('yearPicker').value;
+                    title += ` - ${year}`;
+                    break;
+                case 'weekly':
+                    const weekData = document.getElementById('weekPicker').value.split('-W');
+                    const weekDates = getWeekDates(weekData[0], weekData[1]);
+                    title += ` - Week ${weekData[1]}, ${weekData[0]}`;
+                    break;
+                case 'custom':
+                    const startDate = new Date(document.getElementById('startDate').value);
+                    const endDate = new Date(document.getElementById('endDate').value);
+                    title += ` (${startDate.toLocaleDateString('en-US')} - ${endDate.toLocaleDateString('en-US')})`;
+                    break;
+            }
+            return title;
+        }
+
+        function calculateGrandTotal() {
+            let grandTotal = 0;
+            const visibleRows = Array.from(document.querySelectorAll('.datatable tbody tr'))
+                .filter(row => row.style.display !== 'none');
+
+            visibleRows.forEach(row => {
+                const totalCell = row.querySelector('td:nth-child(7)'); // Column containing total
+                const totalText = totalCell.textContent.replace('Rp ', '').replace(/\./g, '');
+                grandTotal += parseInt(totalText);
             });
+            return grandTotal;
+        }
+
+        function exportToExcel() {
+            // Get visible rows
+            const visibleRows = Array.from(document.querySelectorAll('.datatable tbody tr'))
+                .filter(row => row.style.display !== 'none');
+
+            // Create new array with only required columns
+            const exportData = visibleRows.map(row => ({
+                'Customer': row.querySelector('td:nth-child(3)').textContent,
+                'Date': new Date(row.getAttribute('data-created-at')).toLocaleDateString('en-US'),
+                'Total Items': row.querySelector('td:nth-child(12)')
+                .textContent, // You might need to adjust this based on your actual data structure
+                'Total Price': row.querySelector('td:nth-child(7)').textContent
+            }));
+
+            // Add grand total row
+            const grandTotal = calculateGrandTotal();
+            exportData.push({
+                'Customer': '',
+                'Date': '',
+                'Total Items': 'Grand Total:',
+                'Total Price': `Rp ${grandTotal.toLocaleString('id-ID')}`
+            });
+
+            // Convert to worksheet
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            const wb = XLSX.utils.book_new();
+
+            // Add title to worksheet
+            XLSX.utils.sheet_add_aoa(ws, [
+                [getFilterTitle()]
+            ], {
+                origin: 'A1'
+            });
+
+            // Add worksheet to workbook
+            XLSX.utils.book_append_sheet(wb, ws, 'Orders');
+
+            // Generate filename and save
             const filterType = document.getElementById('filterType').value;
             const filename = `orders_${filterType}_${new Date().toISOString().split('T')[0]}.xlsx`;
-
             XLSX.writeFile(wb, filename);
         }
 
@@ -336,20 +416,46 @@
             } = window.jspdf;
             const doc = new jsPDF();
 
+            // Add title
+            const title = getFilterTitle();
+            doc.setFontSize(16);
+            doc.text(title, 14, 15);
+
+            // Prepare the data for selected columns only
+            const visibleRows = Array.from(document.querySelectorAll('.datatable tbody tr'))
+                .filter(row => row.style.display !== 'none');
+
+            const exportData = visibleRows.map(row => [
+                row.querySelector('td:nth-child(3)').textContent, // Customer
+                new Date(row.getAttribute('data-created-at')).toLocaleDateString('en-US'), // Date
+                row.querySelector('td:nth-child(12)').textContent, // Total Items (adjust as needed)
+                row.querySelector('td:nth-child(7)').textContent // Total Price
+            ]);
+
+            // Calculate grand total
+            const grandTotal = calculateGrandTotal();
+
+            // Add grand total row
+            exportData.push(['', '', 'Grand Total:', `Rp ${grandTotal.toLocaleString('id-ID')}`]);
+
+            // Generate table
             doc.autoTable({
-                html: '.datatable',
+                head: [
+                    ['Customer', 'Date', 'Total Items', 'Total Price']
+                ],
+                body: exportData,
+                startY: 25,
                 theme: 'grid',
                 headStyles: {
-                    fillColor: [41, 128, 185]
+                    fillColor: [41, 128, 185],
+                    textColor: [255, 255, 255]
                 },
-                margin: {
-                    top: 20
-                },
-                didDrawPage: function(data) {
-                    doc.text('Orders Report', 14, 15);
+                alternateRowStyles: {
+                    fillColor: [245, 245, 245]
                 }
             });
 
+            // Generate filename and save
             const filterType = document.getElementById('filterType').value;
             const filename = `orders_${filterType}_${new Date().toISOString().split('T')[0]}.pdf`;
             doc.save(filename);

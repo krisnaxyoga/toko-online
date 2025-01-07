@@ -33,6 +33,9 @@
                                                 #
                                             </th>
                                             <th>
+                                                image
+                                            </th>
+                                            <th>
                                                 Category
                                             </th>
                                             <th>
@@ -63,6 +66,11 @@
                                                             onclick="return confirm('Yakin ingin menghapus data?')"><i
                                                                 class="bx bxs-trash"></i></button>
                                                     </form>
+                                                </td>
+                                                <td>
+                                                    <img style="width: 100px"
+                                                        src="{{ url($item->images->where('is_primary', true)->first()->image_url) }}"
+                                                        alt="Product Image">
                                                 </td>
                                                 <td>{{ $item->category->name }}</td>
                                                 <td>{{ $item->name }}</td>

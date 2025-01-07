@@ -76,8 +76,110 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card m-2">
+
+
+                            <div class="card-body">
+                                <h5 class="card-title">Reports </h5>
+
+                                <!-- Line Chart -->
+                                <div id="reportsChart"></div>
+                                <?php
+                                $data = [];
+                                
+                                foreach ($orders as $order) {
+                                    $date = (new DateTime($order->created_at))->format('Y-m-d');
+                                    if (!isset($data[$date])) {
+                                        $data[$date] = [
+                                            'sales' => 0,
+                                            'customers' => 0,
+                                        ];
+                                    }
+                                    $data[$date]['sales'] += $order->grand_total;
+                                    $data[$date]['customers'] += 1;
+                                }
+                                
+                                $salesData = [];
+                                $customersData = [];
+                                $labels = array_keys($data);
+                                
+                                foreach ($labels as $date) {
+                                    $salesData[] = $data[$date]['sales'];
+                                    $customersData[] = $data[$date]['customers'];
+                                }
+                                
+                                // Now $salesData, $customersData, and $labels can be used to render the chart
+                                
+                                ?>
+
+                                <!-- End Line Chart -->
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+
+                            <div class="card-body pb-0">
+                                <h5 class="card-title">Revenue Diagram</span></h5>
+
+                                <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        echarts.init(document.querySelector("#trafficChart")).setOption({
+                                            tooltip: {
+                                                trigger: 'item'
+                                            },
+                                            legend: {
+                                                top: '5%',
+                                                left: 'center'
+                                            },
+                                            series: [{
+                                                name: 'Access From',
+                                                type: 'pie',
+                                                radius: ['40%', '70%'],
+                                                avoidLabelOverlap: false,
+                                                label: {
+                                                    show: false,
+                                                    position: 'center'
+                                                },
+                                                emphasis: {
+                                                    label: {
+                                                        show: true,
+                                                        fontSize: '18',
+                                                        fontWeight: 'bold'
+                                                    }
+                                                },
+                                                labelLine: {
+                                                    show: false
+                                                },
+                                                data: [
+                                                    @foreach ($data as $date => $item)
+                                                        {
+                                                            value: {{ $item['sales'] }},
+                                                            name: '{{ $date }}'
+                                                        },
+                                                    @endforeach
+                                                ]
+                                            }]
+                                        });
+                                    });
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End Reports -->
+
+            </div>
+            <div class="col-lg-12">
                 <div class="container">
-                    <h2>Data Categories</h2>
                     <div class="row">
                         <div class="col-lg-12">
                             @if (session()->has('success'))
@@ -126,11 +228,15 @@
                                                 @foreach ($orders as $item)
                                                     <tr data-created-at="{{ $item->created_at }}">
                                                         <td>
-                                                            <button type="button" class="btn btn-primary btn-sm"
+                                                            <a class="btn btn-primary btn-sm"
+                                                                href="{{ route('detailpesananorder', ['id' => $item->id]) }}">
+                                                                <i class="bi bi-eye"></i>
+                                                            </a>
+                                                            {{-- <button type="button" class="btn btn-primary btn-sm"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#orderItemsModal{{ $item->id }}">
                                                                 <i class="bi bi-eye"></i>
-                                                            </button>
+                                                            </button> --}}
                                                         </td>
                                                         <td>{{ $item->invoice_number }}</td>
                                                         <td>{{ $item->user->name }}</td>
@@ -226,3 +332,52 @@
         </form>
     </div>
 @endsection
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        new ApexCharts(document.querySelector("#reportsChart"), {
+            series: [{
+                name: 'Sales',
+                data: <?= json_encode($salesData) ?>,
+            }, {
+                name: 'Customers',
+                data: <?= json_encode($customersData) ?>,
+            }],
+            chart: {
+                height: 350,
+                type: 'area',
+                toolbar: {
+                    show: false
+                },
+            },
+            markers: {
+                size: 4
+            },
+            colors: ['#4154f1', '#2eca6a'],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.3,
+                    opacityTo: 0.4,
+                    stops: [0, 90, 100]
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: <?= json_encode($labels) ?>,
+            },
+            tooltip: {
+                x: {
+                    format: 'dd/MM/yy'
+                },
+            }
+        }).render();
+    });
+</script>
