@@ -100,7 +100,13 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::get('/mypaymentdetail/{id}', [CustomerController::class, 'mypaymentdetail'])->name('mypayment.detail');
     Route::get('/myreview', [CustomerController::class, 'myreview'])->name('myreview');
     Route::get('/createmyreview/{id}', [CustomerController::class, 'createmyreview'])->name('createmyreview');
+    Route::get('/customer-profile',[CustomerController::class,'profile'])->name('profile-customer');
+    Route::post('/customer-update',[CustomerController::class,'updateprofile'])->name('customer.update');
 
+    Route::post('/addaddressprofile',[CustomerController::class,'addaddress'])->name('addaddressprofile');
+    Route::post('/updateaddressprofile',[CustomerController::class,'updateaddress'])->name('updatedaddressprofile');
+    Route::delete('/deleteaddressprofile',[CustomerController::class,'deleteaddress'])->name('deleteaddressprofile');
+    Route::get('/activeinactive/{id}',[CustomerController::class,'activeinactive'])->name('activeinactive');
 });
 // Route::get('/', function () {
 //     return view('welcome');

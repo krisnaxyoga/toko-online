@@ -145,7 +145,13 @@
                 </a>
             </li>
 
-
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('profile-customer') ? 'active' : 'collapsed' }}"
+                    href="{{ route('profile-customer') }}">
+                    <i class="bi bi-person"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
             <!-- End Forms Nav -->
             {{-- <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('supplier.index') ? 'active' : 'collapsed' }}"

@@ -160,4 +160,77 @@ class CustomerController extends Controller
         $user = User::find(auth()->id());
         return view('customer.profile.index', compact('user'));
     }
+
+    public function updateprofile(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $imageName = null;
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/user'), $filename);
+
+            $imageName = '/images/user/' . $filename;
+        }
+
+
+        $user = User::find(auth()->id());
+        $user->image = $imageName ?? $user->image;
+        $user->name  = $request->name;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        if($request->password){
+            $user->password = Hash::make($request->password);
+        }
+        $user->save();
+
+
+        return redirect()->route('profile-customer')->with('success', 'Profile updated successfully');
+    }
+
+    public function addaddress(Request $request){
+        $request->validate([
+            'address' => 'required|string',
+        ]);
+
+        $useraddress = new User_address();
+        $useraddress->user_id = auth()->id();
+        $useraddress->province_id = $request->origin_province;
+        $useraddress->city_id = $request->origin_city;
+        $useraddress->address = $request->address;
+        $useraddress->is_primary = false;
+        $useraddress->save();
+
+        return redirect()->back()->with('success', 'Address added successfully');
+    }
+
+    public function updateaddress(Request $request){
+        $request->validate([
+            'address' => 'required|string',
+        ]);
+
+        $useraddress = User_address::find($request->id);
+        $useraddress->province_id = $request->origin_province;
+        $useraddress->city_id = $request->origin_city;
+        $useraddress->address = $request->address;
+        $useraddress->save();
+        return redirect()->back()->with('success', 'Address updated successfully');
+    }
+
+    public function deleteaddress(Request $request, $id){
+        $useraddress = User_address::find($id);
+        $useraddress->delete();
+        return redirect()->back()->with('success', 'Address deleted successfully');
+    }
+
+    public function activeinactive($id){
+        $addresses = User_address::where('user_id', auth()->id())->get();
+        foreach ($addresses as $address) {
+            $address->is_primary = $address->id == $id;
+            $address->save();
+        }
+        return redirect()->back()->with('success', 'Address updated successfully');
+    }
 }

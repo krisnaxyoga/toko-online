@@ -68,7 +68,7 @@
                                         </tr>
                                         @if ($order->status == 'Diterima')
                                             <tr>
-                                                <td colspan="6">
+                                                <td colspan="7">
                                                     <form action="{{ route('submit-review') }}" method="post">
                                                         @csrf
                                                         <input type="text" name="order_id" value="{{ $order->id }}"
@@ -137,13 +137,38 @@
                         <div class="card-body">
                             @if ($order->status == 'Diterima')
                                 <div class="col-lg-12">
-                                    <div class="badge badge-info">Barang Sudah Diterima</div>
+                                    <div class="badge bg-info">Barang Sudah Diterima</div>
                                 </div>
                             @else
                                 <div class="col-lg-12">
                                     <p>Barang Dalam pengiriman</p>
-                                    <a href="{{ route('barang.diterima', ['id' => $order->id]) }}"
-                                        class="btn btn-success">Pesanan diterima</a>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#confirmReceivedModal">
+                                        Pesanan diterima
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="confirmReceivedModal" tabindex="-1"
+                                        aria-labelledby="confirmReceivedModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmReceivedModalLabel">Konfirmasi</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah anda yakin barang sudah diterima?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-dismiss="modal">back</button>
+                                                    <a href="{{ route('barang.diterima', ['id' => $order->id]) }}"
+                                                        class="btn btn-success">sudah</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
                         </div>
