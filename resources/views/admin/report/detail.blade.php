@@ -36,39 +36,41 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <form action="{{ route('detailpesananorder-update', ['id' => $order->id]) }}"
-                                    method="POST">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <label for="">Status</label>
-                                            <select name="status" id="status" class="form-control"
-                                                onchange="showResiInput(this)">
-                                                <option value="sedang di proses">Sedang Di Proses</option>
-                                                <option value="dalam pengiriman">Dalam Pengiriman</option>
-                                            </select>
-                                            <div id="resi-input" style="display: none;">
-                                                <div class="form-group mt-3">
-                                                    <label for="resi" class="mb-1">Resi</label>
-                                                    <input type="text" class="form-control" id="resi"
-                                                        name="resi">
+                                @if ($order->status != 'Dibatalkan')
+                                    <form action="{{ route('detailpesananorder-update', ['id' => $order->id]) }}"
+                                        method="POST">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <label for="">Status</label>
+                                                <select name="status" id="status" class="form-control"
+                                                    onchange="showResiInput(this)">
+                                                    <option value="sedang di proses">Sedang Di Proses</option>
+                                                    <option value="dalam pengiriman">Dalam Pengiriman</option>
+                                                </select>
+                                                <div id="resi-input" style="display: none;">
+                                                    <div class="form-group mt-3">
+                                                        <label for="resi" class="mb-1">Resi</label>
+                                                        <input type="text" class="form-control" id="resi"
+                                                            name="resi">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <script>
-                                                function showResiInput(e) {
-                                                    if (e.value === 'dalam pengiriman') {
-                                                        document.getElementById('resi-input').style.display = 'block';
-                                                    } else {
-                                                        document.getElementById('resi-input').style.display = 'none';
+                                                <script>
+                                                    function showResiInput(e) {
+                                                        if (e.value === 'dalam pengiriman') {
+                                                            document.getElementById('resi-input').style.display = 'block';
+                                                        } else {
+                                                            document.getElementById('resi-input').style.display = 'none';
+                                                        }
                                                     }
-                                                }
-                                            </script>
+                                                </script>
+                                            </div>
+                                            <div class="col-4">
+                                                <button type="submit" class="btn btn-primary my-4">Send</button>
+                                            </div>
                                         </div>
-                                        <div class="col-4">
-                                            <button type="submit" class="btn btn-primary my-4">Send</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -125,8 +127,12 @@
                             <h3>Cek Pembayaran</h3>
                         </div> --}}
                         <div class="card-body my-4">
-                            <a href="{{ route('admin.payment.detail', $order->id) }}" class="btn btn-success">Cek
-                                Pembayan</a>
+                            @if ($order->status != 'Dibatalkan')
+                                <a href="{{ route('admin.payment.detail', $order->id) }}" class="btn btn-success">Cek
+                                    Pembayan</a>
+                            @else
+                                <span class="badge bg-danger">Transaksi Dibatalkan</span>
+                            @endif
                             {{-- @if ($order->status == 'Diterima')
                                 <div class="col-lg-12">
                                     <div class="badge badge-info">Barang Sudah Diterima</div>

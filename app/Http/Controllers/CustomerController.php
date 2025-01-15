@@ -22,7 +22,7 @@ class CustomerController extends Controller
     public function index()
     {
         $bank = BankAccount::where('status', 'active')->get();
-        $orders = Order::with('order_item', 'payment', 'user_address','review')->where('user_id', auth()->id())->get();
+        $orders = Order::with('order_item', 'payment', 'user_address','review')->where('user_id', auth()->id())->latest()->get();
         // dd($orders);
         return view('customer.index', compact('orders','bank'));
     }
@@ -118,8 +118,9 @@ class CustomerController extends Controller
     }
     public function showorder(string $id)
     {
+        $bank = BankAccount::where('status', 'active')->get();
         $order = Order::with('order_item', 'payment', 'user_address')->find($id);
-        return view('customer.myorder.detail', compact('order'));
+        return view('customer.myorder.detail', compact('order','bank'));
     }
 
     /**
@@ -129,7 +130,7 @@ class CustomerController extends Controller
     {
         $data = Payment::whereHas('order', function($query){
             $query->where('user_id', auth()->id());
-        })->get();
+        })->latest()->get();
         return view('customer.mypayment.index', compact('data'));
     }
 
@@ -147,7 +148,7 @@ class CustomerController extends Controller
      */
     public function myreview()
     {
-        $data = Order::where('user_id', auth()->id())->with('review')->get();
+        $data = Order::where('user_id', auth()->id())->with('review')->latest()->get();
         return view('customer.review.index', compact('data'));
     }
     public function createmyreview($id)

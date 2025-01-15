@@ -16,7 +16,7 @@ class ProductVariant extends Controller
     public function index($id)
     {
         $product = Product::find($id);
-        $productvariants = Product_variant::where('product_id',$id)->get();
+        $productvariants = Product_variant::where('product_id',$id)->latest()->get();
         $images_primary = Product_image::where('product_id',$id)->where('is_primary',1)->first();
         return view('admin.product_variant.index',compact('productvariants','product','images_primary'));
     }

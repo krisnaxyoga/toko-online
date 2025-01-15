@@ -10,13 +10,13 @@ class ReportController extends Controller
 {
     public function report()
     {
-        $orders = Order::with('order_item', 'payment', 'user_address')->where('status', ['Diterima','Pengiriman','Pembayaran Diterima'])->get();
+        $orders = Order::with('order_item', 'payment', 'user_address')->where('status', ['Diterima','Pengiriman','Pembayaran Diterima'])->latest()->get();
         return view('admin.report.order', compact('orders'));
     }
 
     public function pesanan()
     {
-        $orders = Order::with('order_item', 'payment', 'user_address')->get();
+        $orders = Order::with('order_item', 'payment', 'user_address')->latest()->get();
         return view('admin.report.pesanan', compact('orders'));
     }
 

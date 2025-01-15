@@ -26,7 +26,7 @@
                                     <p>: {{ $data->invoice_number }}</p>
                                     <p>: {{ \Carbon\Carbon::parse($data->payment->created_at)->translatedFormat('l d F Y') }}
                                     </p>
-                                    <p>: {{ $data->status }}</p>
+                                    <p>: {{ $data->payment->status }}</p>
                                     <p>: {{ $data->grand_total }}</p>
                                 </div>
                             </div>
@@ -35,14 +35,34 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-head m-4">
-                            <h3>Payment Proof</h3>
+                    @if ($data->payment->status == 'Pembayaran Gagal')
+                        <div class="card">
+                            <div class="card-body m-3">
+                                <form action="{{ route('upload-bukti-gagal') }}" method="post"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="order_id" value="{{ $data->id }}">
+                                    <div class="form-group">
+                                        <label for="bukti_transfer">Upload Bukti Transfer lagi dikarenakan pembayaran
+                                            gagal</label>
+                                        <input type="file" class="form-control mb-2" id="bukti_transfer"
+                                            name="bukti_transfer">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                </form>
+                            </div>
+
                         </div>
-                        <div class="card-body">
-                            <img src="{{ url($data->payment->image) }}" alt="" style="width: 100%">
+                    @else
+                        <div class="card">
+                            <div class="card-head m-4">
+                                <h3>Payment Proof</h3>
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ url($data->payment->image) }}" alt="" style="width: 100%">
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductVariant;
 use App\Http\Controllers\AdminController;
@@ -74,6 +75,8 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::get('/admin/allpayment', [ReportController::class, 'reportpayment'])->name('admin.allpayment');
     Route::get('/admin/payment/detail/{id}', [ReportController::class, 'detailpayment'])->name('admin.payment.detail');
     Route::post('/admin/payment/status/{id}', [ReportController::class, 'paymentstatus'])->name('admin.payment.status');
+
+    Route::resource('/news', NewsController::class);
 });
 
 // untuk pegawai
@@ -89,6 +92,7 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::get('/myorder', [CustomerController::class, 'myorder'])->name('myorder');
     Route::get('/order-detail/{id}', [CustomerController::class, 'showorder'])->name('order-detail');
     Route::post('/upload-bukti', [CartController::class, 'uploadBukti'])->name('upload-bukti');
+    Route::post('/uploadbuktigagal',[CartController::class, 'uploadBuktigagal'])->name('upload-bukti-gagal');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::get('/wishlist/store/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist/destroy/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
@@ -107,6 +111,9 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::post('/updateaddressprofile',[CustomerController::class,'updateaddress'])->name('updatedaddressprofile');
     Route::delete('/deleteaddressprofile',[CustomerController::class,'deleteaddress'])->name('deleteaddressprofile');
     Route::get('/activeinactive/{id}',[CustomerController::class,'activeinactive'])->name('activeinactive');
+
+
+    Route::get('/batalkanorder/cancel/{id}', [ReportController::class, 'cancel'])->name('cust.order.cancel');
 });
 // Route::get('/', function () {
 //     return view('welcome');
@@ -119,6 +126,8 @@ Route::get('/contact', [FrontEndController::class, 'contact'])->name('front.cont
 Route::get('/frony/gallery', [FrontEndController::class, 'gallery'])->name('front.gallery');
 Route::get('/category-product', [FrontEndController::class, 'categoryproduct'])->name('front.category.product');
 Route::get('/detailproduct/{id}', [FrontEndController::class, 'productDetail'])->name('front.detailproduct');
+Route::get('/pagedetail/{id}',[NewsController::class, 'show'])->name('front.pagedetail');
+Route::get('/berita',[NewsController::class, 'frontpage'])->name('front.berita');
 
 
 Route::get('provinces', [CheckOngkirController::class, 'province'])->name('provinces');

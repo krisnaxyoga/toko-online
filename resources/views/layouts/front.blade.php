@@ -85,7 +85,9 @@
                             <li class="{{ request()->routeIs('front.gallery') ? 'active-menu' : '' }}">
                                 <a href="{{ route('front.gallery') }}">Gallery</a>
                             </li>
-
+                            <li class="{{ request()->routeIs('front.berita') ? 'active-menu' : '' }}">
+                                <a href="{{ route('front.berita') }}">News</a>
+                            </li>
 
                             <li class="{{ request()->routeIs('front.about') ? 'active-menu' : '' }}">
                                 <a href="{{ route('front.about') }}">About</a>
@@ -176,7 +178,9 @@
                     <a href="{{ route('front.shop') }}">Belanja</a>
                 </li>
 
-
+                <li>
+                    <a href="{{ route('front.berita') }}">News</a>
+                </li>
 
                 <li>
                     <a href="{{ route('front.about') }}">About</a>

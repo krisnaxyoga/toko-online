@@ -73,7 +73,8 @@
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
 
-                        <span class="d-none d-md-block dropdown-toggle ps-2">{{ auth()->user()->name }}</span>
+                        <span
+                            class="d-none d-md-block dropdown-toggle ps-2 text-light">{{ auth()->user()->name }}</span>
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -154,6 +155,13 @@
                     href="{{ route('pageabout.index') }}">
                     <i class="bi bi-info-circle"></i>
                     <span>About</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('news.index') ? 'active' : 'collapsed' }}"
+                    href="{{ route('news.index') }}">
+                    <i class="bi bi-newspaper"></i>
+                    <span>News</span>
                 </a>
             </li>
 

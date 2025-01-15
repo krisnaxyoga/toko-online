@@ -37,17 +37,18 @@
                                 <div class="row mb-3">
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="province">Province</label>
+                                            <label for="province">Province <span class="text-danger">*</span></label>
                                             <select name="origin_province" id="origin_province"
-                                                class="form-select form-control">
+                                                class="form-select form-control" required>
                                                 <option>Choose Province</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="city">City</label>
-                                            <select name="origin_city" id="origin_city" class="form-select form-control">
+                                            <label for="city">City <span class="text-danger">*</span></label>
+                                            <select name="origin_city" id="origin_city" class="form-select form-control"
+                                                required>
                                                 <option>Choose City</option>
                                             </select>
 
@@ -57,7 +58,7 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label for="address">Address</label>
+                                            <label for="address">Address <span class="text-danger">*</span></label>
                                             <textarea name="address" id="" class="form-control"></textarea>
 
 

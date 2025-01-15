@@ -3,7 +3,7 @@
 @section('contents')
     <section>
         <div class="container">
-            <h2>Data About</h2>
+            <h2>Data Berita</h2>
             <div class="row">
                 <div class="col-lg-12">
                     @if (session()->has('success'))
@@ -21,7 +21,7 @@
                     @endif
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Data Categories</h5>
+                            <h5 class="card-title">Data Berita</h5>
                             <a href="{{ route('gallery.create') }}" class="btn btn-success">add</a>
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">

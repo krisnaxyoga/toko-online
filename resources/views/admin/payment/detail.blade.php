@@ -27,7 +27,7 @@
                                         <p>: {{ $data->invoice_number }}</p>
                                         <p>: {{ $data->payment ? \Carbon\Carbon::parse($data->payment->created_at)->translatedFormat('l d F Y') : 'N/A' }}
                                         </p>
-                                        <p>: {{ $data->status }}</p>
+                                        <p>: {{ $data->payment->status }}</p>
                                         <p>: {{ $data->grand_total }}</p>
                                     </div>
                                 </div>
@@ -54,8 +54,9 @@
                                                     <option value="Pembayaran Diterima"
                                                         {{ $data->status == 'Pembayaran Diterima' ? 'selected' : '' }}>
                                                         Pembayaran Berhasil</option>
-                                                    <option value="Dibatalkan"
-                                                        {{ $data->status == 'Dibatalkan' ? 'selected' : '' }}>Pembayaran
+                                                    <option value="Pembayaran Gagal"
+                                                        {{ $data->status == 'Pembayaran Gagal' ? 'selected' : '' }}>
+                                                        Pembayaran
                                                         Gagal
                                                     </option>
                                                 </select>

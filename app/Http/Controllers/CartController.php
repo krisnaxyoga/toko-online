@@ -260,4 +260,31 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Bukti transfer has been uploaded successfully.');
     }
+
+    public function uploadBuktigagal(Request $request) {
+        $request->validate([
+            'order_id' => 'required',
+            'bukti_transfer' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $order = Order::find($request->order_id);
+        $image = $request->file('bukti_transfer');
+        $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('images/bukti'), $filename);
+
+        $imageName = '/images/bukti/' . $filename;
+
+        $order->payment_proof = $imageName;
+        $order->status = 'Menunggu Konfirmasi';
+        $order->save();
+
+        $payments = Payment::where('order_id', $order->id)->first();
+        $payments->order_id = $order->id;
+        $payments->image = $imageName;
+        $payments->status = 'Menunggu Konfirmasi';
+        $payments->save();
+
+
+        return redirect()->back()->with('success', 'Bukti transfer has been uploaded successfully.');
+    }
 }

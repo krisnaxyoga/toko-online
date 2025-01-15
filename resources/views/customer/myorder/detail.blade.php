@@ -21,6 +21,7 @@
                                     <p>Shipping Address</p>
                                     <p>Notes</p>
                                     <p>Status</p>
+                                    <p>Resi</p>
                                 </div>
                                 <div class="col-md-6">
                                     <p>: {{ $order->invoice_number }}</p>
@@ -32,6 +33,12 @@
                                     <p>: {{ $order->user_address->address ?? 'N/A' }}</p>
                                     <p>: {{ $order->notes }}</p>
                                     <p>: {{ $order->status }}</p>
+                                    <p>: {{ $order->shipping_tracking_number }} @if ($order->shipping_tracking_number)
+                                            <a href="https://cekresi.com/" target="_blank" class="btn btn-primary">Cek
+                                                Resi</a>
+                                        @endif
+                                    </p>
+
                                 </div>
                             </div>
                         </div>
@@ -141,11 +148,81 @@
                                 </div>
                             @else
                                 <div class="col-lg-12">
-                                    <p>Barang Dalam pengiriman</p>
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#confirmReceivedModal">
-                                        Pesanan diterima
-                                    </button>
+                                    <p>{{ $order->status }}</p>
+                                    @if ($order->status == 'Belum Dibayar')
+                                        <div class="card mt-3 mb-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Nomor Rekening</h5>
+                                                <p class="card-text">Silahkan transfer ke nomor rekening berikut:</p>
+                                                @foreach ($bank as $bankDetail)
+                                                    <hr>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <strong class="mr-2">{{ $bankDetail->bank_name }}</strong>
+                                                        <span
+                                                            id="rekening-{{ $loop->index }}">{{ $bankDetail->account_number }}</span>
+                                                        <button onclick="copyToClipboard('rekening-{{ $loop->index }}')"
+                                                            class="btn btn-sm btn-outline-primary ml-2">
+                                                            <i class="fas fa-copy"></i> Salin
+                                                        </button>
+                                                    </div>
+                                                    <p class="card-text">
+                                                        Atas Nama <strong>{{ $bankDetail->account_name }}</strong>
+                                                    </p>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <form action="{{ route('upload-bukti') }}" method="post"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                            <div class="form-group">
+                                                <label for="bukti_transfer">Upload Bukti Transfer</label>
+                                                <input type="file" class="form-control mb-2" id="bukti_transfer"
+                                                    name="bukti_transfer">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Upload</button>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#cancelOrderModal">
+                                                Batalkan transaksi
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="cancelOrderModal" tabindex="-1"
+                                                aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="cancelOrderModalLabel">Konfirmasi
+                                                                Pembatalan</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Anda yakin ingin membatalkan transaksi ini?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Batal</button>
+                                                            <a href="{{ route('cust.order.cancel', $order->id) }}"
+                                                                class="btn btn-danger">Ya, Batalkan</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    @endif
+
+                                    @if ($order->status == 'Pembayaran Gagal')
+                                        <a href="{{ route('mypayment.detail', $order->id) }}"
+                                            class="btn btn-warning">Detail payment</a>
+                                    @endif
+
+                                    @if ($order->status == 'dalam pengiriman')
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#confirmReceivedModal">
+                                            Pesanan diterima
+                                        </button>
+                                    @endif
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="confirmReceivedModal" tabindex="-1"
@@ -153,7 +230,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="confirmReceivedModalLabel">Konfirmasi</h5>
+                                                    <h5 class="modal-title" id="confirmReceivedModalLabel">Konfirmasi
+                                                    </h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
