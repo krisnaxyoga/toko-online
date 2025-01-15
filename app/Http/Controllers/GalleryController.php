@@ -82,7 +82,7 @@ class GalleryController extends Controller
 
             $gallery->image = '/images/gallery/' . $filename;
         }
-
+        $gallery->title = $request->title;
         $gallery->save();
 
         return redirect()->route('gallery.index')->with('success', 'Gallery updated successfully.');
