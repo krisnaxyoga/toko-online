@@ -236,17 +236,17 @@
             addCreatedAtDataAttribute();
         });
 
-        function addCreatedAtDataAttribute() {
-            const rows = document.querySelectorAll('.datatable tbody tr');
-            rows.forEach(row => {
-                // Get the created_at value from blade and add it as a data attribute
-                const createdAt = row.getAttribute('data-created-at');
-                console.log(createdAt);
-                if (createdAt) {
-                    row.dataset.date = new Date(createdAt).toISOString().split('T')[0];
-                }
-            });
-        }
+        // function addCreatedAtDataAttribute() {
+        //     const rows = document.querySelectorAll('.datatable tbody tr');
+        //     rows.forEach(row => {
+        //         // Get the created_at value from blade and add it as a data attribute
+        //         const createdAt = row.getAttribute('data-created-at');
+        //         console.log(createdAt);
+        //         if (createdAt) {
+        //             row.dataset.date = new Date(createdAt).toISOString().split('T')[0];
+        //         }
+        //     });
+        // }
 
         function generateYearOptions() {
             const currentYear = new Date().getFullYear();
@@ -297,18 +297,54 @@
             filterTableRows(startDate, endDate);
         }
 
+        // function filterTableRows(startDate, endDate) {
+        //     const rows = document.querySelectorAll('.datatable tbody tr');
+        //     const start = new Date(startDate);
+        //     const end = new Date(endDate);
+        //     end.setHours(23, 59, 59, 999); // Include the entire end date
+
+        //     rows.forEach(row => {
+        //         const rowDate = new Date(row.dataset.date);
+        //         if (rowDate >= start && rowDate <= end) {
+        //             row.style.display = '';
+        //         } else {
+        //             row.style.display = 'none';
+        //         }
+        //     });
+        // }
+
         function filterTableRows(startDate, endDate) {
             const rows = document.querySelectorAll('.datatable tbody tr');
+
+            // Set start date to beginning of day (00:00:00.000)
             const start = new Date(startDate);
+            start.setHours(0, 0, 0, 0);
+
+            // Set end date to end of day (23:59:59.999)
             const end = new Date(endDate);
-            end.setHours(23, 59, 59, 999); // Include the entire end date
+            end.setHours(23, 59, 59, 999);
 
             rows.forEach(row => {
                 const rowDate = new Date(row.dataset.date);
+                // Set row date to start of day for consistent comparison
+                rowDate.setHours(0, 0, 0, 0);
+
                 if (rowDate >= start && rowDate <= end) {
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
+                }
+            });
+        }
+
+        // Also update how we store the date attribute
+        function addCreatedAtDataAttribute() {
+            const rows = document.querySelectorAll('.datatable tbody tr');
+            rows.forEach(row => {
+                const createdAt = row.getAttribute('data-created-at');
+                if (createdAt) {
+                    // Store full ISO date string to preserve timezone information
+                    row.dataset.date = new Date(createdAt).toISOString();
                 }
             });
         }
@@ -377,7 +413,7 @@
                 'Customer': row.querySelector('td:nth-child(3)').textContent,
                 'Date': new Date(row.getAttribute('data-created-at')).toLocaleDateString('en-US'),
                 'Total Items': row.querySelector('td:nth-child(12)')
-                .textContent, // You might need to adjust this based on your actual data structure
+                    .textContent, // You might need to adjust this based on your actual data structure
                 'Total Price': row.querySelector('td:nth-child(7)').textContent
             }));
 
