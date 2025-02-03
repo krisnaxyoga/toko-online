@@ -56,7 +56,20 @@
                         </div> --}}
                         <div class="col-md-6">
                             <label for="inputImage1" class="form-label">Image 1</label>
-                            <input type="file" class="form-control" id="inputImage1" name="image1">
+                            <input type="file" class="form-control" id="inputImage1" name="image1"
+                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)">
+                            <script>
+                                function validateFile(input) {
+                                    const file = input.files[0];
+                                    if (file) {
+                                        const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+                                        if (!validExtensions.includes(file.type)) {
+                                            alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                                            input.value = '';
+                                        }
+                                    }
+                                }
+                            </script>
                             @if ($model->image1)
                                 <img src="{{ url($model->image1) }}" alt="{{ url($model->image1) }}"
                                     style="width: 200px;height:200px" class="mt-2">
@@ -64,7 +77,8 @@
                         </div>
                         <div class="col-md-6">
                             <label for="inputImage2" class="form-label">Image 2</label>
-                            <input type="file" class="form-control" id="inputImage2" name="image2">
+                            <input type="file" class="form-control" id="inputImage2" name="image2"
+                                accept=".jpg, .jpeg, .png, .JPG">
                             @if ($model->image2)
                                 <img src="{{ url($model->image2) }}" alt="{{ url($model->image2) }}"
                                     style="width: 200px;height:200px" class="mt-2">

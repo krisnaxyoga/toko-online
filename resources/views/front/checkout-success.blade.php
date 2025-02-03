@@ -95,17 +95,33 @@
                             @endforeach
                         </div>
                     </div>
-                    @if ($order->status != 'Pembayaran Diterima' && $order->status != 'Pengiriman' && $order->status != 'Diterima')
-                        <form action="{{ route('upload-bukti') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" name="order_id" value="{{ $order->id }}">
-                            <div class="form-group">
-                                <label for="bukti_transfer">Upload Bukti Transfer</label>
-                                <input type="file" class="form-control" id="bukti_transfer" name="bukti_transfer">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                        </form>
+                    @if (!$order->payment)
+                        @if ($order->status != 'Pembayaran Diterima' && $order->status != 'Pengiriman' && $order->status != 'Diterima')
+                            <form action="{{ route('upload-bukti') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                <div class="form-group">
+                                    <label for="bukti_transfer">Upload Bukti Transfer</label>
+                                    <input type="file" class="form-control" id="bukti_transfer" name="bukti_transfer"
+                                        accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)">
+                                    <script>
+                                        function validateFile(input) {
+                                            const file = input.files[0];
+                                            if (file) {
+                                                const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+                                                if (!validExtensions.includes(file.type)) {
+                                                    alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                                                    input.value = '';
+                                                }
+                                            }
+                                        }
+                                    </script>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Upload</button>
+                            </form>
+                        @endif
                     @endif
+
                 </div>
             </div>
         </div>

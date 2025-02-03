@@ -36,7 +36,7 @@
                                     class="mb-3">
                             @endif
                             <label for="inputEmail5" class="form-label">image</label>
-                            <input type="file" class="form-control" name="image">
+                            <input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .JPG">
                         </div>
                         <div class="text-center">
                             <button type="submit"

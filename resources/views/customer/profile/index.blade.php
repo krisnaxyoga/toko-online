@@ -32,7 +32,7 @@
             <div class="card">
                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
                     @if ($user->image)
-                        <img src="{{ url($user->image) }}" alt="Profile" class="rounded-circle" style="width: 300px">
+                        <img src="{{ url($user->image) }}" alt="Profile" class="rounded-circle" style="width: 189px">
                     @endif
                     <h2>{{ $user->name }}</h2>
 
@@ -88,11 +88,10 @@
                             <form action="{{ route('customer.update') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row mb-3">
-                                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">logo
-                                        store</label>
+                                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label"> foto profile</label>
                                     <div class="col-md-8 col-lg-9">
                                         @if ($user->image)
-                                            <img src="{{ url($user->image) }}" alt="Profile" style="width: 100px">
+                                            <img src="{{ url($user->image) }}" alt="Profile" style="width: 189px">
                                         @endif
                                         <div class="pt-2">
                                             <input type="file" class="form-control" id="profileImage" name="image">
@@ -201,7 +200,7 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this slider?')">Delete</button>
+                                                            onclick="return confirm('Are you sure you want to delete this address?')">Delete</button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -234,7 +233,7 @@
                                 <label for="province" class="col-sm-2 col-form-label">Province</label>
                                 <div class="col-sm-10">
                                     <select name="origin_province" id="origin_province"
-                                        class="origin_province form-select form-control">
+                                        class="origin_province form-select form-control" style="width: 100%">
                                         <option>Choose Province</option>
                                     </select>
                                 </div>
@@ -243,7 +242,7 @@
                                 <label for="city" class="col-sm-2 col-form-label">City</label>
                                 <div class="col-sm-10">
                                     <select name="origin_city" id="origin_city"
-                                        class="origin_city form-select form-control">
+                                        class="origin_city form-select form-control" style="width: 100%">
                                         <option>Choose City</option>
                                     </select>
                                 </div>

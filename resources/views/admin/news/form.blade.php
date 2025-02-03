@@ -32,7 +32,20 @@
                         </div>
                         <div class="col-md-6">
                             <label for="inputImage1" class="form-label">Image </label>
-                            <input type="file" class="form-control" id="inputImage1" name="image1">
+                            <input type="file" class="form-control" id="inputImage1" name="image1"
+                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)">
+                            <script>
+                                function validateFile(input) {
+                                    const file = input.files[0];
+                                    if (file) {
+                                        const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+                                        if (!validExtensions.includes(file.type)) {
+                                            alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                                            input.value = '';
+                                        }
+                                    }
+                                }
+                            </script>
                             @if ($model->image1)
                                 <img src="{{ url($model->image1) }}" alt="{{ url($model->image1) }}"
                                     style="width: 200px;height:200px" class="mt-2">

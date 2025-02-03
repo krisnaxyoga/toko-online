@@ -54,7 +54,7 @@
                                         <th>#</th>
                                         <th>Image</th>
                                         <th>Product</th>
-                                        <th>Product Variant ID</th>
+                                        {{-- <th>Product Variant ID</th> --}}
                                         <th>Quantity</th>
                                         <th>Price</th>
                                         <th>Subtotal</th>
@@ -68,7 +68,7 @@
                                                     src="{{ url($orderItem->product->images->where('is_primary', true)->first()->image_url) }}"
                                                     alt="Product Image"></td>
                                             <td>{{ $orderItem->product->name }}</td>
-                                            <td>{{ $orderItem->product_variant->name ?? 'N/A' }}</td>
+                                            {{-- <td>{{ $orderItem->product_variant->name ?? 'N/A' }}</td> --}}
                                             <td>{{ $orderItem->quantity }}</td>
                                             <td>Rp {{ number_format($orderItem->price, 0, ',', '.') }}</td>
                                             <td>Rp {{ number_format($orderItem->subtotal, 0, ',', '.') }}</td>

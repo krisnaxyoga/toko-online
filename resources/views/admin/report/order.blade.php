@@ -110,7 +110,7 @@
                                     <tr>
                                         <th>Order ID</th>
                                         <th>Product ID</th>
-                                        <th>Product Variant ID</th>
+                                        {{-- <th>Product Variant ID</th> --}}
                                         <th>Quantity</th>
                                         <th>Price</th>
                                         <th>Subtotal</th>
@@ -121,7 +121,7 @@
                                         <tr>
                                             <td>{{ $orderItem->order_id }}</td>
                                             <td>{{ $orderItem->product_id }}</td>
-                                            <td>{{ $orderItem->product_variant_id ?? 'N/A' }}</td>
+                                            {{-- <td>{{ $orderItem->product_variant_id ?? 'N/A' }}</td> --}}
                                             <td>{{ $orderItem->quantity }}</td>
                                             <td>Rp {{ number_format($orderItem->price, 0, ',', '.') }}</td>
                                             <td>Rp {{ number_format($orderItem->subtotal, 0, ',', '.') }}</td>

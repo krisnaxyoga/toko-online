@@ -54,9 +54,9 @@
                                                 <td> <a href="{{ route('product.edit', ['product' => $item->id]) }}"
                                                         class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
                                                             class="bx bxs-edit"></i></a>
-                                                    <a href="{{ route('productvariant.creatus.index', ['id' => $item->id]) }}"
+                                                    {{-- <a href="{{ route('productvariant.creatus.index', ['id' => $item->id]) }}"
                                                         class="btn btn-datatable btn-icon btn-transparent-dark mr-2"><i
-                                                            class="bx bxs-show"></i></a>
+                                                            class="bx bxs-show"></i></a> --}}
                                                     <form action="{{ route('product.destroy', $item->id) }}" method="post"
                                                         class="d-inline">
                                                         @csrf

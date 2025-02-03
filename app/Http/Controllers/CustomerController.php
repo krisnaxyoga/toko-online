@@ -220,7 +220,7 @@ class CustomerController extends Controller
         return redirect()->back()->with('success', 'Address updated successfully');
     }
 
-    public function deleteaddress(Request $request, $id){
+    public function deleteaddress($id){
         $useraddress = User_address::find($id);
         $useraddress->delete();
         return redirect()->back()->with('success', 'Address deleted successfully');

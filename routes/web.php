@@ -109,7 +109,7 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
 
     Route::post('/addaddressprofile',[CustomerController::class,'addaddress'])->name('addaddressprofile');
     Route::post('/updateaddressprofile',[CustomerController::class,'updateaddress'])->name('updatedaddressprofile');
-    Route::delete('/deleteaddressprofile',[CustomerController::class,'deleteaddress'])->name('deleteaddressprofile');
+    Route::delete('/deleteaddressprofile/{id}',[CustomerController::class,'deleteaddress'])->name('deleteaddressprofile');
     Route::get('/activeinactive/{id}',[CustomerController::class,'activeinactive'])->name('activeinactive');
 
 
