@@ -156,7 +156,7 @@
                                                     <p class="mb-4">{{ $value->description }}</p>
 
                                                     <!-- Size Selection -->
-                                                    <div class="mb-3">
+                                                    {{-- <div class="mb-3">
                                                         <label class="form-label">Product variant</label>
                                                         <select class="form-select" name="variant"
                                                             id="variant{{ $value->id }}"
@@ -169,7 +169,7 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                    </div>
+                                                    </div> --}}
 
                                                     <!-- Quantity -->
                                                     <div class="mb-4">

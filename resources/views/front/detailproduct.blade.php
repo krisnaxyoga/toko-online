@@ -53,7 +53,7 @@
                             <div class="p-t-33">
                                 <div class="flex-w flex-r-m p-b-10">
 
-                                    <div class="size-204 respon6-next">
+                                    {{-- <div class="size-204 respon6-next">
                                         <label for="variant{{ $product->id }}">Product variant</label>
 
                                         <div class="rs1-select2 bor8 bg0">
@@ -68,7 +68,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
 
 
