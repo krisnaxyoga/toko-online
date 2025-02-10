@@ -35,7 +35,7 @@
                                             <th>
                                                 Name
                                             </th>
-                                            <th>Slug</th>
+                                            {{-- <th>Slug</th> --}}
                                             <th>Description</th>
                                         </tr>
                                     </thead>
@@ -59,7 +59,7 @@
                                                     </form>
                                                 </td>
                                                 <td>{{ $item->name }}</td>
-                                                <td>{{ $item->slug }}</td>
+                                                {{-- <td>{{ $item->slug }}</td> --}}
                                                 <td>{{ $item->description }}</td>
 
                                             </tr>

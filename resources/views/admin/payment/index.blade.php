@@ -50,7 +50,7 @@
                                                 </td>
                                                 <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
                                                 </td>
-                                                <td>{{ $item->order->status }}</td>
+                                                <td>{{ $item->status }}</td>
 
                                             </tr>
                                         @endforeach

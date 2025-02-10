@@ -36,7 +36,20 @@
                                     class="mb-3">
                             @endif
                             <label for="inputEmail5" class="form-label">image</label>
-                            <input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .JPG">
+                            <input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .JPG"
+                                onchange="validateFile(this)">
+                            <script>
+                                function validateFile(input) {
+                                    const file = input.files[0];
+                                    if (file) {
+                                        const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+                                        if (!validExtensions.includes(file.type)) {
+                                            alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                                            input.value = '';
+                                        }
+                                    }
+                                }
+                            </script>
                         </div>
                         <div class="text-center">
                             <button type="submit"

@@ -28,21 +28,21 @@
                         <div class="col-md-6">
                             <label for="inputAccountNumber" class="form-label">Account Number</label>
                             <input type="text" class="form-control" id="inputAccountNumber" name="account_number"
-                                value="{{ old('account_number', $model->account_number ?? '') }}">
+                                value="{{ old('account_number', $model->account_number ?? '') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputAccountName" class="form-label">Account Name</label>
                             <input type="text" class="form-control" id="inputAccountName" name="account_name"
-                                value="{{ old('account_name', $model->account_name ?? '') }}">
+                                value="{{ old('account_name', $model->account_name ?? '') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputBankName" class="form-label">Bank Name</label>
                             <input type="text" class="form-control" id="inputBankName" name="bank_name"
-                                value="{{ old('bank_name', $model->bank_name ?? '') }}">
+                                value="{{ old('bank_name', $model->bank_name ?? '') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputStatus" class="form-label">Status</label>
-                            <select class="form-select" id="inputStatus" name="status">
+                            <select class="form-select" id="inputStatus" name="status" required>
                                 <option value="active"
                                     {{ old('status', $model->status ?? '') == 'active' ? 'selected' : '' }}>Active</option>
                                 <option value="inactive"

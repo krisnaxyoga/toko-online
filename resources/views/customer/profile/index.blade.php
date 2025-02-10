@@ -94,7 +94,21 @@
                                             <img src="{{ url($user->image) }}" alt="Profile" style="width: 189px">
                                         @endif
                                         <div class="pt-2">
-                                            <input type="file" class="form-control" id="profileImage" name="image">
+                                            <input type="file" class="form-control" id="profileImage"
+                                                name="image"accept=".jpg, .jpeg, .png, .JPG"
+                                                onchange="validateFile(this)">
+                                            <script>
+                                                function validateFile(input) {
+                                                    const file = input.files[0];
+                                                    if (file) {
+                                                        const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+                                                        if (!validExtensions.includes(file.type)) {
+                                                            alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                                                            input.value = '';
+                                                        }
+                                                    }
+                                                }
+                                            </script>
                                         </div>
                                     </div>
                                 </div>

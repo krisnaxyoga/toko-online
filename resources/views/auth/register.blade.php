@@ -10,8 +10,9 @@
                             Register
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('doregister') }}">
+                            <form method="POST" action="{{ route('doregister') }}" enctype="multipart/form-data">
                                 @csrf
+
                                 <div class="row mb-3">
                                     <div class="col-lg-6">
                                         <div class="form-group">
@@ -42,6 +43,9 @@
                                                 class="form-select form-control" required>
                                                 <option>Choose Province</option>
                                             </select>
+                                            @error('origin_province')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -49,9 +53,12 @@
                                             <label for="city">City <span class="text-danger">*</span></label>
                                             <select name="origin_city" id="origin_city" class="form-select form-control"
                                                 required>
-                                                <option>Choose City</option>
+                                                <option value="" disabled selected>Choose City</option>
                                             </select>
 
+                                            @error('origin_city')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -59,7 +66,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="address">Address <span class="text-danger">*</span></label>
-                                            <textarea name="address" id="" class="form-control"></textarea>
+                                            <textarea name="address" id="" class="form-control" required></textarea>
 
 
                                         </div>
@@ -70,7 +77,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input type="text" class="form-control" id="phone" name="phone"
+                                            <input type="number" class="form-control" id="phone" name="phone"
                                                 value="{{ old('phone') }}" required autocomplete="phone">
                                             @error('phone')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -140,13 +147,13 @@
                     data: function(params) {
                         return {
                             keyword: params.term
-                        }
+                        };
                     },
                     processResults: function(response) {
                         return {
                             results: response
-                        }
-                    },
+                        };
+                    }
                 }
             });
 
@@ -154,8 +161,9 @@
 
             $('#origin_province').on('change', function() {
                 $('#origin_city').empty();
-                $('#origin_city').append('<option>Choose City</option>');
+                $('#origin_city').append('<option value="">Choose City</option>');
                 $('#origin_city').select2('close');
+
                 $('#origin_city').select2({
                     ajax: {
                         url: "{{ route('cities') }}",
@@ -166,17 +174,34 @@
                             return {
                                 keyword: params.term,
                                 province_id: $('#origin_province').val()
-                            }
+                            };
                         },
                         processResults: function(response) {
                             return {
                                 results: response
-                            }
-                        },
+                            };
+                        }
                     }
                 });
             });
 
+            // 🔥 Tambahkan validasi sebelum submit
+            $('form').on('submit', function(event) {
+                let province = $('#origin_province').val();
+                let city = $('#origin_city').val();
+
+                if (!province) {
+                    alert('Mohon pilih Province!');
+                    event.preventDefault(); // Mencegah form terkirim
+                    return;
+                }
+
+                if (!city || city === "Choose City") {
+                    alert('Mohon pilih City!');
+                    event.preventDefault(); // Mencegah form terkirim
+                    return;
+                }
+            });
         });
     </script>
 @endsection

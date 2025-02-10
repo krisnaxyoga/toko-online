@@ -178,7 +178,20 @@
                                             <div class="form-group">
                                                 <label for="bukti_transfer">Upload Bukti Transfer</label>
                                                 <input type="file" class="form-control mb-2" id="bukti_transfer"
-                                                    name="bukti_transfer">
+                                                    name="bukti_transfer" accept=".jpg, .jpeg, .png, .JPG"
+                                                    onchange="validateFile(this)">
+                                                <script>
+                                                    function validateFile(input) {
+                                                        const file = input.files[0];
+                                                        if (file) {
+                                                            const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+                                                            if (!validExtensions.includes(file.type)) {
+                                                                alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                                                                input.value = '';
+                                                            }
+                                                        }
+                                                    }
+                                                </script>
                                             </div>
                                             <button type="submit" class="btn btn-primary">Upload</button>
                                             <button type="button" class="btn btn-danger" data-bs-toggle="modal"

@@ -147,7 +147,6 @@
                         <select class="form-select" id="filterType">
                             <option value="all">All Time</option>
                             <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
                             <option value="monthly">Monthly</option>
                             <option value="yearly">Yearly</option>
                             <option value="custom">Custom Range</option>

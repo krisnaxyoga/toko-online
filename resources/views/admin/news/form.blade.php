@@ -28,12 +28,12 @@
                         <div class="col-md-6">
                             <label for="inputTitle" class="form-label">Title</label>
                             <input type="text" class="form-control" id="inputTitle" name="title"
-                                value="{{ old('title', $model->title ?? '') }}">
+                                value="{{ old('title', $model->title ?? '') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputImage1" class="form-label">Image </label>
                             <input type="file" class="form-control" id="inputImage1" name="image1"
-                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)">
+                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)" required>
                             <script>
                                 function validateFile(input) {
                                     const file = input.files[0];
@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="inputContent" class="form-label">Content</label>
-                            <textarea class="form-control" id="inputContent" name="content">{{ old('content', $model->content ?? '') }}</textarea>
+                            <textarea class="form-control" id="inputContent" name="content" required>{{ old('content', $model->content ?? '') }}</textarea>
                         </div>
                         {{-- <div class="col-md-6">
                             <label for="inputMetaTitle" class="form-label">Meta Title</label>

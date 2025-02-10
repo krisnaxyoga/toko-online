@@ -41,10 +41,10 @@
                                             <th>
                                                 Name
                                             </th>
-                                            <th>Slug</th>
+                                            {{-- <th>Slug</th> --}}
                                             <th>Price</th>
                                             <th>Weight</th>
-                                            <th>Stock</th>
+                                            {{-- <th>Stock</th>--}}
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -74,10 +74,10 @@
                                                 </td>
                                                 <td>{{ $item->category->name }}</td>
                                                 <td>{{ $item->name }}</td>
-                                                <td>{{ $item->slug }}</td>
+                                                {{-- <td>{{ $item->slug }}</td> --}}
                                                 <td>{{ $item->price }}</td>
                                                 <td>{{ $item->weight }}</td>
-                                                <td>{{ $item->stock }}</td>
+                                                {{-- <td>{{ $item->stock }}</td> --}}
                                                 <td>{{ $item->status }}</td>
                                             </tr>
                                         @endforeach

@@ -49,7 +49,7 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-8">
-                                                <select name="status" id="" class="form-control">
+                                                <select name="status" id="" class="form-control" required>
                                                     <option value="">-pilih-</option>
                                                     <option value="Pembayaran Diterima"
                                                         {{ $data->status == 'Pembayaran Diterima' ? 'selected' : '' }}>

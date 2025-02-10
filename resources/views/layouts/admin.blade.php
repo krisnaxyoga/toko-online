@@ -45,7 +45,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center bg-dark">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center text-light">
+            <a href="{{ route('front.index') }}" class="logo d-flex align-items-center text-light">
                 Admin
             </a>
             <i class="bi bi-list toggle-sidebar-btn  text-light"></i>

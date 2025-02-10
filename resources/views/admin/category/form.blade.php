@@ -28,11 +28,11 @@
                         <div class="col-md-6">
                             <label for="inputName5" class="form-label">Name</label>
                             <input type="text" class="form-control" id="inputName5" name="name"
-                                value="{{ old('name', $model->name ?? '') }}">
+                                value="{{ old('name', $model->name ?? '') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputEmail5" class="form-label">Description</label>
-                            <textarea class="form-control" id="inputEmail5" name="description">{{ old('description', $model->description ?? '') }}</textarea>
+                            <textarea class="form-control" id="inputEmail5" name="description" required>{{ old('description', $model->description ?? '') }}</textarea>
                         </div>
                         @if ($category != null)
                             <input hidden type="text" value="{{ $category }}" name="parent_id">

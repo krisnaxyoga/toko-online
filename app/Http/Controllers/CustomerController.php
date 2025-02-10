@@ -76,8 +76,8 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'address' => 'nullable|string',
-            'origin_province' => 'required|string',
-            'origin_city' => 'required|string',
+            'origin_province' => 'required',
+            'origin_city' => 'required',
             'phone' => 'required|string|max:15',
             'password' => 'required|string|min:8|confirmed',
         ]);

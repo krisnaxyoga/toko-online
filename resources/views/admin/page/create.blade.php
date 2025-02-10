@@ -28,7 +28,7 @@
                         <div class="col-md-6">
                             <label for="inputTitle" class="form-label">Title</label>
                             <input type="text" class="form-control" id="inputTitle" name="title"
-                                value="{{ old('title', $model->title ?? '') }}">
+                                value="{{ old('title', $model->title ?? '') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputSlug" class="form-label">Slug</label>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="inputContent" class="form-label">Content</label>
-                            <textarea class="form-control" id="inputContent" name="content">{{ old('content', $model->content ?? '') }}</textarea>
+                            <textarea class="form-control" id="inputContent" name="content" required>{{ old('content', $model->content ?? '') }}</textarea>
                         </div>
                         {{-- <div class="col-md-6">
                             <label for="inputMetaTitle" class="form-label">Meta Title</label>
@@ -46,7 +46,7 @@
                         </div> --}}
                         <div class="col-md-12">
                             <label for="inputMetaDescription" class="form-label">content 2</label>
-                            <textarea class="form-control" id="inputContent" name="meta_description">{{ old('meta_description', $model->meta_description ?? '') }}</textarea>
+                            <textarea class="form-control" id="inputContent" name="meta_description" required>{{ old('meta_description', $model->meta_description ?? '') }}</textarea>
 
                         </div>
                         {{-- <div class="col-md-6">
@@ -57,19 +57,8 @@
                         <div class="col-md-6">
                             <label for="inputImage1" class="form-label">Image 1</label>
                             <input type="file" class="form-control" id="inputImage1" name="image1"
-                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)">
-                            <script>
-                                function validateFile(input) {
-                                    const file = input.files[0];
-                                    if (file) {
-                                        const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
-                                        if (!validExtensions.includes(file.type)) {
-                                            alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
-                                            input.value = '';
-                                        }
-                                    }
-                                }
-                            </script>
+                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)" required>
+
                             @if ($model->image1)
                                 <img src="{{ url($model->image1) }}" alt="{{ url($model->image1) }}"
                                     style="width: 200px;height:200px" class="mt-2">
@@ -78,7 +67,7 @@
                         <div class="col-md-6">
                             <label for="inputImage2" class="form-label">Image 2</label>
                             <input type="file" class="form-control" id="inputImage2" name="image2"
-                                accept=".jpg, .jpeg, .png, .JPG">
+                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)" required>
                             @if ($model->image2)
                                 <img src="{{ url($model->image2) }}" alt="{{ url($model->image2) }}"
                                     style="width: 200px;height:200px" class="mt-2">
@@ -94,4 +83,16 @@
             </div>
         </div>
     </section>
+    <script>
+        function validateFile(input) {
+            const file = input.files[0];
+            if (file) {
+                const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+                if (!validExtensions.includes(file.type)) {
+                    alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                    input.value = '';
+                }
+            }
+        }
+    </script>
 @endsection

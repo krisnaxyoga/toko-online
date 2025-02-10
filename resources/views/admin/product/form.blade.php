@@ -31,7 +31,7 @@
                         @method($model->exists ? 'PUT' : 'POST')
                         <div class="col-md-6">
                             <label for="inputCategory" class="form-label">Category</label>
-                            <select class="form-select" id="inputCategory" name="category_id">
+                            <select class="form-select" id="inputCategory" name="category_id" required>
                                 <option value="">Select Category</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
@@ -44,41 +44,78 @@
                         <div class="col-md-6">
                             <label for="inputName" class="form-label">Name</label>
                             <input type="text" class="form-control" id="inputName" name="name"
-                                value="{{ old('name', $model->name ?? '') }}">
+                                value="{{ old('name', $model->name ?? '') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="inputDescription" name="description">{{ old('description', $model->description ?? '') }}</textarea>
+                            <textarea class="form-control" id="inputDescription" name="description" required>{{ old('description', $model->description ?? '') }}</textarea>
                         </div>
                         <div class="col-md-6">
                             <label for="inputPrice" class="form-label">Price</label>
-                            <input type="text" class="form-control" id="inputPrice" name="price"
-                                value="{{ old('price', $model->price ?? '') }}">
+                            <input type="number" class="form-control" id="inputPrice" name="price"
+                                value="{{ old('price', $model->price ?? '') }}" required>
                         </div>
                         <div class="col-md-6">
                             <label for="inputWeight" class="form-label">Weight</label>
-                            <input type="text" class="form-control" id="inputWeight" name="weight"
-                                value="{{ old('weight', $model->weight ?? '') }}">
+                            <input type="number" class="form-control" id="inputWeight" name="weight"
+                                value="{{ old('weight', $model->weight ?? '') }}" required>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <label for="inputStock" class="form-label">Stock</label>
                             <input type="text" class="form-control" id="inputStock" name="stock"
                                 value="{{ old('stock', $model->stock ?? '') }}">
-                        </div>
+                        </div> --}}
                         <div class="col-md-6">
                             <label for="inputImages" class="form-label">Images primary</label>
                             <input type="file" class="form-control" id="inputImages" name="images_primary"
-                                accept="image/*" onchange="previewImage(event)">
+                                accept="image/*" onchange="previewImage(event); validateImagewes(this)" required>
                             @if ($model->exists && $image_primary != null)
                                 <img src="{{ url($image_primary->image_url) }}" width="200px" class="mt-2"
                                     id="output" />
                             @else
-                                <img id="output" width="200px" class="mt-2" />
+                                <img id="output" width="200px" class="mt-2" style="display: none;" />
                             @endif
                         </div>
+
+                        <script>
+                            function validateImagewes(input) {
+                                const file = input.files[0];
+                                if (file) {
+                                    const validExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
+                                    const maxSize = 2 * 1024 * 1024; // 2MB
+
+                                    // Validasi format file
+                                    if (!validExtensions.includes(file.type)) {
+                                        alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                                        input.value = '';
+                                        return false;
+                                    }
+
+                                    // Validasi ukuran file
+                                    if (file.size > maxSize) {
+                                        alert('Ukuran file tidak boleh lebih dari 2MB.');
+                                        input.value = '';
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            }
+
+                            function previewImage(event) {
+                                const output = document.getElementById('output');
+                                if (event.target.files && event.target.files[0]) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        output.src = e.target.result;
+                                        output.style.display = 'block';
+                                    };
+                                    reader.readAsDataURL(event.target.files[0]);
+                                }
+                            }
+                        </script>
                         <div class="col-md-6">
                             <label for="inputStatus" class="form-label">Status</label>
-                            <select class="form-select" id="inputStatus" name="status">
+                            <select class="form-select" id="inputStatus" name="status" required>
                                 <option value="available"
                                     {{ old('status', $model->status ?? '') == 'available' ? 'selected' : '' }}>
                                     Available
@@ -94,8 +131,21 @@
                             <div class="form-group">
                                 <label class="form-label">Upload gallery</label>
                                 <input type="file" class="form-control" name="images[]" multiple
-                                    data-allow-reorder="true" accept="image/*">
+                                    data-allow-reorder="true" accept=".jpg, .jpeg, .png" onchange="validateFile(this)">
                             </div>
+                            <script>
+                                function validateFile(input) {
+                                    const files = input.files;
+                                    for (let i = 0; i < files.length; i++) {
+                                        const file = files[i];
+                                        if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+                                            alert('Hanya gambar dengan format jpg, jpeg, atau png yang boleh diupload.');
+                                            input.value = '';
+                                            break;
+                                        }
+                                    }
+                                }
+                            </script>
                             @if ($model->exists && $model->images)
                                 <div class="row">
                                     @foreach ($model->images as $image)
