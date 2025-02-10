@@ -18,7 +18,7 @@ class FrontEndController extends Controller
         // dd(session('cart', []));
         // session()->flush(); // Uncomment this line to clear session
         $sliders = Slider::all();
-        $products = Product::with('images','wishlist')->orderBy('created_at', 'DESC')->get();
+        $products = Product::with('images','wishlist')->where('status','available')->orderBy('created_at', 'DESC')->get();
         return view('front.index',compact('products','sliders'));
     }
 
@@ -43,7 +43,7 @@ class FrontEndController extends Controller
     public function categoryproduct(Request $request){
 
         $categories = Category::all();
-        $products = Product::with('images','wishlist');
+        $products = Product::with('images','wishlist')->where('status','available');
 
         if($request->query('category')){
             $products = $products->where('category_id',$request->query('category'));
@@ -51,7 +51,7 @@ class FrontEndController extends Controller
 
         if($request->query('price_range')){
             $price_range = explode('-',$request->query('price_range'));
-            $products = $products->whereBetween('price',[$price_range[0],$price_range[1]]);
+            $products = $products->whereBetween('price',[$price_range[0],$price_range[1]])->where('status','available');
         }
 
         $products = $products->orderBy('created_at', 'DESC')->get();
@@ -68,7 +68,7 @@ class FrontEndController extends Controller
     }
 
     public function product(){
-        $product = Product::with('images','variants')->orderBy('created_at', 'DESC')->paginate(8);
+        $product = Product::with('images','variants')->orderBy('created_at', 'DESC')->where('status','available')->paginate(8);
         return view('front.shop',compact('product'));
     }
 }
