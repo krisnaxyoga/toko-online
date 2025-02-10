@@ -68,7 +68,7 @@
                         <div class="col-md-6">
                             <label for="inputImages" class="form-label">Images primary</label>
                             <input type="file" class="form-control" id="inputImages" name="images_primary"
-                                accept="image/*" onchange="previewImage(event); validateImagewes(this)" required>
+                                accept="image/*" onchange="previewImage(event); validateImagewes(this)">
                             @if ($model->exists && $image_primary != null)
                                 <img src="{{ url($image_primary->image_url) }}" width="200px" class="mt-2"
                                     id="output" />
