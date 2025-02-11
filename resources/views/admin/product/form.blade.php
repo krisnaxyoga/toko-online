@@ -68,7 +68,8 @@
                         <div class="col-md-6">
                             <label for="inputImages" class="form-label">Images primary</label>
                             <input type="file" class="form-control" id="inputImages" name="images_primary"
-                                accept="image/*" onchange="previewImage(event); validateImagewes(this)">
+                                accept="image/*" onchange="previewImage(event); validateImagewes(this)"
+                                @if (!$model->exists) required @endif>
                             @if ($model->exists && $image_primary != null)
                                 <img src="{{ url($image_primary->image_url) }}" width="200px" class="mt-2"
                                     id="output" />
@@ -131,7 +132,8 @@
                             <div class="form-group">
                                 <label class="form-label">Upload gallery</label>
                                 <input type="file" class="form-control" name="images[]" multiple
-                                    data-allow-reorder="true" accept=".jpg, .jpeg, .png" onchange="validateFile(this)">
+                                    data-allow-reorder="true" accept=".jpg, .jpeg, .png" onchange="validateFile(this)"
+                                    @if (!$model->exists) required @endif />
                             </div>
                             <script>
                                 function validateFile(input) {
@@ -149,9 +151,11 @@
                             @if ($model->exists && $model->images)
                                 <div class="row">
                                     @foreach ($model->images as $image)
-                                        <div class="col-md-3">
-                                            <img src="{{ url($image->image_url) }}" width="100%" />
-                                        </div>
+                                        @if (!$image->is_primary)
+                                            <div class="col-md-3">
+                                                <img src="{{ url($image->image_url) }}" width="100%" />
+                                            </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             @endif

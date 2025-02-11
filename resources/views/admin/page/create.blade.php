@@ -57,7 +57,8 @@
                         <div class="col-md-6">
                             <label for="inputImage1" class="form-label">Image 1</label>
                             <input type="file" class="form-control" id="inputImage1" name="image1"
-                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)" required>
+                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)"
+                                @if (!$model->exists) required @endif>
 
                             @if ($model->image1)
                                 <img src="{{ url($model->image1) }}" alt="{{ url($model->image1) }}"
@@ -67,7 +68,8 @@
                         <div class="col-md-6">
                             <label for="inputImage2" class="form-label">Image 2</label>
                             <input type="file" class="form-control" id="inputImage2" name="image2"
-                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)" required>
+                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)"
+                                @if (!$model->exists) required @endif>
                             @if ($model->image2)
                                 <img src="{{ url($model->image2) }}" alt="{{ url($model->image2) }}"
                                     style="width: 200px;height:200px" class="mt-2">

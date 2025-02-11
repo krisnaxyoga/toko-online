@@ -33,7 +33,8 @@
                         <div class="col-md-6">
                             <label for="inputImage1" class="form-label">Image </label>
                             <input type="file" class="form-control" id="inputImage1" name="image1"
-                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)" required>
+                                accept=".jpg, .jpeg, .png, .JPG" onchange="validateFile(this)"
+                                @if (!$model->exists) required @endif>
                             <script>
                                 function validateFile(input) {
                                     const file = input.files[0];

@@ -37,7 +37,7 @@
                             @endif
                             <label for="inputEmail5" class="form-label">image</label>
                             <input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .JPG"
-                                onchange="validateFile(this)">
+                                onchange="validateFile(this)" @if (!$model->exists) required @endif>
                             <script>
                                 function validateFile(input) {
                                     const file = input.files[0];
