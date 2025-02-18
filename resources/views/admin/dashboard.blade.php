@@ -88,7 +88,7 @@
                                 <div id="reportsChart"></div>
                                 <?php
                                 $data = [];
-                                
+
                                 foreach ($orders as $order) {
                                     $date = (new DateTime($order->created_at))->format('Y-m-d');
                                     if (!isset($data[$date])) {
@@ -100,18 +100,18 @@
                                     $data[$date]['sales'] += $order->grand_total;
                                     $data[$date]['customers'] += 1;
                                 }
-                                
+
                                 $salesData = [];
                                 $customersData = [];
                                 $labels = array_keys($data);
-                                
+
                                 foreach ($labels as $date) {
                                     $salesData[] = $data[$date]['sales'];
                                     $customersData[] = $data[$date]['customers'];
                                 }
-                                
+
                                 // Now $salesData, $customersData, and $labels can be used to render the chart
-                                
+
                                 ?>
 
                                 <!-- End Line Chart -->
@@ -245,7 +245,8 @@
                                                         <td>Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}</td>
                                                         <td>Rp {{ number_format($item->grand_total, 0, ',', '.') }}</td>
                                                         <td>{{ $item->shipping_courier }}</td>
-                                                        <td>{{ $item->user_address->address }}</td>
+                                                        <td>{{ $item->user_address ? $item->user_address->address : 'N/A' }}
+                                                        </td>
                                                         <td>{{ $item->notes }}</td>
                                                         <td>{{ $item->created_at }}</td>
                                                     </tr>
