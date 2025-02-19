@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::get('/detailpesananorder/{id}',[ReportController::class, 'detail'])->name('detailpesananorder');
     Route::post('/detailpesananorder-update/{id}',[ReportController::class, 'updateorder'])->name('detailpesananorder-update');
     Route::get('/pelanggan',[CustomerController::class, 'customerdata'])->name('pelanggan');
+    Route::delete('/deletecustomer/{id}',[CustomerController::class, 'destroy_customer'])->name('deletecustomer');
     Route::resource('/bank-account', BankController::class);
 
     Route::get('/admin/allpayment', [ReportController::class, 'reportpayment'])->name('admin.allpayment');

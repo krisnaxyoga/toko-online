@@ -141,7 +141,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="destination_city"
                                                 id="destination_city_{{ $address->id }}" data-id="{{ $address->id }}"
-                                                value="{{ $address->city->id }}">
+                                                value="{{ $address->city->id }}" required>
                                             <label class="form-check-label" for="destination_city_{{ $address->id }}">
                                                 {{ $address->address }},
                                                 {{ $address->city->name }}, {{ $address->province->name }}
@@ -154,7 +154,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label for="courier" class="form-label">Courier</label>
-                                            <select name="courier" id="courier" class="form-select">
+                                            <select name="courier" id="courier" class="form-select" required>
                                                 <option>Choose Courier</option>
                                                 <option value="jne">JNE</option>
                                                 <option value="pos">POS</option>
@@ -203,7 +203,7 @@
                                 </span>
                             </div>
                             <div class="size-209 p-t-1">
-                                <select id="shipping_options" class="form-select" name="shipping_cost">
+                                <select id="shipping_options" class="form-select" name="shipping_cost" required>
                                     <option value="" disabled selected>Select a price shipping</option>
                                 </select>
                             </div>

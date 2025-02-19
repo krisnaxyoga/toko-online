@@ -234,4 +234,10 @@ class CustomerController extends Controller
         }
         return redirect()->back()->with('success', 'Address updated successfully');
     }
+
+    public function destroy_customer($id){
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->back()->with('success', 'Customer deleted successfully');
+    }
 }

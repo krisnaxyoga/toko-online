@@ -23,6 +23,23 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Data Orders</h5>
+                            <div class="mb-3">
+                                <label for="orderStatusFilter" class="form-label">Filter Status Pesanan</label>
+                                <select id="orderStatusFilter" class="form-select" onchange="filterOrders()">
+                                    <option value="">Semua Status</option>
+                                    <option value="Belum Dibayar">Menunggu Pembayaran</option>
+                                    <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
+                                    <option value="Pembayaran Diterima">Pembayaran Diterima</option>
+                                    <option value="sedang di proses">Sedang Diproses</option>
+                                    <option value="dalam pengiriman">Dalam Pengiriman (+Resi)</option>
+                                    <option value="Pembayaran Gagal">Pembayaran Gagal</option>
+                                    <option value="Diterima">Selesai</option>
+                                    <option value="Dibatalkan">Dibatalkan</option>
+                                </select>
+                            </div>
+
+
+
                             <!-- Table with stripped rows -->
                             <div class="table-responsive">
 
@@ -40,9 +57,9 @@
                                             <th>sub total</th>
                                             <th>shipping cost</th>
                                             <th>total</th>
-                                            <th>shipping courier</th>
+                                            {{-- <th>shipping courier</th>
                                             <th>shipping address</th>
-                                            <th>notes</th>
+                                            <th>notes</th> --}}
                                             <th>date</th>
                                             <th></th>
                                         </tr>
@@ -67,9 +84,9 @@
                                                 <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->grand_total, 0, ',', '.') }}</td>
-                                                <td>{{ $item->shipping_courier }}</td>
+                                                {{-- <td>{{ $item->shipping_courier }}</td>
                                                 <td>{{ $item->user_address ? $item->user_address->address : 'N/A' }}</td>
-                                                <td>{{ $item->notes }}</td>
+                                                <td>{{ $item->notes }}</td> --}}
                                                 <td>{{ $item->created_at }}</td>
                                             </tr>
                                         @endforeach
@@ -83,7 +100,21 @@
                 </div>
             </div>
         </div>
+        <script>
+            function filterOrders() {
+                const filterValue = document.getElementById('orderStatusFilter').value;
+                const rows = document.querySelectorAll('.datatable tbody tr');
 
+                rows.forEach(row => {
+                    const status = row.querySelector('td:nth-child(4)').innerText;
+                    if (filterValue === "" || status === filterValue) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+        </script>
         {{-- @foreach ($orders as $item)
             <div class="modal fade" id="orderItemsModal{{ $item->id }}" tabindex="-1"
                 aria-labelledby="orderItemsModalLabel" aria-hidden="true">

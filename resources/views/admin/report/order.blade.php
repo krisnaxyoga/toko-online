@@ -43,9 +43,9 @@
                                             <th>sub total</th>
                                             <th>shipping cost</th>
                                             <th>total</th>
-                                            <th>shipping courier</th>
+                                            {{-- <th>shipping courier</th>
                                             <th>shipping address</th>
-                                            <th>notes</th>
+                                            <th>notes</th> --}}
                                             <th>date</th>
                                             <th>total item</th>
                                             <th></th>
@@ -68,9 +68,9 @@
                                                 <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->grand_total, 0, ',', '.') }}</td>
-                                                <td>{{ $item->shipping_courier }}</td>
+                                                {{-- <td>{{ $item->shipping_courier }}</td>
                                                 <td>{{ $item->user_address ? $item->user_address->address : 'N/A' }}</td>
-                                                <td>{{ $item->notes }}</td>
+                                                <td>{{ $item->notes }}</td> --}}
                                                 <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
                                                 </td>
                                                 <td>{{ $item->order_item->sum('quantity') }}</td>
@@ -411,8 +411,10 @@
             const exportData = visibleRows.map(row => ({
                 'Customer': row.querySelector('td:nth-child(3)').textContent,
                 'Date': new Date(row.getAttribute('data-created-at')).toLocaleDateString('en-US'),
-                'Total Items': row.querySelector('td:nth-child(12)')
+                'Total Items': row.querySelector('td:nth-child(9)')
                     .textContent, // You might need to adjust this based on your actual data structure
+                'Subtotal': row.querySelector('td:nth-child(5)').textContent,
+                'Shipping Cost': row.querySelector('td:nth-child(6)').textContent,
                 'Total Price': row.querySelector('td:nth-child(7)').textContent
             }));
 
@@ -421,7 +423,9 @@
             exportData.push({
                 'Customer': '',
                 'Date': '',
-                'Total Items': 'Grand Total:',
+                'Total Items': '',
+                'Subtotal': '',
+                'Shipping Cost': 'Grand Total',
                 'Total Price': `Rp ${grandTotal.toLocaleString('id-ID')}`
             });
 
@@ -463,7 +467,9 @@
             const exportData = visibleRows.map(row => [
                 row.querySelector('td:nth-child(3)').textContent, // Customer
                 new Date(row.getAttribute('data-created-at')).toLocaleDateString('en-US'), // Date
-                row.querySelector('td:nth-child(12)').textContent, // Total Items (adjust as needed)
+                row.querySelector('td:nth-child(9)').textContent, // Total Items (adjust as needed)
+                row.querySelector('td:nth-child(5)').textContent, // Subtotal
+                row.querySelector('td:nth-child(6)').textContent, // Shipping Cost
                 row.querySelector('td:nth-child(7)').textContent // Total Price
             ]);
 
@@ -471,12 +477,12 @@
             const grandTotal = calculateGrandTotal();
 
             // Add grand total row
-            exportData.push(['', '', 'Grand Total:', `Rp ${grandTotal.toLocaleString('id-ID')}`]);
+            exportData.push(['', '', '', '', 'Grand Total', `Rp ${grandTotal.toLocaleString('id-ID')}`]);
 
             // Generate table
             doc.autoTable({
                 head: [
-                    ['Customer', 'Date', 'Total Items', 'Total Price']
+                    ['Customer', 'Date', 'Total Items', 'Subtotal', 'Shipping Cost', 'Total Price']
                 ],
                 body: exportData,
                 startY: 25,

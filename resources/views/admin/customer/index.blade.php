@@ -28,6 +28,7 @@
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>ID</th>
                                             <th>Name</th>
                                             <th>Email</th>
@@ -38,7 +39,18 @@
                                     <tbody>
                                         @foreach ($customers as $customer)
                                             <tr>
-                                                <td>{{ $customer->id }}</td>
+                                                <td>
+                                                    <form action="{{ route('deletecustomer', $customer->id) }}"
+                                                        method="post" class="d-inline">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit"
+                                                            class="btn btn-datatable btn-icon btn-transparent-dark mr-2"
+                                                            onclick="return confirm('Yakin ingin menghapus data?')"><i
+                                                                class="bx bxs-trash"></i></button>
+                                                    </form>
+                                                </td>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $customer->name }}</td>
                                                 <td>{{ $customer->email }}</td>
                                                 <td>{{ $customer->phone }}</td>
