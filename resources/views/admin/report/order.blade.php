@@ -69,7 +69,7 @@
                                                 <td>Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->grand_total, 0, ',', '.') }}</td>
                                                 <td>{{ $item->shipping_courier }}</td>
-                                                <td>{{ $item->user_address->address }}</td>
+                                                <td>{{ $item->user_address ? $item->user_address->address : 'N/A' }}</td>
                                                 <td>{{ $item->notes }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
                                                 </td>
