@@ -46,9 +46,9 @@
 
 <body class="animsition">
     <?php
-    
+
     use App\Models\Store_setting;
-    
+
     $storeSetting = Store_setting::first();
     ?>
     <!-- Header -->
@@ -283,6 +283,31 @@
     <main id="main" class="main">
         @yield('contents')
     </main>
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/{{ $storeSetting->phone }}" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp whatsapp-icon"></i>
+    </a>
+
+    <style>
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+        }
+
+        .whatsapp-icon {
+            margin-top: 15px;
+        }
+    </style>
 
     <!-- Footer -->
     <footer class="bg3 p-t-75 p-b-32">

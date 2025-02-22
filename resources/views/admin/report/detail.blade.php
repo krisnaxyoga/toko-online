@@ -44,7 +44,7 @@
                                             <div class="col-8">
                                                 <label for="">Status</label>
                                                 <select name="status" id="status" class="form-control"
-                                                    onchange="showResiInput(this)" required>
+                                                    onchange="showResiInput(this)">
                                                     <option value="">Choose Status</option>
                                                     <option value="sedang di proses">Sedang Di Proses</option>
                                                     <option value="dalam pengiriman">Dalam Pengiriman</option>
@@ -53,7 +53,7 @@
                                                     <div class="form-group mt-3">
                                                         <label for="resi" class="mb-1">Resi</label>
                                                         <input type="text" class="form-control" id="resi"
-                                                            name="resi" required>
+                                                            name="resi">
                                                     </div>
                                                 </div>
                                                 <script>

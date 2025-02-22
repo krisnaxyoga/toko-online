@@ -155,7 +155,7 @@
                                         <div class="col-md-12">
                                             <label for="courier" class="form-label">Courier</label>
                                             <select name="courier" id="courier" class="form-select" required>
-                                                <option>Choose Courier</option>
+                                                <option value="">Choose Courier</option>
                                                 <option value="jne">JNE</option>
                                                 <option value="pos">POS</option>
                                                 <option value="tiki">TIKI</option>
