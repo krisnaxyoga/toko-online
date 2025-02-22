@@ -13,9 +13,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $revenue = Order::where('status', ['Diterima','Pengiriman','Pembayaran Diterima'])->sum('grand_total');
+        $revenue = Order::where('status', ['Diterima','dalam pengiriman','Pembayaran Diterima'])->sum('grand_total');
 
-        $penjualan = Order::where('status', ['Diterima','Pengiriman','Pembayaran Diterima'])->count();
+        $penjualan = Order::where('status', ['Diterima','dalam pengiriman','Pembayaran Diterima'])->count();
 
         $customer = User::where('role_id', 2)->count();
         $orders = Order::with('order_item', 'payment', 'user_address')->latest()->get();
