@@ -15,7 +15,9 @@ class AdminController extends Controller
     {
         $revenue = Order::where('status', ['Diterima','dalam pengiriman','Pembayaran Diterima'])->sum('grand_total');
 
-        $penjualan = Order::where('status', ['Diterima','dalam pengiriman','Pembayaran Diterima'])->count();
+        $penjualan = Order::whereHas('payment',function($query){
+            $query->where('status', 'Pembayaran Diterima');
+        })->count();
 
         $customer = User::where('role_id', 2)->count();
         $orders = Order::with('order_item', 'payment', 'user_address')->latest()->get();
