@@ -13,7 +13,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $revenue = Order::where('status', ['Diterima','dalam pengiriman','Pembayaran Diterima'])->sum('grand_total');
+        $revenue = Order::whereHas('payment',function($query){
+            $query->where('status', 'Pembayaran Diterima');
+        })->sum('grand_total');
 
         $penjualan = Order::whereHas('payment',function($query){
             $query->where('status', 'Pembayaran Diterima');
