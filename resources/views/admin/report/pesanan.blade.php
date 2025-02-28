@@ -53,7 +53,7 @@
                                                 No. Invoice
                                             </th>
                                             <th>customer</th>
-                                            <th>status</th>
+                                            {{-- <th>status</th> --}}
                                             <th>sub total</th>
                                             <th>shipping cost</th>
                                             <th>total</th>
@@ -80,7 +80,7 @@
                                                 </td>
                                                 <td>{{ $item->invoice_number }}</td>
                                                 <td>{{ $item->user->name }}</td>
-                                                <td>{{ $item->status }}</td>
+                                                {{-- <td>{{ $item->status }}</td> --}}
                                                 <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->shipping_cost, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->grand_total, 0, ',', '.') }}</td>

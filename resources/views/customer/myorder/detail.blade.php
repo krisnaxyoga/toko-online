@@ -225,6 +225,8 @@
                                         </form>
                                     @endif
 
+                                    <a href="{{ route('invoice-detail', $order->id) }}" class="btn btn-secondary my-3"><i
+                                            class="fa fa-print"></i> invoice</a>
                                     @if ($order->status == 'Pembayaran Gagal')
                                         <a href="{{ route('mypayment.detail', $order->id) }}"
                                             class="btn btn-warning">Detail payment</a>

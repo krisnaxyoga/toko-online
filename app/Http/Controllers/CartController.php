@@ -221,10 +221,11 @@ class CartController extends Controller
     }
 
     public function checkoutSuccess() {
+        $storeSetting = Store_setting::first();
         $order = Order::where('user_id', auth()->id())->latest()->first();
         $bank = BankAccount::where('status', 'active')->get();
         $order_items = Order_item::where('order_id', $order->id)->with('product', 'product_variant')->get();
-        return view('front.checkout-success', compact('order', 'order_items','bank'));
+        return view('front.checkout-success', compact('order', 'order_items','bank','storeSetting'));
     }
 
     public function invoice($id) {

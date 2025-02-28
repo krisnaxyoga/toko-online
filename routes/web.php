@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth', 'checkrole:2']], function() {
     Route::get('/wishlist/store/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist/destroy/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
     Route::get('/invoice/{id}', [CartController::class, 'invoice'])->name('invoice');
+    Route::get('/invoice-detail/{id}', [CustomerController::class, 'invoice_detail'])->name('invoice-detail');
     Route::post('/review', [CustomerController::class, 'review'])->name('submit-review');
     Route::post('/send-invoice-email/{id}', [CustomerController::class, 'sendInvoiceEmail'])->name('send-invoice-email');
     Route::get('/barang-diterima/{id}',[CustomerController::class, 'barangditerima'])->name('barang.diterima');

@@ -10,6 +10,8 @@ use App\Models\Payment;
 use App\Models\User_address;
 use Illuminate\Http\Request;
 use App\Models\Product_review;
+use App\Models\Store_setting;
+use App\Models\Order_item;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -113,14 +115,25 @@ class CustomerController extends Controller
 
      public function myorder()
     {
+
         $orders = Order::with('order_item', 'payment', 'user_address')->where('user_id', auth()->id())->latest()->get();
         return view('customer.myorder.index', compact('orders'));
     }
     public function showorder(string $id)
     {
+
+        $storeSetting = Store_setting::first();
         $bank = BankAccount::where('status', 'active')->get();
         $order = Order::with('order_item', 'payment', 'user_address')->find($id);
-        return view('customer.myorder.detail', compact('order','bank'));
+        return view('customer.myorder.detail', compact('order','bank','storeSetting'));
+    }
+
+    public function invoice_detail($id){
+        $storeSetting = Store_setting::first();
+        $order = Order::where('id', $id)->latest()->first();
+        $bank = BankAccount::where('status', 'active')->get();
+        $order_items = Order_item::where('order_id', $order->id)->with('product', 'product_variant')->get();
+        return view('customer.myorder.invoice', compact('order', 'order_items','bank','storeSetting'));
     }
 
     /**
