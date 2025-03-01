@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth', 'checkrole:1']], function() {
     Route::post('/slider/store', [StoreSettingController::class, 'addslidder'])->name('admin.setting.slider.store');
     Route::put('/slider/update/{id}', [StoreSettingController::class, 'editslider'])->name('admin.setting.slider.update');
     Route::delete('/slider/destroy/{id}', [StoreSettingController::class, 'deleteslider'])->name('admin.setting.slider.destroy');
-
+    Route::get('/admin/invoice-detail/{id}', [CustomerController::class, 'invoice_detail'])->name('admin.invoice-detail');
     Route::post('/resiadd',[AdminController::class, 'resiadd'])->name('resi.add.admin');
     Route::get('/pesanan',[ReportController::class, 'pesanan'])->name('pesanan');
     Route::get('/detailpesananorder/{id}',[ReportController::class, 'detail'])->name('detailpesananorder');

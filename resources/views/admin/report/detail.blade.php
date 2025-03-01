@@ -145,6 +145,8 @@
                                         class="btn btn-success">Pesanan diterima</a>
                                 </div>
                             @endif --}}
+                            <a href="{{ route('admin.invoice-detail', ['id' => $order->id]) }}"
+                                class="btn btn-primary">Invoice</a>
                         </div>
                     </div>
                 </div>
