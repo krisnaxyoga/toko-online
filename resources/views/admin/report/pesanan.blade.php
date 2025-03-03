@@ -53,7 +53,7 @@
                                                 No. Invoice
                                             </th>
                                             <th>customer</th>
-                                            {{-- <th>status</th> --}}
+                                            <th>status</th>
                                             <th>sub total</th>
                                             <th>shipping cost</th>
                                             <th>total</th>

@@ -58,6 +58,9 @@
                                 <p class="mb-0"><strong>Alamat:</strong> {{ $order->user_address->address ?? 'N/A' }}</p>
                                 <p class="mb-0"><strong>HP:</strong> {{ $order->user->phone }}</p>
                                 <p><strong>Email:</strong> {{ $order->user->email }}</p>
+                                <p><strong>Tgl
+                                        Pesanan:</strong>{{ \Carbon\Carbon::parse($order->created_at)->translatedFormat('l d F Y') }}
+                                </p>
                             </div>
                         </div>
                     </div>
