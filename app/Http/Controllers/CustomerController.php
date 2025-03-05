@@ -226,8 +226,8 @@ class CustomerController extends Controller
         ]);
 
         $useraddress = User_address::find($request->id);
-        $useraddress->province_id = $request->origin_province;
-        $useraddress->city_id = $request->origin_city;
+        $useraddress->province_id = $request->origin_province ?? $useraddress->province_id;
+        $useraddress->city_id = $request->origin_city ?? $useraddress->city_id;
         $useraddress->address = $request->address;
         $useraddress->save();
         return redirect()->back()->with('success', 'Address updated successfully');
