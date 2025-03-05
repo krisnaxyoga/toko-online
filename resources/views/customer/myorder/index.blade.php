@@ -51,7 +51,7 @@
                                                     <a href="{{ route('order-detail', $item->id) }}">
                                                         {{ $item->invoice_number }}</a>
                                                 </td>
-                                                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
+                                                <td>{{ $item->created_at }}
                                                 </td>
                                                 <td>{{ $item->order_item->pluck('quantity')->sum() }}</td>
                                                 <td>Rp {{ number_format($item->grand_total, 0, ',', '.') }}</td>

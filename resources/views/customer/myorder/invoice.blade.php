@@ -46,7 +46,7 @@
                                 <p class="mb-0"><strong>HP:</strong> {{ $order->user->phone }}</p>
                                 <p><strong>Email:</strong> {{ $order->user->email }}</p>
                                 <p><strong>Tgl
-                                        Pesanan:</strong>{{ \Carbon\Carbon::parse($order->created_at)->translatedFormat('l d F Y') }}
+                                        Pesanan:</strong>{{ $order->created_at }}
                                 </p>
                             </div>
                         </div>

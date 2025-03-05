@@ -71,7 +71,7 @@
                                                 {{-- <td>{{ $item->shipping_courier }}</td>
                                                 <td>{{ $item->user_address ? $item->user_address->address : 'N/A' }}</td>
                                                 <td>{{ $item->notes }}</td> --}}
-                                                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
+                                                <td>{{ $item->created_at }}
                                                 </td>
                                                 <td>{{ $item->order_item->sum('quantity') }}</td>
                                             </tr>

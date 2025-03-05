@@ -48,7 +48,7 @@
                                                     <a href="{{ route('mypayment.detail', $item->order_id) }}">
                                                         {{ $item->order->invoice_number }}</a>
                                                 </td>
-                                                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
+                                                <td>{{ $item->created_at }}
                                                 </td>
                                                 <td>{{ $item->status }}</td>
 

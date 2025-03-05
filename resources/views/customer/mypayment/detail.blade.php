@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <p>: {{ $data->invoice_number }}</p>
-                                    <p>: {{ \Carbon\Carbon::parse($data->payment->created_at)->translatedFormat('l d F Y') }}
+                                    <p>: {{ $data->payment->created_at }}
                                     </p>
                                     <p>: {{ $data->payment->status }}</p>
                                     <p>: {{ $data->grand_total }}</p>

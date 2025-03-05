@@ -48,7 +48,7 @@
                                                 <td><a
                                                         href="{{ route('createmyreview', $item->id) }}">{{ $item->invoice_number }}</a>
                                                 </td>
-                                                <td>{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('l d F Y') }}
+                                                <td>{{ $item->created_at }}
                                                 </td>
                                                 <td>{{ $item->review ? $item->review->rating : 'NA' }}</td>
                                                 <td>{{ $item->review ? $item->review->review : 'NA' }}</td>
