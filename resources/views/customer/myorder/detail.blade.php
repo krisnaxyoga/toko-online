@@ -25,7 +25,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <p>: {{ $order->invoice_number }}</p>
-                                    <p>: {{ $order->created_at }}</p>
+                                    <p>: {{ \Carbon\Carbon::parse($order->created_at)->locale('id_ID')->isoFormat('d F Y') }}
+                                    </p>
+                                    <p>: {{ \Carbon\Carbon::now()->locale('id_ID')->isoFormat('d F Y') }}</p>
                                     <p>: Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
                                     <p>: Rp {{ number_format($order->shipping_cost, 0, ',', '.') }}</p>
                                     <p>: Rp {{ number_format($order->grand_total, 0, ',', '.') }}</p>
